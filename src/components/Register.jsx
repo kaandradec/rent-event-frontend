@@ -64,8 +64,8 @@ export const Register = () => {
           <p className="text-red-500 font-bold h-5" aria-live="assertive">
             {errMsg}
           </p>
-          <h1 className="text-3xl font-bold mb-4">Registrarse</h1>
-          <form className="max-w-xs" onSubmit={handleSubmit}>
+          <h1 className="text-3xl font-bold mb-4 text-center">Registrarse</h1>
+          <form className="max-w-xs mx-auto" onSubmit={handleSubmit}>
             <CustomInput
               label="Nombre"
               type="text"

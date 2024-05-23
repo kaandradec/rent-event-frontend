@@ -10,7 +10,7 @@ import {
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
-import { RentEventLogo } from "../components/icons/RentEventLogo";
+import { RentEventLogo } from "./icons/RentEventLogo";
 import SwitchTheme from "./ui/SwitchTheme";
 
 export default function Header() {

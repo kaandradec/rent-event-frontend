@@ -17,7 +17,7 @@ export function DatePickerDemo() {
   const [date, setDate] = React.useState<Date>()
 
   return (
-    <Popover>
+    <Popover >
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
