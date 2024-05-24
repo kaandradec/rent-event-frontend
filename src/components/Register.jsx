@@ -1,12 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
 import { Button, Input } from "@nextui-org/react";
-import { EyeSlashFilledIcon } from "./icons/EyeSlashFilledIcon";
-import { EyeFilledIcon } from "./icons/EyeFilledIcon";
 
 export const Register = () => {
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,8 +20,8 @@ export const Register = () => {
         JSON.stringify({
           username: email,
           password: password,
-          lastname: apellido,
-          firstname: nombre,
+          lastname: lastname,
+          firstname: name,
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -37,8 +35,8 @@ export const Register = () => {
       // borrar los estados y los inputs controlados
       setEmail("");
       setPassword("");
-      setNombre("");
-      setApellido("");
+      setName("");
+      setLastname("");
     } catch (err) {
       if (!err?.response) {
         setErrMsg("El servidor no responde");
@@ -66,23 +64,32 @@ export const Register = () => {
           </p>
           <h1 className="text-3xl font-bold mb-4 text-center">Registrarse</h1>
           <form className="max-w-xs mx-auto" onSubmit={handleSubmit}>
-            <CustomInput
+            <Input
+              className="mb-5"
+              type="text"
               label="Nombre"
-              type="text"
-              onChange={(e) => setNombre(e.target.value)}
+              variant="bordered"
+              onChange={(e) => setName(e.target.value)}
             />
-            <CustomInput
+            <Input
+              className="mb-5"
+              type="text"
               label="Apellido"
-              type="text"
-              onChange={(e) => setApellido(e.target.value)}
+              variant="bordered"
+              onChange={(e) => setLastname(e.target.value)}
             />
-            <CustomInput
-              label="Correo electrónico"
+            <Input
+              className="mb-5"
               type="email"
+              label="Correo electrónico"
+              variant="bordered"
               onChange={(e) => setEmail(e.target.value)}
             />
-            <CustomPasswordInput
+            <Input
+              className="mb-5"
+              type="email"
               label="Contraseña"
+              variant="bordered"
               placeholder="Ingresa tu contraseña"
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -109,68 +116,14 @@ export const Register = () => {
                 </a>
               </label>
             </div>
-            <Button color="primary" type="submit">
-              Registrarse
-            </Button>
+            <div className="text-center">
+              <Button color="primary" type="submit" className="font-bold">
+                Registrarse
+              </Button>
+            </div>
           </form>
         </section>
       )}
     </>
-  );
-};
-
-const CustomInput = ({
-  label,
-  type,
-  variant = "bordered",
-  onChange,
-  placeholder,
-}) => {
-  return (
-    <div className="mb-5">
-      <Input
-        type={type}
-        label={label}
-        variant={variant}
-        placeholder={placeholder}
-        onChange={onChange}
-      />
-    </div>
-  );
-};
-
-const CustomPasswordInput = ({
-  label,
-  variant = "bordered",
-  placeholder,
-  onChange,
-}) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  const toggleVisibility = () => setIsVisible(!isVisible);
-
-  return (
-    <div className="mb-5">
-      <Input
-        label={label}
-        variant={variant}
-        placeholder={placeholder}
-        endContent={
-          <button
-            className="focus:outline-none"
-            type="button"
-            onClick={toggleVisibility}
-          >
-            {isVisible ? (
-              <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-            ) : (
-              <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-            )}
-          </button>
-        }
-        type={isVisible ? "text" : "password"}
-        onChange={onChange}
-      />
-    </div>
   );
 };

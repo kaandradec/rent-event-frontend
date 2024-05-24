@@ -8,6 +8,7 @@ import Dashboard from './pages/administrativo/Dashboard'
 import Landing from './pages/cliente/Landing'
 import Home from './pages/cliente/Home'
 import Analytics from './pages/administrativo/Analytics'
+import LoginClient from './pages/cliente/LoginClient'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/landing" element={<Landing />} />
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<LoginClient />} />
           <Route path="/date" element={<DatePickerDemo />} />
           <Route path={`${ADMIN_PATH}/dashboard`} element={<Dashboard />} />
           <Route path={`${ADMIN_PATH}/analytics`} element={<Analytics />} />

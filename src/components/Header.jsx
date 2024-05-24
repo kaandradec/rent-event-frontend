@@ -3,7 +3,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   DropdownItem,
   DropdownTrigger,
   Dropdown,
@@ -12,8 +11,13 @@ import {
 } from "@nextui-org/react";
 import { RentEventLogo } from "../components/icons/RentEventLogo";
 import SwitchTheme from "./ui/SwitchTheme";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
+  const logout = () => {
+    navigate("/login");
+  };
   return (
     <Navbar>
       <NavbarBrand
@@ -63,8 +67,8 @@ export default function Header() {
             <DropdownItem key="system">System</DropdownItem>
             <DropdownItem key="configurations">Configurations</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
-              Log Out
+            <DropdownItem key="logout" color="danger" onClick={logout}>
+              Logout
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
