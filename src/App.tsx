@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import { Register } from './components/Register'
 import Header from './components/Header'
 import { DatePickerDemo } from './components/DatePickerDemo'
 import Inicio from './pages/Inicio'
@@ -8,7 +7,8 @@ import Dashboard from './pages/administrativo/Dashboard'
 import Landing from './pages/cliente/Landing'
 import Home from './pages/cliente/Home'
 import Analytics from './pages/administrativo/Analytics'
-import LoginClient from './pages/cliente/LoginClient'
+import LoginClient from './pages/administrativo/Login'
+import { Register } from './pages/administrativo/Register'
 
 function App() {
 
