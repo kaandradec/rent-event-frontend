@@ -13,7 +13,7 @@ import {
 import { RentEventLogo } from "./icons/RentEventLogo";
 import SwitchTheme from "./ui/SwitchTheme";
 
-export default function Header() {
+export default function HeaderUser() {
   return (
     <Navbar>
       <NavbarBrand
@@ -21,7 +21,7 @@ export default function Header() {
         onClick={() => (window.location.href = "/")}
       >
         <RentEventLogo />
-        <p className="font-bold text-inherit">Rent Event</p>
+        <p className="font-bold text-inherit">Rent Event Admin</p>
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">

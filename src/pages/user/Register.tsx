@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button, Input } from "@nextui-org/react";
 import { registerRequest } from "@/api/auth";
 
-export const Register = () => {
+export const RegisterUser = () => {
   const [firstname, setFirstame] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");

@@ -1,13 +1,33 @@
+import { loginRequest } from "@/api/auth";
 import { CustomPasswordInput } from "@/components/CustomPasswordInput";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/auth";
 import { Input } from "@nextui-org/react";
 import { AxiosError } from "axios";
-import { useAuthStore } from "@/store/auth";
 import { useState } from "react";
-import { loginRequest } from "@/api/auth";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export const LoginClient = () => {
+  return (
+    <main className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px] lg:h-dvh">
+      <section className="flex items-center justify-center py-12">
+        <div className="mx-auto grid w-[350px] gap-6">
+          <Login />
+        </div>
+      </section>
+      <section className="hidden bg-muted lg:block hfu lg:overflow-hidden">
+        <img
+          src="/lunacat.png"
+          alt="Image"
+          className="dark:brightness-[0.2] dark:grayscale w-full"
+        />
+      </section>
+    </main>
+  )
+}
+
+
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -63,10 +83,9 @@ export default function Login() {
   }
 
   return (
-    <main className="mt-40">
-      <section className="max-w-sm border-2 rounded-xl p-4 mx-4 md:mx-auto">
-
-        <h1 className="text-3xl font-bold mb-4 text-center">
+    <main>
+      <section className="">
+        <h1 className="text-4xl font-bold mb-4 text-center">
           Iniciar sesión
         </h1>
         <form className="max-w-xs mx-auto" onSubmit={handleSubmit}>
@@ -90,22 +109,22 @@ export default function Login() {
           <p className={`h-5 text-center my-2 ${success ? msgStyle.colorSuccess : msgStyle.colorError}`} aria-live="assertive">
             {!success ? errMsg : '¡Acceso Exitoso!'}
           </p>
-          <div className="text-center">
-            <Button color="primary" type="submit" size="lg">
-              Log In
-            </Button>
-          </div>
+          <Button className="w-full" color="primary" type="submit" size="lg">
+            Log In
+          </Button>
           <section className="flex justify-center my-2 cursor-pointer">
-            <a
+            <p>No tienes una cuenta? <a
               onClick={() => navigate("/register")}
               className="text-blue-600 hover:underline dark:text-blue-500 font-bold "
             >
               Registrarse
             </a>
+            </p>
           </section>
         </form>
       </section>
-
     </main>
   );
 }
+
+

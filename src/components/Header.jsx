@@ -19,24 +19,23 @@ export default function Header() {
     navigate("/login");
   };
   return (
-    <Navbar>
-      <NavbarBrand
-        className="cursor-pointer"
-        onClick={() => (window.location.href = "/")}
-      >
-        <RentEventLogo />
-        <p className="font-bold text-inherit">Rent Event</p>
+    <Navbar className="fixed">
+      <NavbarBrand className="cursor-pointer">
+        <Link to="/user/dashboard" className="flex">
+          <RentEventLogo />
+          <p className="font-bold text-inherit">Rent Event</p>
+        </Link>
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link color="primary" href="/register">
-            Componente NextUi
+          <Link color="primary" to="/user/login">
+            Login User
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link color="primary" href="/date">
-            Componente Shadcn/ui
+          <Link color="primary" href="/user/dashboard">
+            Dashboard User
           </Link>
         </NavbarItem>
       </NavbarContent>
