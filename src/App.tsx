@@ -10,7 +10,7 @@ import Analytics from './pages/user/Analytics'
 import { LoginUser } from './pages/user/Login'
 import { RegisterUser } from './pages/user/Register'
 import { LoginClient } from './pages/client/LoginClient'
-import HeaderUser from './components/HeaderUser'
+// import HeaderUser from './components/HeaderUser'
 
 const ADMIN_PATH = '/user'
 
@@ -41,7 +41,7 @@ function HeaderSelector() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith(ADMIN_PATH);
 
-  return isAdminRoute ? <HeaderUser /> : <Header />;
+  return isAdminRoute ? "" : <Header />;
 }
 
 export default App
