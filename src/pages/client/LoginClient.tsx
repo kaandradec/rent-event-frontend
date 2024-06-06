@@ -1,4 +1,4 @@
-import { loginRequest } from "@/api/auth";
+import { loginRequestClient } from "@/api/auth";
 import { CustomPasswordInput } from "@/components/CustomPasswordInput";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/auth";
@@ -35,6 +35,7 @@ const Login = () => {
   const [success, setSuccess] = useState(false);
 
   const setToken = useAuthStore((state) => state.setToken);
+  const setRole = useAuthStore((state) => state.setRole);
 
   const navigate = useNavigate();
 
@@ -59,11 +60,13 @@ const Login = () => {
     if (!validInputs) return;
 
     try {
-      const response = await loginRequest(email, password);
-      console.log(response?.data?.token); // token
+      const response = await loginRequestClient(email, password);
+      console.log(response?.data);
       setToken(response?.data?.token);
+      setRole(response?.data?.role);
       setSuccess(true);
       resetInputs();
+      navigate("/landing");
     } catch (err) {
       const error = err as AxiosError;
       console.log(error.response?.data);
@@ -114,7 +117,7 @@ const Login = () => {
           </Button>
           <section className="flex justify-center my-2 cursor-pointer">
             <p>No tienes una cuenta? <a
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/auth/register")}
               className="text-blue-600 hover:underline dark:text-blue-500 font-bold "
             >
               Registrarse

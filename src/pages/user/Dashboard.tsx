@@ -24,8 +24,20 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link } from "@nextui-org/react"
 import { RentEventLogo } from "@/components/icons/RentEventLogo"
+import { useAuthStore } from "@/store/auth"
+import { useNavigate } from "react-router-dom"
 
 export default function Dashboard() {
+  const setToken = useAuthStore((state) => state.setToken);
+  const setRole = useAuthStore((state) => state.setRole);
+
+  const navigate = useNavigate();
+
+  const logout = () => {
+    navigate("/auth/user/login");
+    setToken(null);
+    setRole(null);
+  };
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -167,7 +179,7 @@ export default function Dashboard() {
               <DropdownMenuSeparator />
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>

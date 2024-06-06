@@ -2,6 +2,8 @@ import { AxiosError } from "axios";
 import { useState } from "react";
 import { Button, Input } from "@nextui-org/react";
 import { registerRequest } from "@/api/auth";
+import { CustomPasswordInput } from "@/components/CustomPasswordInput";
+import { useNavigate } from "react-router-dom";
 
 export const RegisterUser = () => {
   const [firstname, setFirstame] = useState("");
@@ -11,6 +13,8 @@ export const RegisterUser = () => {
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+
+  const navigate = useNavigate();
 
 
   const resetInputs = () => {
@@ -40,6 +44,7 @@ export const RegisterUser = () => {
       console.log(response);
       setSuccess(true);
       resetInputs();
+      navigate("/auth/user/login");
 
     } catch (err) {
       const error = err as AxiosError;
@@ -83,13 +88,12 @@ export const RegisterUser = () => {
             variant="bordered"
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Input
+          <CustomPasswordInput
             className="mb-5"
-            type="password"
             label="Contraseña"
             variant="bordered"
             placeholder="Ingresa tu contraseña"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
           />
           <div className="flex items-start">
             <div className="flex items-center h-5">

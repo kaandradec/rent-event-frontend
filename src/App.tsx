@@ -10,9 +10,11 @@ import Analytics from './pages/user/Analytics'
 import { LoginUser } from './pages/user/Login'
 import { RegisterUser } from './pages/user/Register'
 import { LoginClient } from './pages/client/LoginClient'
+import { RegisterClient } from './pages/client/RegisterClient'
+import { ProtectedRoute } from './components/ProtectedRoute'
 // import HeaderUser from './components/HeaderUser'
 
-const ADMIN_PATH = '/user'
+const USER_PATH = '/user'
 
 function App() {
   return (
@@ -22,15 +24,19 @@ function App() {
         <Routes>
           <Route index element={<Landing />} />
           <Route path='/inicio' element={<Inicio />} />
-          <Route path='/login' element={<LoginClient />} />
+          <Route path='/auth/login' element={<LoginClient />} />
+          <Route path='/auth/register' element={<RegisterClient />} />
           <Route path='/date' element={<DatePickerDemo />} />
           <Route path="/landing" element={<Landing />} />
           <Route path="/home" element={<Home />} />
           <Route path="/date" element={<DatePickerDemo />} />
-          <Route path="/register" element={<RegisterUser />} />
-          <Route path={`${ADMIN_PATH}/login`} element={<LoginUser />} />
-          <Route path={`${ADMIN_PATH}/dashboard`} element={<Dashboard />} />
-          <Route path={`${ADMIN_PATH}/analytics`} element={<Analytics />} />
+          <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
+          <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path={`${USER_PATH}/dashboard`} element={<Dashboard />} />
+          </Route>
+          <Route path={`${USER_PATH}/analytics`} element={<Analytics />} />
         </Routes>
       </BrowserRouter>
     </main>
@@ -39,7 +45,7 @@ function App() {
 
 function HeaderSelector() {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith(ADMIN_PATH);
+  const isAdminRoute = location.pathname.startsWith(USER_PATH);
 
   return isAdminRoute ? "" : <Header />;
 }

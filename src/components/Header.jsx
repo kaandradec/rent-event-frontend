@@ -12,11 +12,16 @@ import {
 import { RentEventLogo } from "../components/icons/RentEventLogo";
 import SwitchTheme from "./ui/SwitchTheme";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/auth";
 
 export default function Header() {
   const navigate = useNavigate();
+  const setToken = useAuthStore((state) => state.setToken);
+  const setRole = useAuthStore((state) => state.setRole);
   const logout = () => {
-    navigate("/login");
+    navigate("/auth/login");
+    setToken(null);
+    setRole(null);
   };
   return (
     <Navbar className="fixed">
@@ -29,13 +34,13 @@ export default function Header() {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link color="primary" to="/user/login">
-            Login User
+          <Link color="primary" to="#">
+            Eventos
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link color="primary" href="/user/dashboard">
-            Dashboard User
+          <Link color="primary" href="#">
+            Pagos
           </Link>
         </NavbarItem>
       </NavbarContent>

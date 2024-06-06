@@ -15,6 +15,7 @@ export const LoginUser = () => {
   const [success, setSuccess] = useState(false);
 
   const setToken = useAuthStore((state) => state.setToken);
+  const setRole = useAuthStore((state) => state.setRole);
 
   const navigate = useNavigate();
 
@@ -40,10 +41,12 @@ export const LoginUser = () => {
 
     try {
       const response = await loginRequest(email, password);
-      console.log(response?.data?.token); // token
+      console.log(response?.data); // token
       setToken(response?.data?.token);
+      setRole(response?.data?.role);
       setSuccess(true);
       resetInputs();
+      navigate("/user/dashboard");
     } catch (err) {
       const error = err as AxiosError;
       console.log(error.response?.data);
@@ -97,7 +100,7 @@ export const LoginUser = () => {
           </div>
           <section className="flex justify-center my-2 cursor-pointer">
             <a
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/auth/user/register")}
               className="text-blue-600 hover:underline dark:text-blue-500 font-bold "
             >
               Registrarse
