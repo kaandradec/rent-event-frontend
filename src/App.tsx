@@ -12,6 +12,7 @@ import { RegisterUser } from './pages/user/Register'
 import { LoginClient } from './pages/client/LoginClient'
 import { RegisterClient } from './pages/client/RegisterClient'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import {UserConfiguration} from "@/pages/client/UserConfiguration.tsx";
 // import HeaderUser from './components/HeaderUser'
 
 const USER_PATH = '/user'
@@ -32,6 +33,7 @@ function App() {
           <Route path="/date" element={<DatePickerDemo />} />
           <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
           <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
+          <Route path='/api/me' element={<UserConfiguration />} />
 
           <Route element={<ProtectedRoute />}>
             <Route path={`${USER_PATH}/dashboard`} element={<Dashboard />} />

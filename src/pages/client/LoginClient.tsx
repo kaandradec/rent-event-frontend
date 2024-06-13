@@ -66,7 +66,7 @@ const Login = () => {
       setRole(response?.data?.role);
       setSuccess(true);
       resetInputs();
-      navigate("/landing");
+      navigate("/api/me");
     } catch (err) {
       const error = err as AxiosError;
       console.log(error.response?.data);
