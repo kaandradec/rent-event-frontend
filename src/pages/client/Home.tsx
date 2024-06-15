@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <>
       <div>Home (private)</div>
-      <p>Acceso solo para usuarios registrados</p>
+      <p>(Requiere login de Cliente)Acceso solo para clientes registrados</p>
     </>
   )
 }

@@ -34,8 +34,13 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const setToken = useAuthStore((state) => state.setToken);
-  const setRole = useAuthStore((state) => state.setRole);
+  const { setToken, setRole, setFirstName, setLastName, setUsername } = useAuthStore((state) => ({
+    setToken: state.setToken,
+    setRole: state.setRole,
+    setFirstName: state.setFirstName,
+    setLastName: state.setLastName,
+    setUsername: state.setUsername,
+  }));
 
   const navigate = useNavigate();
 
@@ -53,6 +58,22 @@ const Login = () => {
     return true;
   }
 
+  interface AuthData {
+    token: string;
+    role: string;
+    firstname: string;
+    lastname: string;
+    username: string;
+  }
+
+  const setAuthStore = (data: AuthData) => {
+    setToken(data.token);
+    setRole(data.role);
+    setFirstName(data.firstname);
+    setLastName(data.lastname);
+    setUsername(data.username);
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -62,11 +83,10 @@ const Login = () => {
     try {
       const response = await loginRequestClient(email, password);
       console.log(response?.data);
-      setToken(response?.data?.token);
-      setRole(response?.data?.role);
+      setAuthStore(response?.data);
       setSuccess(true);
       resetInputs();
-      navigate("/api/me");
+      navigate("/me");
     } catch (err) {
       const error = err as AxiosError;
       console.log(error.response?.data);
