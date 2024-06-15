@@ -18,15 +18,16 @@ export default function Header() {
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
   const setRole = useAuthStore((state) => state.setRole);
+
   const logout = () => {
-    navigate("/auth/login");
     setToken(null);
     setRole(null);
+    navigate("/auth/login");
   };
   const myConfig = () => {
-    navigate("/api/me");
     setToken(null);
     setRole(null);
+    navigate("/api/me");
   };
   return (
     <Navbar className="fixed">
@@ -70,7 +71,9 @@ export default function Header() {
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">zoey@example.com</p>
             </DropdownItem>
-            <DropdownItem key="settings" color ="success" onClick={myConfig}>My Settings</DropdownItem>
+            <DropdownItem key="settings" color="success" onClick={myConfig}>
+              My Settings
+            </DropdownItem>
             <DropdownItem key="team_settings">Team Settings</DropdownItem>
             <DropdownItem key="analytics">Analytics</DropdownItem>
             <DropdownItem key="system">System</DropdownItem>
