@@ -40,7 +40,7 @@ function App() {
           <Route path={`${USER_PATH}/analytics`} element={<Analytics />} />
         </Routes>
       </BrowserRouter>
-      {process.env.NODE_ENV === 'development' && <DevTool />}
+      <DevTool />
     </main>
   )
 }

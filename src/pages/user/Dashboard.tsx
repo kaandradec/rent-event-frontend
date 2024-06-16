@@ -1,22 +1,8 @@
-import { Button } from "@/components/ui/button"
 import { DashboardMenu } from "@/components/DashboardMenu"
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-
-import {
-  File,
-  ListFilter,
-  MoreHorizontal,
-  PlusCircle,
-} from "lucide-react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Image } from "@nextui-org/react";
-import { Badge } from "@/components/ui/badge";
-import { DashboardServices } from "@/components/DashboardServices";
+import { DashboardServices } from "@/components/DashBoardServices/DashboardServices";
 
 export default function Dashboard() {
 
@@ -35,6 +21,9 @@ export default function Dashboard() {
         }
         {
           selectedItemMenu === 2 && <DashboardServices />
+        }
+        {
+          selectedItemMenu === 22 && <DashboardServices />
         }
         {
           selectedItemMenu === 3 && <DashboardClients />
@@ -60,8 +49,6 @@ const DashboardOrders = () => (<>
   <h1>Gestion de ordenes</h1>
   <p>Aqui se gestionan las ordenes de generación del evento del cliente</p>
 </>)
-
-
 
 const DashboardClients = () => (<>
   <h1>Gestion de Clientes</h1>
