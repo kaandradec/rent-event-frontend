@@ -1,14 +1,14 @@
 import { AxiosError } from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Input } from "@nextui-org/react";
 import { registerRequestClient } from "@/api/auth";
 import { useNavigate } from "react-router-dom";
 
 export const RegisterClient = () => {
-  const [firstname, setFirstame] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [contrasenia, setContrasenia] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
@@ -18,14 +18,14 @@ export const RegisterClient = () => {
 
   const resetInputs = () => {
     // borrar los estados y los inputs controlados
-    setFirstame("");
-    setLastname("");
-    setEmail("");
-    setPassword("");
+    setNombre("");
+    setApellido("");
+    setCorreo("");
+    setContrasenia("");
   }
 
   const validateInputs = () => {
-    if (firstname === "" || lastname === "" || email === "" || password === "") {
+    if (nombre === "" || apellido === "" || correo === "" || contrasenia === "") {
       setErrMsg("Campos vacíos");
       return false;
     }
@@ -39,7 +39,7 @@ export const RegisterClient = () => {
     if (!validInputs) return;
 
     try {
-      const response = registerRequestClient(firstname, lastname, email, password);
+      const response = registerRequestClient(nombre, apellido, correo, contrasenia);
       console.log(response);
       setSuccess(true);
       resetInputs();
@@ -70,21 +70,21 @@ export const RegisterClient = () => {
             type="text"
             label="Nombre"
             variant="bordered"
-            onChange={(e) => setFirstame(e.target.value)}
+            onChange={(e) => setNombre(e.target.value)}
           />
           <Input
             className="mb-5"
             type="text"
             label="Apellido"
             variant="bordered"
-            onChange={(e) => setLastname(e.target.value)}
+            onChange={(e) => setApellido(e.target.value)}
           />
           <Input
             className="mb-5"
             type="email"
             label="Correo electrónico"
             variant="bordered"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setCorreo(e.target.value)}
           />
           <Input
             className="mb-5"
@@ -92,7 +92,7 @@ export const RegisterClient = () => {
             label="Contraseña"
             variant="bordered"
             placeholder="Ingresa tu contraseña"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setContrasenia(e.target.value)}
           />
           <div className="flex items-start">
             <div className="flex items-center h-5">

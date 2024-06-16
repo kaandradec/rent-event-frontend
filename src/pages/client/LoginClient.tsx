@@ -28,30 +28,30 @@ export const LoginClient = () => {
 
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [contrasenia, setContrasenia] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const { setToken, setRole, setFirstName, setLastName, setUsername } = useAuthStore((state) => ({
+  const { setToken, setRol, setNombre, setApellido, setMail } = useAuthStore((state) => ({
     setToken: state.setToken,
-    setRole: state.setRole,
-    setFirstName: state.setFirstName,
-    setLastName: state.setLastName,
-    setUsername: state.setUsername,
+    setRol: state.setRol,
+    setNombre: state.setNombre,
+    setApellido: state.setApellido,
+    setMail: state.setCorreo,
   }));
 
   const navigate = useNavigate();
 
   const resetInputs = () => {
     // borrar los estados y los inputs controlados
-    setEmail("");
-    setPassword("");
+    setCorreo("");
+    setContrasenia("");
   }
 
   const validateInputs = () => {
-    if (email === "" || password === "") {
+    if (correo === "" || contrasenia === "") {
       setErrMsg("Campos vacíos");
       return false;
     }
@@ -60,18 +60,18 @@ const Login = () => {
 
   interface AuthData {
     token: string;
-    role: string;
-    firstname: string;
-    lastname: string;
-    username: string;
+    rol: string;
+    nombre: string;
+    apellido: string;
+    correo: string;
   }
 
   const setAuthStore = (data: AuthData) => {
     setToken(data.token);
-    setRole(data.role);
-    setFirstName(data.firstname);
-    setLastName(data.lastname);
-    setUsername(data.username);
+    setRol(data.rol);
+    setNombre(data.nombre);
+    setApellido(data.apellido);
+    setMail(data.correo);
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -81,7 +81,7 @@ const Login = () => {
     if (!validInputs) return;
 
     try {
-      const response = await loginRequestClient(email, password);
+      const response = await loginRequestClient(correo, contrasenia);
       console.log(response?.data);
       setAuthStore(response?.data);
       setSuccess(true);
@@ -118,7 +118,7 @@ const Login = () => {
             placeholder="ejemplo@email.com"
             variant="bordered"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
+              setCorreo(e.target.value)
             }
             className="mb-5"
           />
@@ -126,7 +126,7 @@ const Login = () => {
             label="Contraseña"
             placeholder="***********"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
+              setContrasenia(e.target.value)
             }
           />
           <p className={`h-5 text-center my-2 ${success ? msgStyle.colorSuccess : msgStyle.colorError}`} aria-live="assertive">

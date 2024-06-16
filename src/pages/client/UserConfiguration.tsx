@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { Avatar, Input } from "@nextui-org/react";
+import {Avatar, Input, user} from "@nextui-org/react";
 import { useAuthStore } from "@/store/auth";
 import { obtenerCliente } from "@/api/client";
-import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 
 export const UserConfiguration = () => {
-  const { username } = useAuthStore();
+  const { correo: correo } = useAuthStore();
 
   const [firstname, setFirstame] = useState("");
   const [lastname, setLastname] = useState("");
@@ -21,7 +20,7 @@ export const UserConfiguration = () => {
 
   const fetchClient = async () => {
     try {
-      const data = await obtenerCliente(username || "");
+      const data = await obtenerCliente(correo || "");
       console.log(data);
       setFirstame(data.nombre);
       setLastname(data.apellido);
@@ -64,8 +63,7 @@ export const UserConfiguration = () => {
             label="Nombre de Usuario"
             variant="bordered"
             name="username"
-            value="d"
-            // value={userData.username}
+            value={email}
             readOnly
           />
         </div>

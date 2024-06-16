@@ -2,44 +2,44 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type State = {
-  token: string | null;
-  role: string | null;
-  firstname: string | null;
-  lastname: string | null;
-  username: string | null;
+    token: string | null;
+    rol: string | null;
+    nombre: string | null;
+    apellido: string | null;
+    correo: string | null;
 }
 type Actions = {
-  setToken: (token: string | null) => void;
-  setRole: (role: string | null) => void;
-  setFirstName: (firstname: string | null) => void;
-  setLastName: (lastname: string | null) => void;
-  setUsername: (username: string | null) => void;
+    setToken: (token: string | null) => void;
+    setRol: (rol: string | null) => void;
+    setNombre: (nombre: string | null) => void;
+    setApellido: (apellido: string | null) => void;
+    setCorreo: (correo: string | null) => void;
 }
 
 export const useAuthStore = create(persist<State & Actions>(
-  (set) => ({
-    token: null,
-    role: null,
-    firstname: null,
-    lastname: null,
-    username: null,
-    setToken: (token: string | null) => set((state) => ({
-      token: state.token = token,
-    })),
-    setRole: (role: string | null) => set((state) => ({
-      role: state.role = role,
-    })),
-    setFirstName: (firstname: string | null) => set((state) => ({
-      firstname: state.firstname = firstname,
-    })),
-    setLastName: (lastname: string | null) => set((state) => ({
-      lastname: state.lastname = lastname,
-    })),
-    setUsername: (username: string | null) => set((state) => ({
-      username: state.username = username,
-    })),
-  }),
-  {
-    name: "auth",
-  }
+    (set) => ({
+        token: null,
+        rol: null,
+        nombre: null,
+        apellido: null,
+        correo: null,
+        setToken: (token: string | null) => set((state) => ({
+            token: state.token = token,
+        })),
+        setRol: (rol: string | null) => set((state) => ({
+            rol: state.rol = rol,
+        })),
+        setNombre: (nombre: string | null) => set((state) => ({
+            nombre: state.nombre = nombre,
+        })),
+        setApellido: (apellido: string | null) => set((state) => ({
+            apellido: state.apellido = apellido,
+        })),
+        setCorreo: (correo: string | null) => set((state) => ({
+            correo: state.correo = correo,
+        })),
+    }),
+    {
+        name: "auth",
+    }
 ));
