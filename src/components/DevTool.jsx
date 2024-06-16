@@ -6,15 +6,15 @@ const DevTool = () => {
 
   const {
     token: globalToken,
-    role: globalRole,
-    firstname: globalFirstName,
-    lastname: globalLastName,
-    username: globalUsername,
+    rol: globalRole,
+    nombre: globalFirstName,
+    apellido: globalLastName,
+    correo: globalUsername,
     setToken: setGlobalToken,
-    setRole: setGlobalRole,
-    setFirstName: setGlobalFirstName,
-    setLastName: setGlobalLastName,
-    setUsername: setGlobalUsername,
+    setRol: setGlobalRole,
+    setNombre: setGlobalFirstName,
+    setApellido: setGlobalLastName,
+    setCorreo: setGlobalUsername,
   } = useAuthStore();
 
   const [token, setToken] = useState(globalToken);
