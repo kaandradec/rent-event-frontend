@@ -6,7 +6,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link } from "@nextui-org/react"
 
@@ -17,7 +16,6 @@ import {
   Menu,
   Package,
   Package2,
-  Search,
   ShoppingCart,
   Users,
 } from "lucide-react"
@@ -26,11 +24,12 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useAuthStore } from "@/store/auth"
 import { useNavigate } from "react-router-dom"
+import SwitchTheme from "@/components/ui/SwitchTheme";
 
 export const DashboardHeader = () => {
 
   const setToken = useAuthStore((state) => state.setToken);
-  const setRole = useAuthStore((state) => state.setRole);
+  const setRole = useAuthStore((state) => state.setRol);
 
   const navigate = useNavigate();
 
@@ -104,17 +103,9 @@ export const DashboardHeader = () => {
         </SheetContent>
       </Sheet>
       <div className="w-full flex-1">
-        <form>
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Quitar este buscador y poner switch de dark mode"
-              className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-            />
-          </div>
-        </form>
+
       </div>
+            <SwitchTheme/>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon" className="rounded-full">

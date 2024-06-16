@@ -9,7 +9,6 @@ export const RegisterClient = () => {
   const [apellido, setApellido] = useState("");
   const [correo, setCorreo] = useState("");
   const [contrasenia, setContrasenia] = useState("");
-
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 

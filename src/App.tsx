@@ -12,7 +12,7 @@ import { LoginClient } from './pages/client/LoginClient'
 import { RegisterClient } from './pages/client/RegisterClient'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import DevTool from './components/DevTool'
-import { UserConfiguration } from './pages/client/UserConfiguration'
+import { ClientConfiguration } from './pages/client/ClientConfiguration.tsx'
 
 const USER_PATH = '/user'
 
@@ -31,7 +31,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
           <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
-          <Route path='/me' element={<UserConfiguration />} />
+          <Route path='/account/config' element={<ClientConfiguration />} />
 
           {/* Rutas protegidas, solo acceso a usuario(Empleado)*/}
           <Route element={<ProtectedRoute />}>

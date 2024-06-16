@@ -86,7 +86,7 @@ const Login = () => {
       setAuthStore(response?.data);
       setSuccess(true);
       resetInputs();
-      navigate("/me");
+      navigate("/account/config");
     } catch (err) {
       const error = err as AxiosError;
       console.log(error.response?.data);
