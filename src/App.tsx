@@ -11,8 +11,8 @@ import { RegisterUser } from './pages/user/Register'
 import { LoginClient } from './pages/client/LoginClient'
 import { RegisterClient } from './pages/client/RegisterClient'
 import { ProtectedRoute } from './components/ProtectedRoute'
-import { UserConfiguration } from "@/pages/client/UserConfiguration.tsx";
 import DevTool from './components/DevTool'
+import { UserConfiguration } from './pages/client/UserConfiguration'
 
 const USER_PATH = '/user'
 

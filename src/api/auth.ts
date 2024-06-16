@@ -1,18 +1,14 @@
+import { authApi } from "@/lib/axios";
 import axios from "axios";
 
 export const loginRequest = async (email: string, password: string) =>
-  await axios.post(
-    "http://localhost:8080/auth/user/login",
+  await authApi.post(
+    "/auth/user/login",
     JSON.stringify({
       username: email,
       password: password,
-    }),
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // withCredentials: true,
-    }
+    })
+
   );
 
 export const registerRequest = async (
@@ -39,18 +35,12 @@ export const registerRequest = async (
 
 
 export const loginRequestClient = async (email: string, password: string) =>
-  await axios.post(
-    "http://localhost:8080/auth/login",
+  await authApi.post(
+    "/auth/login",
     JSON.stringify({
       username: email,
       password: password,
-    }),
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // withCredentials: true,
-    }
+    })
   );
 
 export const registerRequestClient = async (
