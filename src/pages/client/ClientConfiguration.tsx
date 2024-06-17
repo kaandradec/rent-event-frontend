@@ -51,67 +51,30 @@ export const ClientConfiguration = () => {
 
     return (
         <main className="mt-40">
-            <section className="max-w-md border-2 rounded-xl p-5 mx-4 md:mx-auto">
-                <div className="flex gap-4 items-center mb-5">
-                    <h1 className="text-3xl font-bold">Usuario:</h1>
+            <section className="max-w-md border-2 rounded-3xl p-5 mx-auto">
+                <div className="container flex">
+                    <Avatar isBordered color="secondary" radius="lg"  src={"/lunacat.png"}
+                            className="object-contain min-w-12 min-h-12 sm:w-20 sm:h-20 mb-5"/>
+                    <div className="ml-5">
+                        <h2 className="mb-2 text-2xl font-medium">{email}</h2>
+                        <h3 className="mb-2 text-lg font-medium">{firstname + " " + lastname}</h3>
+                    </div>
                 </div>
-                <div className="container ">
-                    <Avatar isBordered radius="lg" src={"/lunacat.png"} className="w-20 h-20 text-large mb-5"/>
-                </div>
-                <div className="container flex align-super content-center gap-3 ">
-                    <Input
-                        className="mb-3 h-14"
-                        type="text"
-                        label="Correo"
-                        variant="bordered"
-                        name="correo"
-                        value={email}
-                        readOnly
-                    />
 
-                </div>
                 <div className="container flex align-super content-center gap-3 ">
                     <Input
-                        className="mb-3 h-14"
+                        className="mb-3 h-14 border-primary"
                         type="text"
-                        label="Nombre"
-                        variant="bordered"
-                        name="nombre"
-                        value={firstname}
-                        readOnly
-                    />
-                    <Button isIconOnly variant="solid" className="w-20 h-14">
-                        <PencilIcon/>
-                    </Button>
-                </div>
-                <div className="container flex align-super content-center gap-3 ">
-                    <Input
-                        className="mb-3 h-14"
-                        type="text"
-                        label="Apellido"
-                        variant="bordered"
-                        name="apellido"
-                        value={lastname}
-                        readOnly
-                    />
-                    {/*todo no se como centrarle bonito*/}
-                    <Button isIconOnly variant="solid" className="w-20 h-14">
-                        <PencilIcon/>
-                    </Button>
-                </div>
-                <div className="container flex align-super content-center gap-3 ">
-                    <Input
-                        className="mb-3 h-14"
-                        type="text"
-                        label="Genero"
+                        label="Género"
+                        color={"primary"}
                         variant="bordered"
                         name="genero"
                         value={genero}
                         readOnly
                     />
                     {/*todo no se como centrarle bonito*/}
-                    <Button isIconOnly variant="solid" className="w-20 h-14">
-                        <PencilIcon/>
+                    <Button isIconOnly variant="light" className="w-20 h-14 text-black dark:text-white" color={"success"}>
+                        <PencilIcon />
                     </Button>
                 </div>
                 <div className="container flex align-super content-center gap-3 ">
@@ -119,14 +82,15 @@ export const ClientConfiguration = () => {
                         className="mb-3 h-14"
                         type="text"
                         label="Nacionalidad"
+                        color={"primary"}
                         variant="bordered"
                         name="nacionalidad"
                         value={nacionalidad}
                         readOnly
                     />
                     {/*todo no se como centrarle bonito*/}
-                    <Button isIconOnly variant="solid" className="w-20 h-14">
-                        <PencilIcon/>
+                    <Button isIconOnly variant="light" className="w-20 h-14 text-black dark:text-white" color={"success"}>
+                        <PencilIcon />
                     </Button>
                 </div>
             </section>

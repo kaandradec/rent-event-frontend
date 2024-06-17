@@ -46,15 +46,21 @@ export const registerRequestClient = async (
     nombre: string,
     apellido: string,
     email: string,
-    contrasenia: string
+    contrasenia: string,
+    genero: string,
+    prefijo:number,
+    telefono:number
 ) =>
     await axios.post(
         "http://localhost:8080/auth/register",
         JSON.stringify({
             nombre: nombre,
-            lastname: apellido,
+            apellido: apellido,
             correo: email,
             contrasenia: contrasenia,
+            genero:genero,
+            prefijo:prefijo,
+            telefono:telefono
         }),
         {
             headers: {
