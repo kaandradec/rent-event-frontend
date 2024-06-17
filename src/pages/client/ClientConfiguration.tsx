@@ -1,12 +1,12 @@
-import {useState, useEffect} from "react";
-import {Avatar, Button, Input} from "@nextui-org/react";
-import {useAuthStore} from "@/store/auth";
-import {obtenerCliente} from "@/api/client";
-import {AxiosError} from "axios";
-import {PencilIcon} from "@/components/icons/PencilIcon";
+import { useState, useEffect } from "react";
+import { Avatar, Button, Input } from "@nextui-org/react";
+import { useAuthStore } from "@/store/auth";
+import { obtenerCliente } from "@/api/client";
+import { AxiosError } from "axios";
+import { PencilIcon } from "@/components/icons/PencilIcon";
 
 export const ClientConfiguration = () => {
-    const {correo: correo} = useAuthStore();
+    const { correo: correo } = useAuthStore();
 
     const [email, setEmail] = useState("");
     const [firstname, setFirstname] = useState("");
@@ -56,7 +56,7 @@ export const ClientConfiguration = () => {
                     <h1 className="text-3xl font-bold">Usuario:</h1>
                 </div>
                 <div className="container ">
-                    <Avatar isBordered radius="lg" src={"/lunacat.png"} className="w-20 h-20 text-large mb-5"/>
+                    <Avatar isBordered radius="lg" src={"/lunacat.png"} className="w-20 h-20 text-large mb-5" />
                 </div>
                 <div className="container flex align-super content-center gap-3 ">
                     <Input
@@ -81,7 +81,7 @@ export const ClientConfiguration = () => {
                         readOnly
                     />
                     <Button isIconOnly variant="solid" className="w-20 h-14">
-                        <PencilIcon/>
+                        <PencilIcon />
                     </Button>
                 </div>
                 <div className="container flex align-super content-center gap-3 ">
@@ -96,7 +96,7 @@ export const ClientConfiguration = () => {
                     />
                     {/*todo no se como centrarle bonito*/}
                     <Button isIconOnly variant="solid" className="w-20 h-14">
-                        <PencilIcon/>
+                        <PencilIcon />
                     </Button>
                 </div>
                 <div className="container flex align-super content-center gap-3 ">
@@ -111,7 +111,7 @@ export const ClientConfiguration = () => {
                     />
                     {/*todo no se como centrarle bonito*/}
                     <Button isIconOnly variant="solid" className="w-20 h-14">
-                        <PencilIcon/>
+                        <PencilIcon />
                     </Button>
                 </div>
                 <div className="container flex align-super content-center gap-3 ">
@@ -126,7 +126,7 @@ export const ClientConfiguration = () => {
                     />
                     {/*todo no se como centrarle bonito*/}
                     <Button isIconOnly variant="solid" className="w-20 h-14">
-                        <PencilIcon/>
+                        <PencilIcon />
                     </Button>
                 </div>
             </section>

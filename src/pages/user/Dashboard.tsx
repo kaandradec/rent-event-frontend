@@ -6,7 +6,7 @@ import { DashboardServices } from "@/components/DashBoardServices/DashboardServi
 
 export default function Dashboard() {
 
-  const [selectedItemMenu, setSelectedItemMenu] = useState(0)
+  const [selectedItemMenu, setSelectedItemMenu] = useState(2)
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -21,9 +21,6 @@ export default function Dashboard() {
         }
         {
           selectedItemMenu === 2 && <DashboardServices />
-        }
-        {
-          selectedItemMenu === 22 && <DashboardServices />
         }
         {
           selectedItemMenu === 3 && <DashboardClients />
