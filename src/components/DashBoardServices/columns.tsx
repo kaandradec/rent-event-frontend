@@ -13,14 +13,15 @@ import {
 import { Image } from "@nextui-org/react"
 
 export type Service = {
-  id: string | number,
+  id: string | number
   code: string
-  name: string
-  type: "Luces" | "Sonido" | "Video" | "Estructura" | "Pantallas" | "Cableado" | "Cámaras" | "Micrófonos" | "Consolas" | "Proyectores" | "Computadoras" | "Impresoras" | "Software" | "Otros"
-  cost: number | string
-  stock: number
-  description: string
-  image?: string
+  name: string,
+  type: "CATERING" | "DECORACION" | "ENTRETENIMIENTO" | "FOTOGRAFIA" | "MUSICA" | "ILUMINACION" | "SEGURIDAD" | "TRANSPORTE" | "OTROS",
+  cost: number | string,
+  description?: string,
+  image?: string,
+  provider?: string
+  state: "ACTIVO" | "INACTIVO"
 }
 
 export const columns: ColumnDef<Service>[] = [
@@ -47,12 +48,22 @@ export const columns: ColumnDef<Service>[] = [
     header: "Name",
   },
   {
+    accessorKey: "state",
+    header: "Estado",
+  },
+  {
     accessorKey: "type",
     header: "Type",
   },
   {
     accessorKey: "cost",
-    header: () => <div className="text-right">Amount</div>,
+    header: ({ column }) => <Button
+      variant="ghost"
+      onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    >
+      Costo
+      <ArrowUpDown className="ml-2 h-4 w-4" />
+    </Button>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("cost"))
       const formatted = new Intl.NumberFormat("en-US", {
@@ -64,22 +75,12 @@ export const columns: ColumnDef<Service>[] = [
     },
   },
   {
-    accessorKey: "stock",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Stock
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+    accessorKey: "provider",
+    header: "Proveedor",
   },
   {
     accessorKey: "description",
-    header: "Description",
+    header: "Descripción",
   },
   {
     id: "actions",
