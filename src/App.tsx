@@ -9,7 +9,7 @@ import Analytics from './pages/user/Analytics'
 import { LoginUser } from './pages/user/Login'
 import { RegisterUser } from './pages/user/Register'
 import { LoginClient } from './pages/client/LoginClient'
-import { RegisterClient } from './pages/client/RegisterClient'
+import { CompletoRegisterClient } from './pages/client/CompletoRegisterClient.tsx'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import DevTool from './components/DevTool'
 import { ClientConfiguration } from './pages/client/ClientConfiguration.tsx'
@@ -27,7 +27,7 @@ function App() {
           <Route index element={<Landing />} />
           <Route path='/inicio' element={<Inicio />} />
           <Route path='/auth/login' element={<LoginClient />} />
-          <Route path='/auth/register' element={<RegisterClient />} />
+          <Route path='/auth/register' element={<CompletoRegisterClient />} />
           <Route path="/landing" element={<Landing />} />
           <Route path="/home" element={<Home />} />
           <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />

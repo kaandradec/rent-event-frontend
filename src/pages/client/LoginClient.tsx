@@ -107,7 +107,7 @@ const Login = () => {
 
   return (
     <main>
-      <section className="">
+      <section className="mt-32">
         <h1 className="text-4xl font-bold mb-4 text-center">
           Iniciar sesión
         </h1>
