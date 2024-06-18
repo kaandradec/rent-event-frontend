@@ -13,6 +13,7 @@ import { RegisterClient } from './pages/client/RegisterClient'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import DevTool from './components/DevTool'
 import { ClientConfiguration } from './pages/client/ClientConfiguration.tsx'
+import DashboardServicesUpdate from './components/DashBoardServices/DashboardServicesUpdate.tsx'
 
 const USER_PATH = '/user'
 
@@ -36,6 +37,7 @@ function App() {
           {/* Rutas protegidas, solo acceso a usuario(Empleado)*/}
           <Route element={<ProtectedRoute />}>
             <Route path={`${USER_PATH}/dashboard`} element={<Dashboard />} />
+            <Route path={`${USER_PATH}/dashboard/services/update/:codigo`} element={<DashboardServicesUpdate />} />
           </Route>
           <Route path={`${USER_PATH}/analytics`} element={<Analytics />} />
         </Routes>

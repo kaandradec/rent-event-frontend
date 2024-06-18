@@ -2,13 +2,12 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 import {
-
   PlusCircle,
 } from "lucide-react"
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 import { DataTable } from "./DataTable";
-import { Service, columns } from "./columns";
+import { Service, useColumns } from "./columns";
 import { useEffect, useState } from "react";
 import { getServices } from "@/api/services";
 import DashboardServicesNew from "./DashboardServicesNew";
@@ -25,9 +24,10 @@ export const DashboardServices = () => {
   )
 
 }
-
 const ServiceTable = ({ setSubpage }: { setSubpage: React.Dispatch<React.SetStateAction<number>> }) => {
   const [services, setServices] = useState<Service[]>([])
+
+  const { columns } = useColumns()
 
   type ResponseService = {
     id: string | number

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   ChevronLeft,
   Upload,
@@ -25,9 +25,15 @@ import {
 
 import { Image } from '@nextui-org/react'
 import { Textarea } from '../ui/textarea'
-import axios from 'axios'
+import { dataFormApi } from '@/lib/axios'
+import { useNavigate } from 'react-router-dom'
 
-export default function DashboardServicesNew({ setSubpage }: { setSubpage: React.Dispatch<React.SetStateAction<number>> }) {
+interface DashboardServicesNewProps {
+  code?: string | undefined,
+  setSubpage?: React.Dispatch<React.SetStateAction<number>>
+}
+
+export default function DashboardServicesNew({ code, setSubpage }: DashboardServicesNewProps) {
   const [image, setImage] = useState("");
 
   const [file, setFile] = useState<File | null>(null);
@@ -41,6 +47,37 @@ export default function DashboardServicesNew({ setSubpage }: { setSubpage: React
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+
+  const handleExit = () => {
+    setSubpage && setSubpage(0);
+    navigate('/user/dashboard/');
+  }
+
+  const fetchService = async () => {
+    try {
+      const response = await dataFormApi.get(`/servicios/${code}`);
+      console.log(response.data);
+      setName(response.data.nombre);
+      setDescription(response.data.descripcion);
+      setType(response.data.tipo);
+      setState(response.data.estado);
+      setProvider(response.data.proveedor.nombre);
+      setCost(response.data.costo);
+      setImage(response.data.imagenes[0].url);
+    } catch (err) {
+      console.error('Error:', err
+      );
+    }
+  }
+
+  useEffect(() => {
+    if (code) {
+      fetchService();
+    }
+  }, [])
 
   const validateInputs = () => {
     if (name === "" || description === "" || type === "" || state === "" || provider === "" || cost === 0) {
@@ -75,13 +112,8 @@ export default function DashboardServicesNew({ setSubpage }: { setSubpage: React
     formData.append('costo', cost.toString());
 
     try {
-      const response = await axios.post(`http://localhost:8080/servicios/guardar`,
+      const response = await dataFormApi.post(`/servicios/guardar`,
         formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
       );
       console.log(response.data);
       setSuccess(true);
@@ -114,7 +146,7 @@ export default function DashboardServicesNew({ setSubpage }: { setSubpage: React
       <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
         <section className="flex items-center gap-4">
           <Button
-            onClick={() => setSubpage(0)}
+            onClick={handleExit}
             variant="outline" size="icon" className="h-7 w-7">
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Back</span>
@@ -127,7 +159,7 @@ export default function DashboardServicesNew({ setSubpage }: { setSubpage: React
               displayInfo()
             }
             <Button
-              onClick={() => setSubpage(0)}
+              onClick={handleExit}
               variant="outline" size="sm">
               Descartar
             </Button>
@@ -139,15 +171,19 @@ export default function DashboardServicesNew({ setSubpage }: { setSubpage: React
         <section className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
           <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
             <DetallesServicio
+              name={name}
+              type={type}
+              description={description}
+              cost={cost}
               setName={setName}
               setDescription={setDescription}
               setType={setType}
               setCost={setCost}
             />
-            <ServiceProvider setProvider={setProvider} />
+            <ServiceProvider provider={provider} setProvider={setProvider} />
           </div>
           <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
-            <StatusCard setState={setState} />
+            <StatusCard state={state} setState={setState} />
             <ImageCard image={image} handleFileChange={handleFileChange} />
           </div>
         </section>
@@ -165,13 +201,17 @@ export default function DashboardServicesNew({ setSubpage }: { setSubpage: React
 }
 
 type DetallesServicioProps = {
+  name: string,
+  type: string,
+  description: string,
+  cost: number,
   setName: (name: string) => void,
   setType: (type: string) => void,
   setDescription: (description: string) => void
   setCost: (cost: number) => void
 }
 
-const DetallesServicio = ({ setName, setType, setDescription, setCost }: DetallesServicioProps) => {
+const DetallesServicio = ({ name, setName, type, setType, description, setDescription, cost, setCost }: DetallesServicioProps) => {
   return (
     <Card x-chunk="dashboard-07-chunk-0">
       <CardHeader>
@@ -188,14 +228,15 @@ const DetallesServicio = ({ setName, setType, setDescription, setCost }: Detalle
               id="name"
               type="text"
               className="w-full"
-              defaultValue=""
+              defaultValue={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div className="grid gap-3">
-            <Label htmlFor="category">Tipo</Label>
+            <Label htmlFor="category">Tipo {`: ${type && type}`}</Label>
             <Select
               onValueChange={(value) => setType(value)}
+              defaultValue={type}
             >
               <SelectTrigger
                 id="category"
@@ -221,16 +262,17 @@ const DetallesServicio = ({ setName, setType, setDescription, setCost }: Detalle
             <Textarea
               onChange={(e) => setDescription(e.target.value)}
               id="description"
-              defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
+              defaultValue={description}
               className="min-h-32"
             />
           </div>
           <div className="grid gap-3">
-            <Label htmlFor="cost">Costo</Label>
+            <Label htmlFor="cost">Costo {`: ${cost && cost}`}</Label>
             <Input
               id="cost"
               type="number"
-              defaultValue="0"
+              min={2}
+              defaultValue={cost}
               onChange={(e) => setCost(parseFloat(e.target.value))}
             />
           </div>
@@ -240,7 +282,13 @@ const DetallesServicio = ({ setName, setType, setDescription, setCost }: Detalle
   )
 }
 
-const ServiceProvider = ({ setProvider }: { setProvider: (description: string) => void }) => {
+type ServiceProviderProps = {
+  provider: string,
+  setProvider: (description: string) => void
+}
+
+
+const ServiceProvider = ({ provider, setProvider }: ServiceProviderProps) => {
   return (
     <Card x-chunk="dashboard-07-chunk-2">
       <CardHeader>
@@ -249,9 +297,10 @@ const ServiceProvider = ({ setProvider }: { setProvider: (description: string) =
       <CardContent>
         <div className="grid gap-6 sm:grid-cols-1">
           <div className="grid gap-3">
-            <Label htmlFor="category">Proveedor</Label>
+            <Label htmlFor="category">Proveedor {` : ${provider && provider}`}</Label>
             <Select
               onValueChange={(value) => setProvider(value)}
+              defaultValue={provider}
             >
               <SelectTrigger
                 id="category"
@@ -268,6 +317,39 @@ const ServiceProvider = ({ setProvider }: { setProvider: (description: string) =
       </CardContent>
     </Card>
   )
+}
+
+type StatusCardProps = {
+  state: string,
+  setState: (state: string) => void
+}
+
+const StatusCard = ({ state, setState }: StatusCardProps) => {
+  return (
+    <Card x-chunk="dashboard-07-chunk-3">
+      <CardHeader>
+        <CardTitle>Estado del servicio</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-6">
+          <div className="grid gap-3">
+            <Label htmlFor="status">Estado {` : ${state && state}`}</Label>
+            <Select
+              onValueChange={(value) => setState(value)}
+              defaultValue={state}
+            >
+              <SelectTrigger id="status" aria-label="Select status">
+                <SelectValue placeholder="Selecciona un estado" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ACTIVO">Activo</SelectItem>
+                <SelectItem value="INACTIVO">Inactivo</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </CardContent>
+    </Card>)
 }
 
 const ImageCard = ({ image, handleFileChange }: { image: string, handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void }) => {
@@ -323,30 +405,5 @@ const ImageCard = ({ image, handleFileChange }: { image: string, handleFileChang
   )
 }
 
-const StatusCard = ({ setState }: { setState: (state: string) => void }) => {
-  return (
-    <Card x-chunk="dashboard-07-chunk-3">
-      <CardHeader>
-        <CardTitle>Estado del servicio</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-6">
-          <div className="grid gap-3">
-            <Label htmlFor="status">Estado</Label>
-            <Select
-              onValueChange={(value) => setState(value)}
-            >
-              <SelectTrigger id="status" aria-label="Select status">
-                <SelectValue placeholder="Selecciona un estado" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ACTIVO">Activo</SelectItem>
-                <SelectItem value="INACTIVO">Inactivo</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </CardContent>
-    </Card>)
-}
+
 

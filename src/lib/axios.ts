@@ -13,6 +13,11 @@ export const tokenApi = axios.create({
   withCredentials: false,
 });
 
+export const dataFormApi = axios.create({
+  baseURL,
+  withCredentials: false,
+});
+
 
 // ERROR TS asignar  objeto{ Authorization: string; } a onjeto de tipo AxiosRequestHeaders con más propiedades
 // authApi.interceptors.request.use((config) => {
@@ -42,6 +47,12 @@ authApi.interceptors.request.use((config) => {
 tokenApi.interceptors.request.use((config) => {
 
   config.headers['Content-Type'] = "application/json"
+  return config;
+});
+
+dataFormApi.interceptors.request.use((config) => {
+
+  config.headers['Content-Type'] = "multipart/form-data"
   return config;
 });
 
