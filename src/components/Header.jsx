@@ -8,7 +8,7 @@ import {RentEventLogo} from "../components/icons/RentEventLogo";
 import SwitchTheme from "./ui/SwitchTheme";
 import {Link} from "react-router-dom";
 
-import AccountMenu from "@/components/ui/AccountMenu.jsx";
+import AccountMenu from "@/components/AccountMenu.tsx";
 
 export default function Header() {
 

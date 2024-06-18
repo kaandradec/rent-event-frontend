@@ -1,12 +1,6 @@
-import {
-    DropdownItem,
-    DropdownTrigger,
-    Dropdown,
-    DropdownMenu,
-    Avatar,
-} from "@nextui-org/react";
+import {Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger,} from "@nextui-org/react";
 import {useNavigate} from "react-router-dom";
-import {useAuthStore} from "@/store/auth";
+import {useAuthStore} from "@/store/auth.js";
 import {useEffect, useState} from "react";
 import {obtenerCliente} from "@/api/client.ts";
 
@@ -54,31 +48,31 @@ export default function AccountMenu() {
 
     return (
 
-                <Dropdown placement="bottom-end">
-                    <DropdownTrigger>
-                        <Avatar
-                            isBordered
-                            as="button"
-                            className="transition-transform"
-                            color="primary"
-                            name="Jason Hughes"
-                            size="sm"
-                            src="lunacat.png"
-                        />
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="Profile Actions" variant="flat">
-                        <DropdownItem isDisabled={true} key="profile" className="h-14 gap-2">
-                            <p className="font-semibold">Signed in as</p>
-                            <p className="font-semibold">{email}</p>
-                        </DropdownItem>
-                        <DropdownItem key="settings" color="success" onClick={myConfig}>
-                            My Settings
-                        </DropdownItem>
-                        <DropdownItem key="logout" color="danger" onClick={logout}>
-                            Logout
-                        </DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
+        <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+                <Avatar
+                    isBordered
+                    as="button"
+                    className="transition-transform"
+                    color="primary"
+                    name="Jason Hughes"
+                    size="sm"
+                    src="lunacat.png"
+                />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem isDisabled={true} key="profile" className="h-14 gap-2">
+                    <p className="font-semibold">Signed in as</p>
+                    <p className="font-semibold">{email}</p>
+                </DropdownItem>
+                <DropdownItem key="settings" color="success" onClick={myConfig}>
+                    My Settings
+                </DropdownItem>
+                <DropdownItem key="logout" color="danger" onClick={logout}>
+                    Logout
+                </DropdownItem>
+            </DropdownMenu>
+        </Dropdown>
 
     );
 }

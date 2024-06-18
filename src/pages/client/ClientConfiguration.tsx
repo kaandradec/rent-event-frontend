@@ -13,11 +13,10 @@ export const ClientConfiguration = () => {
     const [lastname, setLastname] = useState("");
     const [genero, setGenero] = useState("");
     const [nacionalidad, setNacionalidad] = useState("");
-
-    const [errMsg, setErrMsg] = useState("");
     // const [success, setSuccess] = useState(false);
 
     // const navigate = useNavigate();
+    const [errMsg, setErrMsg] = useState("");
 
     const fetchClient = async () => {
         try {

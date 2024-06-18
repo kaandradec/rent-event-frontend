@@ -14,7 +14,7 @@ import {
 import {Badge} from "@/components/ui/badge"
 import {Button} from "@/components/ui/button"
 import SwitchTheme from "@/components/ui/SwitchTheme";
-import AccountMenu from "@/components/ui/AccountMenu";
+import AccountMenu from "@/components/AccountMenu.tsx";
 
 export const DashboardHeader = () => {
 
