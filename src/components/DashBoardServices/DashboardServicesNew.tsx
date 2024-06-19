@@ -67,17 +67,13 @@ export default function DashboardServicesNew({ code, setSubpage }: DashboardServ
       setProvider(response.data.proveedor.nombre);
       setCost(response.data.costo);
       setImage(response.data.imagenes[0].url);
+
+      console.log("IMAGEN", response.data.imagenes[0].idPublica);
     } catch (err) {
       console.error('Error:', err
       );
     }
   }
-
-  useEffect(() => {
-    if (code) {
-      fetchService();
-    }
-  }, [])
 
   const validateInputs = () => {
     if (name === "" || description === "" || type === "" || state === "" || provider === "" || cost === 0) {
@@ -96,12 +92,17 @@ export default function DashboardServicesNew({ code, setSubpage }: DashboardServ
 
   const resetInfo = () => {
     setError("");
-    setLoading(false);
+    setName("");
+    setDescription("");
+    setType("");
+    setState("");
+    setProvider("");
+    setCost(0);
+    setImage("");
+    setFile(null);
   }
 
-  const handleSubmmit = async () => {
-    if (!validateInputs()) return;
-    setLoading(true);
+  const sendNewService = async () => {
     const formData = new FormData();
     formData.append('file', file || new Blob());
     formData.append('nombre', name);
@@ -120,10 +121,54 @@ export default function DashboardServicesNew({ code, setSubpage }: DashboardServ
     } catch (err) {
       console.error('Error:', err);
     }
+
     resetInfo();
+    setLoading(false);
     setTimeout(() => {
       setSuccess(false);
     }, 1500);
+  }
+
+  const sendUpdateService = async () => {
+    const formData = new FormData();
+    formData.append('file', file || new Blob());
+    formData.append('nombre', name);
+    formData.append('descripcion', description);
+    formData.append('tipo', type);
+    formData.append('proveedor', provider);
+    formData.append('estado', state);
+    formData.append('costo', cost.toString());
+
+    try {
+      const response = await dataFormApi.put(`/servicios/actualizar/${code}`,
+        formData,
+      );
+      console.log(response.data);
+      setSuccess(true);
+    } catch (err) {
+      console.error('Error:', err);
+    }
+    resetInfo();
+    fetchService();
+    fetchService();
+    setLoading(false);
+
+    setTimeout(() => {
+      setSuccess(false);
+    }, 1500);
+  }
+
+  const handleSubmmit = async () => {
+    if (!validateInputs()) return;
+    setLoading(true);
+    if (code) {// URL PARAM
+      console.log("Actualizando servicio");
+      sendUpdateService();
+    } else {
+      console.log("Creando nuevo servicio");
+      sendNewService();
+    }
+
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,6 +185,13 @@ export default function DashboardServicesNew({ code, setSubpage }: DashboardServ
     reader.readAsDataURL(file);
     setFile(file);
   };
+
+  useEffect(() => {
+    console.log("CodePath =>", code);
+    if (code) {
+      fetchService();
+    }
+  }, [])
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-6 md:gap-8">
