@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useAuthStore} from "@/store/auth.js";
 import {useEffect, useState} from "react";
 import {obtenerCliente} from "@/api/client.ts";
+import {AxiosError} from "axios";
 
 
 export default function AccountMenu() {
@@ -10,38 +11,47 @@ export default function AccountMenu() {
     const setToken = useAuthStore((state) => state.setToken);
     const setRole = useAuthStore((state) => state.setRol);
     const [errMsg, setErrMsg] = useState("");
+
     const logout = () => {
         setToken(null);
         setRole(null);
         navigate("/auth/login");
     };
+
     const myConfig = () => {
-        setToken(null);
-        setRole(null);
         navigate("/account/config");
     };
 
-    const {correo: correo} = useAuthStore();
+    const {correo} = useAuthStore();
     const [email, setEmail] = useState("");
+
     const fetchClient = async () => {
         try {
-            const data = await obtenerCliente(correo || "");
-            setEmail(data.correo);
+            if (!correo) {
+                throw new Error("Correo no definido");
+            }
+            const data = await obtenerCliente(correo);
+            if (data && data.correo) {
+                setEmail(data.correo);
+            } else {
+                throw new Error("Datos de cliente inválidos");
+            }
         } catch (err) {
-            const error = err;
-            if (!error?.response) {
+            const error = err as AxiosError;
+            if (!error.response) {
                 setErrMsg("El servidor no responde");
-            } else if (
-                error.response?.status === 409 ||
-                error.response?.data === "Bad credentials"
-            ) {
+            } else if (error.response?.status === 409 || error.response?.data === "Bad credentials") {
                 setErrMsg("Credenciales incorrectas");
             } else {
                 setErrMsg("Error desconocido");
             }
-            console.log(errMsg)
+            console.log(errMsg);
         }
     };
+
+    useEffect(() => {
+        fetchClient();
+    }, [correo]);
     useEffect(() => {
         fetchClient();
     }, []);
