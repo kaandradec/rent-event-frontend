@@ -14,6 +14,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import DevTool from './components/DevTool'
 import { ClientConfiguration } from './pages/client/ClientConfiguration.tsx'
 import DashboardServicesUpdate from './components/DashBoardServices/DashboardServicesUpdate.tsx'
+import { About } from './pages/client/About.tsx'
 
 const USER_PATH = '/user'
 
@@ -29,6 +30,7 @@ function App() {
           <Route path='/auth/login' element={<LoginClient />} />
           <Route path='/auth/register' element={<CompletoRegisterClient />} />
           <Route path="/landing" element={<Landing />} />
+          <Route path="/about" element={<About />} />
           <Route path="/home" element={<Home />} />
           <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
           <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
