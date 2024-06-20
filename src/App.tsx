@@ -20,6 +20,7 @@ import HeaderPreLogin from "@/components/HeaderPreLogin";
 const USER_PATH = '/user'
 
 function App() {
+
     return (
         <main>
             <BrowserRouter>
@@ -52,11 +53,13 @@ function App() {
 
 function HeaderSelector() {
     const location = useLocation();
-    const isAdminRoute = location.pathname.startsWith(USER_PATH);
-    const isNotLoggedIn = location.pathname.startsWith("/" || "" || "/auth" || "/inicio")
+    const pathName = location.pathname;
 
+    const isAdminRoute = pathName.startsWith(USER_PATH);
+    const isNotLoggedIn = pathName.startsWith("/auth" || "/inicio");
+    const isLanding = pathName.length==1 || pathName.startsWith("/landing");
 
-    return isAdminRoute ? "" : (isNotLoggedIn ? <HeaderPreLogin/> : <Header/>);
+    return isAdminRoute ? "" : ((isNotLoggedIn || isLanding) ? <HeaderPreLogin/> : <Header/>);
 }
 
 export default App

@@ -52,9 +52,7 @@ export default function AccountMenu() {
     useEffect(() => {
         fetchClient();
     }, [correo]);
-    useEffect(() => {
-        fetchClient();
-    }, []);
+
 
     return (
 
