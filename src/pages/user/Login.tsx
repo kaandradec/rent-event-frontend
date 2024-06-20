@@ -15,7 +15,7 @@ export const LoginUser = () => {
   const [success, setSuccess] = useState(false);
 
   const setToken = useAuthStore((state) => state.setToken);
-  const setRole = useAuthStore((state) => state.setRole);
+  const setRole = useAuthStore((state) => state.setRol);
 
   const navigate = useNavigate();
 

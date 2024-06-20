@@ -1,22 +1,27 @@
 import {AxiosError} from "axios";
 import React, {useEffect, useState} from "react";
-import {Button, Input} from "@nextui-org/react";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
+import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input} from "@nextui-org/react";
 import {registerRequestClient} from "@/api/auth";
 import {useNavigate} from "react-router-dom";
 import {obtenerGeneros} from "@/api/generos.ts";
+import {EyeFilledIcon} from "@/components/icons/EyeFilledIcon";
+import {EyeSlashFilledIcon} from "@/components/icons/EyeSlashFilledIcon";
 
-export const CompletoRegisterClient = () => {
+export const RegisterClient = () => {
     const [nombre, setNombre] = useState("");
     const [apellido, setApellido] = useState("");
     const [correo, setCorreo] = useState("");
     const [contrasenia, setContrasenia] = useState("");
+    const [otraContrasenia, setOtraContrasenia] = useState("");
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
     const [generos, setGeneros] = useState<string[]>([]);
     const [prefijo, setPrefijo] = useState(-1);
     const [telefono, setTelefono] = useState(-1);
     const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(new Set(["Género"]));
+    const [isVisible, setIsVisible] = React.useState(false);
+
+    const toggleVisibility = () => setIsVisible(!isVisible);
 
     const navigate = useNavigate();
 
@@ -25,6 +30,7 @@ export const CompletoRegisterClient = () => {
         setApellido("");
         setCorreo("");
         setContrasenia("");
+        setOtraContrasenia("");
         setPrefijo(0);
         setTelefono(0);
         setSelectedKeys(new Set(["Género"]));
@@ -37,8 +43,17 @@ export const CompletoRegisterClient = () => {
 
     const validateInputs = () => {
         if (nombre === "" || apellido === "" || correo === "" || contrasenia === "" ||
-            selectedGender === "" || selectedGender === "Género"|| prefijo <= 0 || telefono <= 0) {
+            selectedGender === "" || selectedGender === "Género" || prefijo <= 0 || telefono <= 0) {
             setErrMsg("Campos vacíos");
+            return false;
+        } else if (prefijo.toString().length > 5) {
+            setErrMsg("Prefijo de teléfono no existe");
+            return false;
+        } else if (contrasenia !== otraContrasenia) {
+            setErrMsg("Contraseñas distintas, corrígelas");
+            return false;
+        } else if (/\d/.test(nombre) || /\d/.test(apellido)) {
+            setErrMsg("Nombre o Apellido contiene numeros");
             return false;
         }
         return true;
@@ -77,10 +92,11 @@ export const CompletoRegisterClient = () => {
         e.preventDefault();
 
         const validInputs = validateInputs();
+
         if (!validInputs) return;
 
         try {
-            const response = await registerRequestClient(nombre, apellido, correo, contrasenia, selectedGender,prefijo,telefono);
+            const response = await registerRequestClient(nombre, apellido, correo, contrasenia, selectedGender, prefijo, telefono);
             console.log(response);
             setSuccess(true);
             resetInputs();
@@ -133,17 +149,45 @@ export const CompletoRegisterClient = () => {
                     />
                     <Input
                         className="mb-5"
-                        type="password"
                         label="Contraseña"
                         isRequired={true}
                         variant="bordered"
                         placeholder="Ingresa tu contraseña"
+                        endContent={
+                            <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                                {isVisible ? (
+                                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none"/>
+                                ) : (
+                                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none"/>
+                                )}
+                            </button>
+                        }
+                        type={isVisible ? "text" : "password"}
                         onChange={(e) => setContrasenia(e.target.value)}
+                    />
+                    <Input
+                        className="mb-5"
+                        label="Confirmar contraseña"
+                        isRequired={true}
+                        variant="bordered"
+                        placeholder="Confirma tu contraseña"
+                        endContent={
+                            <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                                {isVisible ? (
+                                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none"/>
+                                ) : (
+                                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none"/>
+                                )}
+                            </button>
+                        }
+                        type={isVisible ? "text" : "password"}
+                        onChange={(e) => setOtraContrasenia(e.target.value)}
                     />
                     <h3 className="text-medium font-semibold mb-2 text-start">Número de teléfono:</h3>
                     <div className={"flex gap-3 mb-5"}>
                         <Input
                             type="number"
+                            variant="bordered"
                             labelPlacement="outside-left"
                             label={"+"}
                             placeholder="000"
@@ -152,6 +196,7 @@ export const CompletoRegisterClient = () => {
                         />
                         <Input
                             type="number"
+                            variant="bordered"
                             placeholder="00-0000-000"
                             isRequired={true}
                             onChange={(e) => setTelefono(Number(e.target.value))}
