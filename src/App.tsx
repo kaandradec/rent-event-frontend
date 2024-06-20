@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import Header from './components/Header'
 import Inicio from './pages/Inicio'
@@ -14,7 +14,6 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import DevTool from './components/DevTool'
 import { ClientConfiguration } from './pages/client/ClientConfiguration.tsx'
 import DashboardServicesUpdate from './components/DashBoardServices/DashboardServicesUpdate.tsx'
-import HeaderPreLogin from "@/components/HeaderPreLogin";
 
 import { About } from './pages/client/About.tsx'
 
@@ -25,7 +24,7 @@ function App() {
     return (
         <main>
             <BrowserRouter>
-                <HeaderSelector />
+                <Header />
                 <Routes>
                     {/* Rutas de cliente */}
                     <Route index element={<Landing />} />
@@ -51,18 +50,6 @@ function App() {
             <DevTool />
         </main>
     )
-}
-
-function HeaderSelector() {
-    const location = useLocation();
-    const pathName = location.pathname;
-
-    const isAdminRoute = pathName.startsWith(USER_PATH);
-    const isNotLoggedIn = pathName.startsWith("/auth" || "/inicio");
-    // pathName.length==1 es "/"
-    const isLanding = pathName.length == 1 || pathName.startsWith("/landing");
-
-    return isAdminRoute ? "" : ((isNotLoggedIn || isLanding) ? <HeaderPreLogin /> : <Header />);
 }
 
 export default App

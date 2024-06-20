@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 type State = {
     token: string | null;
@@ -16,7 +15,7 @@ type Actions = {
     setCorreo: (correo: string | null) => void;
 }
 
-export const useAuthStore = create(persist<State & Actions>(
+export const useAuthStore = create<State & Actions>(
     (set) => ({
         token: null,
         rol: null,
@@ -38,8 +37,5 @@ export const useAuthStore = create(persist<State & Actions>(
         setCorreo: (correo: string | null) => set((state) => ({
             correo: state.correo = correo,
         })),
-    }),
-    {
-        name: "auth",
-    }
-));
+    })
+);

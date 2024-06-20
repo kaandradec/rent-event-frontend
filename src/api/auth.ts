@@ -48,8 +48,8 @@ export const registerRequestClient = async (
     email: string,
     contrasenia: string,
     genero: string,
-    prefijo:number,
-    telefono:number
+    prefijo: number,
+    telefono: number
 ) =>
     await axios.post(
         "http://localhost:8080/auth/register",
@@ -58,9 +58,9 @@ export const registerRequestClient = async (
             apellido: apellido,
             correo: email,
             contrasenia: contrasenia,
-            genero:genero,
-            prefijo:prefijo,
-            telefono:telefono
+            genero: genero,
+            prefijo: prefijo,
+            telefono: telefono
         }),
         {
             headers: {

@@ -14,8 +14,13 @@ export const LoginUser = () => {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const setToken = useAuthStore((state) => state.setToken);
-  const setRole = useAuthStore((state) => state.setRol);
+  const { setToken, setRol, setNombre, setApellido, setMail } = useAuthStore((state) => ({
+    setToken: state.setToken,
+    setRol: state.setRol,
+    setNombre: state.setNombre,
+    setApellido: state.setApellido,
+    setMail: state.setCorreo,
+  }));
 
   const navigate = useNavigate();
 
@@ -33,6 +38,22 @@ export const LoginUser = () => {
     return true;
   }
 
+  interface AuthData {
+    token: string;
+    rol: string;
+    nombre: string;
+    apellido: string;
+    correo: string;
+  }
+
+  const setAuthStore = (data: AuthData) => {
+    setToken(data.token);
+    setRol(data.rol);
+    setNombre(data.nombre);
+    setApellido(data.apellido);
+    setMail(data.correo);
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -42,8 +63,7 @@ export const LoginUser = () => {
     try {
       const response = await loginRequest(email, password);
       console.log(response?.data); // token
-      setToken(response?.data?.token);
-      setRole(response?.data?.role);
+      setAuthStore(response?.data);
       setSuccess(true);
       resetInputs();
       navigate("/user/dashboard");

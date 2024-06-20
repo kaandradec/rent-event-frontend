@@ -1,4 +1,5 @@
 import {
+  Button,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -6,11 +7,14 @@ import {
 } from "@nextui-org/react";
 import { RentEventLogo } from "../components/icons/RentEventLogo";
 import SwitchTheme from "./ui/SwitchTheme";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import AccountMenu from "@/components/AccountMenu.tsx";
+import { useAuthStore } from "@/store/auth";
 
 export default function Header() {
+  const rol = useAuthStore.getState().rol;
+  const navigate = useNavigate();
   return (
     <Navbar className="fixed">
       <NavbarBrand className="cursor-pointer">
@@ -35,7 +39,26 @@ export default function Header() {
 
       <NavbarContent as="div" justify="end">
         <SwitchTheme />
-        <AccountMenu />
+        {rol ? (
+          <AccountMenu />
+        ) : (
+          <>
+            <Button
+              color="primary"
+              onClick={() => navigate("/auth/login")}
+              className={"font-bold"}
+            >
+              Entrar
+            </Button>
+            <Button
+              className={"font-bold text-primary"}
+              color="success"
+              onClick={() => navigate("/auth/register")}
+            >
+              Registrate
+            </Button>
+          </>
+        )}
       </NavbarContent>
     </Navbar>
   );

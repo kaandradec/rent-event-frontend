@@ -1,9 +1,9 @@
-import {Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger,} from "@nextui-org/react";
-import {useNavigate} from "react-router-dom";
-import {useAuthStore} from "@/store/auth.js";
-import {useEffect, useState} from "react";
-import {obtenerCliente} from "@/api/client.ts";
-import {AxiosError} from "axios";
+import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/auth.js";
+import { useEffect, useState } from "react";
+import { obtenerCliente } from "@/api/client.ts";
+import { AxiosError } from "axios";
 
 
 export default function AccountMenu() {
@@ -22,7 +22,7 @@ export default function AccountMenu() {
         navigate("/account/config");
     };
 
-    const {correo} = useAuthStore();
+    const { correo } = useAuthStore();
     const [email, setEmail] = useState("");
 
     const fetchClient = async () => {
@@ -65,7 +65,7 @@ export default function AccountMenu() {
                     color="primary"
                     name="Jason Hughes"
                     size="sm"
-                    src="lunacat.png"
+                    src="/lunacat.png"
                 />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">

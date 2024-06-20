@@ -26,7 +26,6 @@ export const LoginClient = () => {
   )
 }
 
-
 const Login = () => {
   const [correo, setCorreo] = useState("");
   const [contrasenia, setContrasenia] = useState("");
@@ -86,7 +85,7 @@ const Login = () => {
       setAuthStore(response?.data);
       setSuccess(true);
       resetInputs();
-      navigate("/account/config");
+      navigate("/");
     } catch (err) {
       const error = err as AxiosError;
       console.log(error.response?.data);
