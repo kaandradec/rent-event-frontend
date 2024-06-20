@@ -1,32 +1,33 @@
-import {useState, useEffect} from "react";
-import {Avatar, Button, Input} from "@nextui-org/react";
+import {useEffect, useState} from "react";
+import {Button} from "@nextui-org/react";
 import {useAuthStore} from "@/store/auth";
-import {obtenerCliente} from "@/api/client";
+import {obtenerDetallesCliente} from "@/api/client";
 import {AxiosError} from "axios";
 import {PencilIcon} from "@/components/icons/PencilIcon";
+import {Input} from "@/components/ui/input.tsx";
+import {UserInfo} from "@/components/UserInfo.tsx";
+import {useNavigate} from "react-router-dom";
 
 export const ClientConfiguration = () => {
+    const navigate = useNavigate();
     const {correo: correo} = useAuthStore();
 
-    const [email, setEmail] = useState("");
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
-    const [genero, setGenero] = useState("");
-    const [nacionalidad, setNacionalidad] = useState("");
-    // const [success, setSuccess] = useState(false);
 
-    // const navigate = useNavigate();
+    const [genero, setGenero] = useState("");
+    const [pais, setPais] = useState("");
+    const [prefijo, setPrefijo] = useState("");
+    const [telefono, setTelefono] = useState("");
+
     const [errMsg, setErrMsg] = useState("");
 
-    const fetchClient = async () => {
+    const fetchFullClient = async () => {
         try {
-            const data = await obtenerCliente(correo || "");
-            console.log(data);
-            setFirstname(data.nombre ?? "");
-            setLastname(data.apellido ?? "");
-            setEmail(data.correo ?? "");
-            setGenero(data.genero ?? "");
-            setNacionalidad(data.nacionalidad ?? "");
+            const details = await obtenerDetallesCliente(correo || "");
+
+            setGenero(details.genero ?? "");
+            setPais(details.pais ?? "");
+            setPrefijo(details.prefijo ?? "");
+            setTelefono(details.telefono ?? "");
 
         } catch (err) {
             const error = err as AxiosError;
@@ -45,51 +46,61 @@ export const ClientConfiguration = () => {
     };
 
     useEffect(() => {
-        fetchClient();
+        fetchFullClient();
     }, []);
 
     return (
         <main className="mt-40">
-            <section className="max-w-md border-2 rounded-3xl p-5 mx-auto">
-                <div className="container flex">
-                    <Avatar isBordered color="secondary" radius="lg"  src={"/lunacat.png"}
-                            className="object-contain min-w-12 min-h-12 sm:w-20 sm:h-20 mb-5"/>
-                    <div className="ml-5">
-                        <h2 className="mb-2 text-2xl font-medium">{email}</h2>
-                        <h3 className="mb-2 text-lg font-medium">{firstname + " " + lastname}</h3>
-                    </div>
-                </div>
-
+            <section className="max-w-lg border-2 rounded-3xl p-5 mx-auto">
+                <UserInfo/>
                 <div className="container flex align-super content-center gap-3 ">
                     <Input
-                        className="mb-3 h-14 border-primary"
+                        className="mb-3 h-14 border-2"
                         type="text"
-                        label="Género"
                         color={"primary"}
-                        variant="bordered"
                         name="genero"
                         value={genero}
                         readOnly
                     />
-                    {/*todo no se como centrarle bonito*/}
-                    <Button isIconOnly variant="light" className="w-20 h-14 text-black dark:text-white" color={"success"}>
-                        <PencilIcon />
+                    <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
+                            color={"success"}>
+                        <PencilIcon/>
                     </Button>
                 </div>
                 <div className="container flex align-super content-center gap-3 ">
                     <Input
-                        className="mb-3 h-14"
+                        className="mb-3 h-14 border-2"
                         type="text"
-                        label="Nacionalidad"
                         color={"primary"}
-                        variant="bordered"
-                        name="nacionalidad"
-                        value={nacionalidad}
+                        name="Pais"
+                        value={pais}
                         readOnly
                     />
-                    {/*todo no se como centrarle bonito*/}
-                    <Button isIconOnly variant="light" className="w-20 h-14 text-black dark:text-white" color={"success"}>
-                        <PencilIcon />
+                    <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
+                            color={"success"} >
+                        <PencilIcon/>
+                    </Button>
+                </div>
+                <div className="container flex align-super content-center gap-3 ">
+                    <Input
+                        className="max-w-16 mb-3 h-14 border-2"
+                        type="text"
+                        color={"primary"}
+                        name="Prefijo Telefonico"
+                        value={"+ "+prefijo}
+                        readOnly
+                    />
+                    <Input
+                        className="mb-3 h-14 border-2"
+                        type="text"
+                        color={"primary"}
+                        name="Número Telefonico"
+                        value={telefono}
+                        readOnly
+                    />
+                    <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
+                            color={"success"} onClick={()=>navigate(`/account/config/telefono`)}>
+                        <PencilIcon/>
                     </Button>
                 </div>
             </section>

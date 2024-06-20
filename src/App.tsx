@@ -16,6 +16,7 @@ import { ClientConfiguration } from './pages/client/ClientConfiguration.tsx'
 import DashboardServicesUpdate from './components/DashBoardServices/DashboardServicesUpdate.tsx'
 
 import { About } from './pages/client/About.tsx'
+import {ClientTelefonoConf} from "@/pages/client/ClientTelefonoConf.tsx";
 
 const USER_PATH = '/user'
 
@@ -37,6 +38,8 @@ function App() {
                     <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
                     <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
                     <Route path='/account/config' element={<ClientConfiguration />} />
+                    <Route path='/account/config/genero' element={<ClientConfiguration />} />
+                    <Route path='/account/config/telefono' element={<ClientTelefonoConf />} />
 
                     {/* Rutas protegidas, solo acceso a usuario(Empleado)*/}
                     <Route element={<ProtectedRoute />}>
