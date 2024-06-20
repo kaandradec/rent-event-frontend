@@ -31,10 +31,12 @@ export default function HeaderPreLogin() {
                 <Button
                     color="primary"
                     onClick={navigateLogin}
+                    className={"font-bold"}
                 >
                     Entrar
                 </Button>
                 <Button
+                    className={"font-bold text-primary"}
                     color="success"
                     onClick={navigateRegister}
                 >

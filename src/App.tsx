@@ -9,7 +9,7 @@ import Analytics from './pages/user/Analytics'
 import {LoginUser} from './pages/user/Login'
 import {RegisterUser} from './pages/user/Register'
 import {LoginClient} from './pages/client/LoginClient'
-import {CompletoRegisterClient} from './pages/client/CompletoRegisterClient.tsx'
+import {RegisterClient} from './pages/client/RegisterClient.tsx'
 import {ProtectedRoute} from './components/ProtectedRoute'
 import DevTool from './components/DevTool'
 import {ClientConfiguration} from './pages/client/ClientConfiguration.tsx'
@@ -30,7 +30,7 @@ function App() {
                     <Route index element={<Landing/>}/>
                     <Route path='/inicio' element={<Inicio/>}/>
                     <Route path='/auth/login' element={<LoginClient/>}/>
-                    <Route path='/auth/register' element={<CompletoRegisterClient/>}/>
+                    <Route path='/auth/register' element={<RegisterClient/>}/>
                     <Route path="/landing" element={<Landing/>}/>
                     <Route path="/home" element={<Home/>}/>
                     <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser/>}/>
@@ -57,6 +57,7 @@ function HeaderSelector() {
 
     const isAdminRoute = pathName.startsWith(USER_PATH);
     const isNotLoggedIn = pathName.startsWith("/auth" || "/inicio");
+    // pathName.length==1 es "/"
     const isLanding = pathName.length==1 || pathName.startsWith("/landing");
 
     return isAdminRoute ? "" : ((isNotLoggedIn || isLanding) ? <HeaderPreLogin/> : <Header/>);
