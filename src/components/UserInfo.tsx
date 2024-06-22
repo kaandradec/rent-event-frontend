@@ -1,11 +1,13 @@
 import {Avatar} from "@nextui-org/react";
-import {obtenerCliente} from "@/api/client.ts";
+import {obtenerCliente} from "@/api/cliente.ts";
 import {AxiosError} from "axios";
 import {useEffect, useState} from "react";
 import {useAuthStore} from "@/store/auth.ts";
+import {obtenerUsuario} from "@/api/usuario.ts";
 
 export const UserInfo = () => {
     const {correo: correo} = useAuthStore();
+    const rol = useAuthStore.getState().rol;
 
     const [email, setEmail] = useState("");
     const [firstname, setFirstname] = useState("");
@@ -16,8 +18,11 @@ export const UserInfo = () => {
 
     const fetchFullClient = async () => {
         try {
-            const data = await obtenerCliente(correo || "");
-            console.log(data);
+            if (!correo) {
+                throw new Error("Correo no definido");
+            }
+            const data = rol?.startsWith('C') ?
+                await obtenerCliente(correo) : await obtenerUsuario(correo);
             setFirstname(data.nombre ?? "");
             setLastname(data.apellido ?? "");
             setEmail(data.correo ?? "");

@@ -114,7 +114,7 @@ export const LoginUser = () => {
             {!success ? errMsg : '¡Acceso Exitoso!'}
           </p>
           <div className="text-center">
-            <Button color="primary" type="submit" size="lg">
+            <Button className={"font-bold dark:text-success-300"} color="primary" type="submit" size="lg">
               Log In
             </Button>
           </div>

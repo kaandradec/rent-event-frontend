@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useAuthStore} from "@/store/auth";
-import {obtenerDetallesCliente} from "@/api/client";
+import {obtenerDetallesCliente} from "@/api/cliente.ts";
 import {AxiosError} from "axios";
 import {Input} from "@/components/ui/input";
 import {UserInfo} from "@/components/UserInfo";

@@ -1,17 +1,17 @@
-import {useEffect, useState} from "react";
-import {Button} from "@nextui-org/react";
-import {useAuthStore} from "@/store/auth";
-import {obtenerDetallesCliente} from "@/api/client";
-import {AxiosError} from "axios";
-import {PencilIcon} from "@/components/icons/PencilIcon";
-import {Input} from "@/components/ui/input.tsx";
-import {UserInfo} from "@/components/UserInfo.tsx";
-import {useNavigate} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Button } from "@nextui-org/react";
+import { useAuthStore } from "@/store/auth";
+import { obtenerDetallesCliente } from "@/api/cliente.ts";
+import { AxiosError } from "axios";
+import { PencilIcon } from "@/components/icons/PencilIcon";
+import { Input } from "@/components/ui/input.tsx";
+import { UserInfo } from "@/components/UserInfo.tsx";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const ClientConfiguration = () => {
     const navigate = useNavigate();
-    const {correo: correo} = useAuthStore();
-
+    const location = useLocation();
+    const { correo: correo } = useAuthStore();
 
     const [genero, setGenero] = useState("");
     const [pais, setPais] = useState("");
@@ -49,10 +49,19 @@ export const ClientConfiguration = () => {
         fetchFullClient();
     }, []);
 
+    // Clear inputs when the location (page) changes
+    useEffect(() => {
+        setGenero("");
+        setPais("");
+        setPrefijo("");
+        setTelefono("");
+    }, [location]);
+
     return (
         <main className="mt-40">
-            <section className="max-w-lg border-2 rounded-3xl p-5 mx-auto">
-                <UserInfo/>
+            <section className="container max-w-lg border-2 rounded-3xl p-5 mx-auto">
+                <UserInfo />
+                <p className="container mb-2 text-lg font-medium">Genero:</p>
                 <div className="container flex align-super content-center gap-3 ">
                     <Input
                         className="mb-3 h-14 border-2"
@@ -64,9 +73,10 @@ export const ClientConfiguration = () => {
                     />
                     <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
                             color={"success"}>
-                        <PencilIcon/>
+                        <PencilIcon />
                     </Button>
                 </div>
+                <p className="container mb-2 text-lg font-medium">País:</p>
                 <div className="container flex align-super content-center gap-3 ">
                     <Input
                         className="mb-3 h-14 border-2"
@@ -77,17 +87,18 @@ export const ClientConfiguration = () => {
                         readOnly
                     />
                     <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
-                            color={"success"} >
-                        <PencilIcon/>
+                            color={"success"}>
+                        <PencilIcon />
                     </Button>
                 </div>
+                <p className="container mb-2 text-lg font-medium">Teléfono:</p>
                 <div className="container flex align-super content-center gap-3 ">
                     <Input
                         className="max-w-16 mb-3 h-14 border-2"
                         type="text"
                         color={"primary"}
                         name="Prefijo Telefonico"
-                        value={"+ "+prefijo}
+                        value={"+ " + prefijo}
                         readOnly
                     />
                     <Input
@@ -99,8 +110,14 @@ export const ClientConfiguration = () => {
                         readOnly
                     />
                     <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
-                            color={"success"} onClick={()=>navigate(`/account/config/telefono`)}>
-                        <PencilIcon/>
+                            color={"success"} onClick={() => navigate(`/account/config/telefono`)}>
+                        <PencilIcon />
+                    </Button>
+                </div>
+                <div className="container flex align-super content-center gap-3 ">
+                    <Button isIconOnly variant="bordered" className=" flex w-full text-black dark:text-white"
+                            color={"primary"} onClick={() => navigate(`/account/config/pass`)}>
+                        Cambiar Contraseña
                     </Button>
                 </div>
             </section>

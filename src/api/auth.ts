@@ -69,4 +69,24 @@ export const registerRequestClient = async (
             // withCredentials: true,
         }
     );
+export const changePasswClient = async (
+    email: string | null,
+    contrasenia: string,
+    contraseniaNueva: string,
+) =>
+    await axios.put(
+        "http://localhost:8080/clientes/account/password",
+        JSON.stringify({
+            correo: email,
+            contrasenia: contrasenia,
+            contraseniaNueva: contraseniaNueva,
+
+        }),
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            withCredentials: true,
+        }
+    );
 
