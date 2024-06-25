@@ -1,4 +1,4 @@
-import { authApi } from "@/lib/axios";
+import {authApi} from "@/lib/axios";
 import axios from "axios";
 
 export const loginRequest = async (correo: string, contrasenia: string) =>
@@ -71,22 +71,20 @@ export const registerRequestClient = async (
     );
 export const changePasswClient = async (
     email: string | null,
-    contrasenia: string,
+    contraseniaActual: string,
     contraseniaNueva: string,
-) =>
-    await axios.put(
-        "http://localhost:8080/clientes/account/password",
-        JSON.stringify({
+) => {
+    return await authApi.put(
+        "/clientes/account/password",
+        {
             correo: email,
-            contrasenia: contrasenia,
+            contraseniaActual: contraseniaActual,
             contraseniaNueva: contraseniaNueva,
-
-        }),
+        },
         {
             headers: {
                 "Content-Type": "application/json",
-            },
-            withCredentials: true,
+            }
         }
     );
-
+};

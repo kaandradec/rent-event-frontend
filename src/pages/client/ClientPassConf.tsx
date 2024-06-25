@@ -1,10 +1,10 @@
-import { AxiosError } from "axios";
-import React, { useState } from "react";
-import { Button, Input } from "@nextui-org/react";
-import { useAuthStore } from "@/store/auth";
-import { changePasswClient } from "@/api/auth.ts";
-import { EyeFilledIcon } from "@/components/icons/EyeFilledIcon";
-import { EyeSlashFilledIcon } from "@/components/icons/EyeSlashFilledIcon";
+import {AxiosError} from "axios";
+import React, {useState} from "react";
+import {Button, Input} from "@nextui-org/react";
+import {useAuthStore} from "@/store/auth";
+import {changePasswClient} from "@/api/auth.ts";
+import {EyeFilledIcon} from "@/components/icons/EyeFilledIcon";
+import {EyeSlashFilledIcon} from "@/components/icons/EyeSlashFilledIcon";
 
 export const ClientPassConf = () => {
     const correo = useAuthStore.getState().correo;
@@ -22,7 +22,7 @@ export const ClientPassConf = () => {
 
         const validInputs = validateInputs();
         if (!validInputs) return;
-            await changePasswClient(correo, contrasenia, contraseniaNueva);
+        await changePasswClient(correo, contrasenia, contraseniaNueva);
         try {
             setSuccess(true);
             resetInputs();
@@ -46,12 +46,11 @@ export const ClientPassConf = () => {
         setContraseniaConfirmacion("");
     };
 
-    const validateInputs = (): boolean => {
+    const validateInputs = () => {
         if (contrasenia.length === 0 || contraseniaNueva.length === 0 || contraseniaConfirmacion.length === 0) {
             setErrMsg("Campos vacíos");
             return false;
-        }
-        if (contraseniaNueva !== contraseniaConfirmacion) {
+        } else if (contraseniaNueva !== contraseniaConfirmacion) {
             setErrMsg("Las contraseñas no coinciden");
             return false;
         }
@@ -78,9 +77,9 @@ export const ClientPassConf = () => {
                             endContent={
                                 <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
                                     {isVisible ? (
-                                        <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                        <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none"/>
                                     ) : (
-                                        <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                        <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none"/>
                                     )}
                                 </button>
                             }
@@ -99,9 +98,9 @@ export const ClientPassConf = () => {
                             endContent={
                                 <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
                                     {isVisible ? (
-                                        <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                        <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none"/>
                                     ) : (
-                                        <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                        <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none"/>
                                     )}
                                 </button>
                             }
@@ -120,9 +119,9 @@ export const ClientPassConf = () => {
                             endContent={
                                 <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
                                     {isVisible ? (
-                                        <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                        <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none"/>
                                     ) : (
-                                        <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                        <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none"/>
                                     )}
                                 </button>
                             }
@@ -132,12 +131,14 @@ export const ClientPassConf = () => {
                         />
                     </div>
                     <div className="container flex align-super content-center gap-3 ">
-                        <Button variant="bordered" className="flex-auto font-semibold text-black dark:text-white" color={"success"} type="submit">
+                        <Button variant="bordered" className="flex-auto font-semibold text-black dark:text-white"
+                                color={"success"} type="submit">
                             Cambiar Contraseña
                         </Button>
                     </div>
                 </form>
-                <p className={`h-5 text-center my-2 ${success ? msgStyle.colorSuccess : msgStyle.colorError}`} aria-live="assertive">
+                <p className={`h-5 text-center my-2 ${success ? msgStyle.colorSuccess : msgStyle.colorError}`}
+                   aria-live="assertive">
                     {!success ? errMsg : '¡Registro exitoso!'}
                 </p>
             </section>
