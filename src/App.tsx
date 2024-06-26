@@ -4,7 +4,6 @@ import Header from './components/Header'
 import Inicio from './pages/Inicio'
 import Dashboard from './pages/user/Dashboard'
 import Landing from './pages/client/Landing'
-import Home from './pages/client/Home'
 import Analytics from './pages/user/Analytics'
 import { LoginUser } from './pages/user/Login'
 import { RegisterUser } from './pages/user/Register'
@@ -16,6 +15,7 @@ import { ClientConfiguration } from './pages/client/ClientConfiguration.tsx'
 import DashboardServicesUpdate from './components/DashBoardServices/DashboardServicesUpdate.tsx'
 
 import { About } from './pages/client/About.tsx'
+import Services from './pages/client/Services.tsx'
 
 const USER_PATH = '/user'
 
@@ -33,7 +33,7 @@ function App() {
                     <Route path='/auth/register' element={<RegisterClient />} />
                     <Route path="/landing" element={<Landing />} />
                     <Route path="/about" element={<About />} />
-                    <Route path="/home" element={<Home />} />
+                    <Route path="/home" element={<Services />} />
                     <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
                     <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
                     <Route path='/account/config' element={<ClientConfiguration />} />

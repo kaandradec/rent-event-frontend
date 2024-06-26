@@ -61,14 +61,14 @@ const DevTool = () => {
           >
             {collapsed ? "Herramienta de desarrollo" : "Cerrar"}
           </button>
-          {!collapsed && (
+          {/* {!collapsed && (
             <button
               onClick={handleSubmit}
               className="bg-blue-500 text-white py-1 px-2 rounded"
             >
               Cambiar estados globales
             </button>
-          )}
+          )} */}
           {btnClicked && <span className="text-lg text-green-500">🔄️✅</span>}
         </section>
 

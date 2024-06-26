@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Navbar,
   NavbarBrand,
@@ -7,14 +8,27 @@ import {
 } from "@nextui-org/react";
 import { RentEventLogo } from "../components/icons/RentEventLogo";
 import SwitchTheme from "./ui/SwitchTheme";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import AccountMenu from "@/components/AccountMenu.tsx";
 import { useAuthStore } from "@/store/auth";
+import { ShoppingCartIcon } from "lucide-react";
+import { useStore } from "@/store/store";
 
 export default function Header() {
   const rol = useAuthStore.getState().rol;
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Cart Icon Style
+  const linkStyle = {
+    div: "flex items-center space-x-1 py-1 pr-3 pl-1.5 text-gray-600 cursor-pointer\
+    rounded-lg hover:border hover:text-cPrimary/90 hover:shadow-lg",
+    activeLink: "border text-cPrimary/90 shadow-lg",
+  };
+
+  const cartQuantity = useStore((state) => state.cartQuantity);
+
   return (
     <Navbar className="fixed">
       <NavbarBrand className="cursor-pointer">
@@ -38,6 +52,22 @@ export default function Header() {
       </NavbarContent>
 
       <NavbarContent as="div" justify="end">
+        {/* Cart */}
+        <Link
+          to="cart"
+          className={`${
+            "/cart" === location.pathname && linkStyle.activeLink
+          } ${linkStyle.div} relative`}
+        >
+          <Badge
+            color="danger"
+            content={cartQuantity}
+            isInvisible={cartQuantity === 0}
+            shape="circle"
+          >
+            <ShoppingCartIcon />
+          </Badge>
+        </Link>
         <SwitchTheme />
         {rol ? (
           <AccountMenu />
