@@ -1,11 +1,15 @@
 import axios from "axios";
-// import { useAuthStore } from "../store/auth";
 
 const baseURL = "http://localhost:8080";
 
 export const authApi = axios.create({
   baseURL,
   withCredentials: false,
+});
+
+export const authPass = axios.create({
+  baseURL,
+  withCredentials: true,
 });
 
 export const tokenApi = axios.create({
@@ -18,16 +22,22 @@ export const dataFormApi = axios.create({
   withCredentials: false,
 });
 
-
 // ERROR TS asignar  objeto{ Authorization: string; } a onjeto de tipo AxiosRequestHeaders con más propiedades
-// authApi.interceptors.request.use((config) => {
+// authPass.interceptors.request.use((config) => {
 //   const token = useAuthStore.getState().token;
-
-//   config.headers = {
-//     Authorization: `Bearer ${token}`,
-//   }  
+//
+//   if (token) {
+//     if (!config.headers) {
+//       config.headers = {} as AxiosRequestHeaders; // Asegúrate de tipar correctamente los headers
+//     }
+//     const headers = config.headers as AxiosRequestHeaders;
+//     headers['Authorization'] = `Bearer ${token}`;
+//     headers['Content-Type'] = "application/json"; // Añadir Content-Type
+//   }
+//
 //   return config;
 // });
+
 
 //SOLUCION: 
 

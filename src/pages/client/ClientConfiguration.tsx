@@ -1,32 +1,33 @@
-import {useState, useEffect} from "react";
-import {Avatar, Button, Input} from "@nextui-org/react";
-import {useAuthStore} from "@/store/auth";
-import {obtenerCliente} from "@/api/client";
-import {AxiosError} from "axios";
-import {PencilIcon} from "@/components/icons/PencilIcon";
+import { useEffect, useState } from "react";
+import { Button } from "@nextui-org/react";
+import { useAuthStore } from "@/store/auth";
+import { obtenerDetallesCliente } from "@/api/cliente.ts";
+import { AxiosError } from "axios";
+import { PencilIcon } from "@/components/icons/PencilIcon";
+import { Input } from "@/components/ui/input.tsx";
+import { UserInfo } from "@/components/UserInfo.tsx";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const ClientConfiguration = () => {
-    const {correo: correo} = useAuthStore();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { correo: correo } = useAuthStore();
 
-    const [email, setEmail] = useState("");
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
     const [genero, setGenero] = useState("");
-    const [nacionalidad, setNacionalidad] = useState("");
-    // const [success, setSuccess] = useState(false);
+    const [pais, setPais] = useState("");
+    const [prefijo, setPrefijo] = useState("");
+    const [telefono, setTelefono] = useState("");
 
-    // const navigate = useNavigate();
     const [errMsg, setErrMsg] = useState("");
 
-    const fetchClient = async () => {
+    const fetchFullClient = async () => {
         try {
-            const data = await obtenerCliente(correo || "");
-            console.log(data);
-            setFirstname(data.nombre ?? "");
-            setLastname(data.apellido ?? "");
-            setEmail(data.correo ?? "");
-            setGenero(data.genero ?? "");
-            setNacionalidad(data.nacionalidad ?? "");
+            const details = await obtenerDetallesCliente(correo || "");
+
+            setGenero(details.genero ?? "");
+            setPais(details.pais ?? "");
+            setPrefijo(details.prefijo ?? "");
+            setTelefono(details.telefono ?? "");
 
         } catch (err) {
             const error = err as AxiosError;
@@ -45,51 +46,78 @@ export const ClientConfiguration = () => {
     };
 
     useEffect(() => {
-        fetchClient();
+        fetchFullClient();
     }, []);
+
+    // Clear inputs when the location (page) changes
+    useEffect(() => {
+        setGenero("");
+        setPais("");
+        setPrefijo("");
+        setTelefono("");
+    }, [location]);
 
     return (
         <main className="mt-40">
-            <section className="max-w-md border-2 rounded-3xl p-5 mx-auto">
-                <div className="container flex">
-                    <Avatar isBordered color="secondary" radius="lg"  src={"/lunacat.png"}
-                            className="object-contain min-w-12 min-h-12 sm:w-20 sm:h-20 mb-5"/>
-                    <div className="ml-5">
-                        <h2 className="mb-2 text-2xl font-medium">{email}</h2>
-                        <h3 className="mb-2 text-lg font-medium">{firstname + " " + lastname}</h3>
-                    </div>
-                </div>
-
+            <section className="container max-w-lg border-2 rounded-3xl p-5 mx-auto">
+                <UserInfo />
+                <p className="container mb-2 text-lg font-medium">Genero:</p>
                 <div className="container flex align-super content-center gap-3 ">
                     <Input
-                        className="mb-3 h-14 border-primary"
+                        className="mb-3 h-14 border-2"
                         type="text"
-                        label="Género"
                         color={"primary"}
-                        variant="bordered"
                         name="genero"
                         value={genero}
                         readOnly
                     />
-                    {/*todo no se como centrarle bonito*/}
-                    <Button isIconOnly variant="light" className="w-20 h-14 text-black dark:text-white" color={"success"}>
+                    <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
+                            color={"success"}>
+                        <PencilIcon />
+                    </Button>
+                </div>
+                <p className="container mb-2 text-lg font-medium">País:</p>
+                <div className="container flex align-super content-center gap-3 ">
+                    <Input
+                        className="mb-3 h-14 border-2"
+                        type="text"
+                        color={"primary"}
+                        name="Pais"
+                        value={pais}
+                        readOnly
+                    />
+                    <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
+                            color={"success"}>
+                        <PencilIcon />
+                    </Button>
+                </div>
+                <p className="container mb-2 text-lg font-medium">Teléfono:</p>
+                <div className="container flex align-super content-center gap-3 ">
+                    <Input
+                        className="max-w-16 mb-3 h-14 border-2"
+                        type="text"
+                        color={"primary"}
+                        name="Prefijo Telefonico"
+                        value={"+ " + prefijo}
+                        readOnly
+                    />
+                    <Input
+                        className="mb-3 h-14 border-2"
+                        type="text"
+                        color={"primary"}
+                        name="Número Telefonico"
+                        value={telefono}
+                        readOnly
+                    />
+                    <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
+                            color={"success"} onClick={() => navigate(`/account/config/telefono`)}>
                         <PencilIcon />
                     </Button>
                 </div>
                 <div className="container flex align-super content-center gap-3 ">
-                    <Input
-                        className="mb-3 h-14"
-                        type="text"
-                        label="Nacionalidad"
-                        color={"primary"}
-                        variant="bordered"
-                        name="nacionalidad"
-                        value={nacionalidad}
-                        readOnly
-                    />
-                    {/*todo no se como centrarle bonito*/}
-                    <Button isIconOnly variant="light" className="w-20 h-14 text-black dark:text-white" color={"success"}>
-                        <PencilIcon />
+                    <Button isIconOnly variant="bordered" className=" flex w-full text-black dark:text-white"
+                            color={"primary"} onClick={() => navigate(`/account/config/pass`)}>
+                        Cambiar Contraseña
                     </Button>
                 </div>
             </section>

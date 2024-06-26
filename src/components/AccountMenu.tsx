@@ -1,20 +1,24 @@
-import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/store/auth.js";
-import { useEffect, useState } from "react";
-import { obtenerCliente } from "@/api/client.ts";
-import { AxiosError } from "axios";
+import {Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger,} from "@nextui-org/react";
+import {useNavigate} from "react-router-dom";
+import {useAuthStore} from "@/store/auth.js";
+import {useEffect, useState} from "react";
+import {obtenerCliente} from "@/api/cliente.ts";
+import {AxiosError} from "axios";
+import {obtenerUsuario} from "@/api/usuario.ts";
 
 
 export default function AccountMenu() {
     const navigate = useNavigate();
+    const rol = useAuthStore.getState().rol;
     const setToken = useAuthStore((state) => state.setToken);
     const setRole = useAuthStore((state) => state.setRol);
+    const setCorreo = useAuthStore((state) => state.setCorreo);
     const [errMsg, setErrMsg] = useState("");
 
     const logout = () => {
         setToken(null);
         setRole(null);
+        setCorreo(null);
         navigate("/auth/login");
     };
 
@@ -22,19 +26,26 @@ export default function AccountMenu() {
         navigate("/account/config");
     };
 
-    const { correo } = useAuthStore();
+    const {correo} = useAuthStore();
     const [email, setEmail] = useState("");
 
-    const fetchClient = async () => {
+    const fetchAccount = async () => {
         try {
+
             if (!correo) {
                 throw new Error("Correo no definido");
             }
-            const data = await obtenerCliente(correo);
+
+
+            //todo esta comprobacion se ve peligrosa xd
+            const data = rol?.startsWith('C') ?
+                await obtenerCliente(correo) : await obtenerUsuario(correo);
+            /////////////////////////////////////////////////////////////////
+
             if (data && data.correo) {
                 setEmail(data.correo);
             } else {
-                throw new Error("Datos de cliente inválidos");
+                throw new Error("Ups! Ocurrio un error");
             }
         } catch (err) {
             const error = err as AxiosError;
@@ -50,7 +61,7 @@ export default function AccountMenu() {
     };
 
     useEffect(() => {
-        fetchClient();
+        fetchAccount();
     }, [correo]);
 
 

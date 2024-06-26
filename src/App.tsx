@@ -16,6 +16,8 @@ import DashboardServicesUpdate from './components/DashBoardServices/DashboardSer
 
 import { About } from './pages/client/About.tsx'
 import Services from './pages/client/Services.tsx'
+import { ClientTelefonoConf } from "@/pages/client/ClientTelefonoConf.tsx";
+import { ClientPassConf } from "@/pages/client/ClientPassConf.tsx";
 
 const USER_PATH = '/user'
 
@@ -33,10 +35,13 @@ function App() {
                     <Route path='/auth/register' element={<RegisterClient />} />
                     <Route path="/landing" element={<Landing />} />
                     <Route path="/about" element={<About />} />
-                    <Route path="/home" element={<Services />} />
+                    <Route path="/services" element={<Services />} />
                     <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
                     <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
                     <Route path='/account/config' element={<ClientConfiguration />} />
+                    <Route path='/account/config/genero' element={<ClientConfiguration />} />
+                    <Route path='/account/config/telefono' element={<ClientTelefonoConf />} />
+                    <Route path='/account/config/pass' element={<ClientPassConf />} />
 
                     {/* Rutas protegidas, solo acceso a usuario(Empleado)*/}
                     <Route element={<ProtectedRoute />}>

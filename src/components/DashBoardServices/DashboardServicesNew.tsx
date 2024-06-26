@@ -150,7 +150,6 @@ export default function DashboardServicesNew({ code, setSubpage }: DashboardServ
     }
     resetInfo();
     fetchService();
-    fetchService();
     setLoading(false);
 
     setTimeout(() => {
@@ -168,7 +167,6 @@ export default function DashboardServicesNew({ code, setSubpage }: DashboardServ
       console.log("Creando nuevo servicio");
       sendNewService();
     }
-
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

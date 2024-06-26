@@ -36,7 +36,7 @@ export function useColumns() {
         const image = row.getValue("image")
         return <Image
           alt="Product image"
-          className="aspect-square rounded-md object-cover"
+          className="aspect-square rounded-md object-cover min-w-10 min-h-10"
           height="64"
           src={image ? String(image) : "https://ui.shadcn.com/placeholder.svg"}
           width="64"

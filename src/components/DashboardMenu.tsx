@@ -1,13 +1,7 @@
-import { Link } from "@nextui-org/react";
-import { RentEventLogo } from "./icons/RentEventLogo";
-import {
-  Home,
-  LineChart,
-  Package,
-  ShoppingCart,
-  Users,
-} from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import {Link} from "@nextui-org/react";
+import {RentEventLogo} from "./icons/RentEventLogo";
+import {Package, ShoppingCart,} from "lucide-react"
+import {Badge} from "@/components/ui/badge"
 import React from "react";
 
 type DashboardMenuProps = {
@@ -39,14 +33,14 @@ export const DashboardMenu = ({ selectedItemMenu, setSelectedItemMenu }: Dashboa
         </div>
         <div className="flex-1">
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-            <Link
-              href="#"
-              className={`${isItemSelected(0)}`}
-              onClick={() => setSelectedItemMenu(0)}
-            >
-              <Home className="h-4 w-4" />
-              Dashboard
-            </Link>
+            {/*<Link*/}
+            {/*  href="#"*/}
+            {/*  className={`${isItemSelected(0)}`}*/}
+            {/*  onClick={() => setSelectedItemMenu(0)}*/}
+            {/*>*/}
+            {/*  <Home className="h-4 w-4" />*/}
+            {/*  Dashboard*/}
+            {/*</Link>*/}
             <Link
               href="#"
               className={`${isItemSelected(1)}`}
@@ -66,30 +60,30 @@ export const DashboardMenu = ({ selectedItemMenu, setSelectedItemMenu }: Dashboa
               <Package className="h-4 w-4" />
               Servicios{" "}
             </Link>
-            <Link
-              href="#"
-              className={`${isItemSelected(3)}`}
-              onClick={() => setSelectedItemMenu(3)}
-            >
-              <Users className="h-4 w-4" />
-              Clientes
-            </Link>
-            <Link
-              href="#"
-              className={`${isItemSelected(4)}`}
-              onClick={() => setSelectedItemMenu(4)}
-            >
-              <Users className="h-4 w-4" />
-              Incidentes
-            </Link>
-            <Link
-              href="#"
-              className={`${isItemSelected(5)}`}
-              onClick={() => setSelectedItemMenu(5)}
-            >
-              <LineChart className="h-4 w-4" />
-              Analíticas
-            </Link>
+            {/*<Link*/}
+            {/*  href="#"*/}
+            {/*  className={`${isItemSelected(3)}`}*/}
+            {/*  onClick={() => setSelectedItemMenu(3)}*/}
+            {/*>*/}
+            {/*  <Users className="h-4 w-4" />*/}
+            {/*  Clientes*/}
+            {/*</Link>*/}
+            {/*<Link*/}
+            {/*  href="#"*/}
+            {/*  className={`${isItemSelected(4)}`}*/}
+            {/*  onClick={() => setSelectedItemMenu(4)}*/}
+            {/*>*/}
+            {/*  <Users className="h-4 w-4" />*/}
+            {/*  Incidentes*/}
+            {/*</Link>*/}
+            {/*<Link*/}
+            {/*  href="#"*/}
+            {/*  className={`${isItemSelected(5)}`}*/}
+            {/*  onClick={() => setSelectedItemMenu(5)}*/}
+            {/*>*/}
+            {/*  <LineChart className="h-4 w-4" />*/}
+            {/*  Analíticas*/}
+            {/*</Link>*/}
           </nav>
         </div>
       </div>

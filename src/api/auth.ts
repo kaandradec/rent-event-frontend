@@ -1,4 +1,4 @@
-import { authApi } from "@/lib/axios";
+import {authApi} from "@/lib/axios";
 import axios from "axios";
 
 export const loginRequest = async (correo: string, contrasenia: string) =>
@@ -69,4 +69,22 @@ export const registerRequestClient = async (
             // withCredentials: true,
         }
     );
-
+export const changePasswClient = async (
+    email: string | null,
+    contraseniaActual: string,
+    contraseniaNueva: string,
+) => {
+    return await authApi.put(
+        "/clientes/account/password",
+        {
+            correo: email,
+            contraseniaActual: contraseniaActual,
+            contraseniaNueva: contraseniaNueva,
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }
+    );
+};
