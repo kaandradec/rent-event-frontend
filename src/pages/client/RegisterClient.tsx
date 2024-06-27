@@ -1,11 +1,13 @@
-import {AxiosError} from "axios";
-import React, {useEffect, useState} from "react";
-import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input} from "@nextui-org/react";
-import {registerRequestClient} from "@/api/auth";
-import {useNavigate} from "react-router-dom";
-import {obtenerGeneros} from "@/api/generos.ts";
-import {EyeFilledIcon} from "@/components/icons/EyeFilledIcon";
-import {EyeSlashFilledIcon} from "@/components/icons/EyeSlashFilledIcon";
+// RegisterClient.tsx
+import { AxiosError } from "axios";
+import React, { useEffect, useState } from "react";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from "@nextui-org/react";
+import { registerRequestClient } from "@/api/auth";
+import { useNavigate } from "react-router-dom";
+import { obtenerGeneros } from "@/api/generos.ts";
+import { EyeFilledIcon } from "@/components/icons/EyeFilledIcon";
+import { EyeSlashFilledIcon } from "@/components/icons/EyeSlashFilledIcon";
+import { BotonPaises } from "@/components/BotonPaises.tsx";
 
 export const RegisterClient = () => {
     const [nombre, setNombre] = useState("");
@@ -20,6 +22,8 @@ export const RegisterClient = () => {
     const [telefono, setTelefono] = useState(-1);
     const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(new Set(["Género"]));
     const [isVisible, setIsVisible] = React.useState(false);
+    const [selectedCountry, setSelectedCountry] = useState<string>("País");
+    const [selectedCity, setSelectedCity] = useState<string>("Ciudad");
 
     const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -34,7 +38,9 @@ export const RegisterClient = () => {
         setPrefijo(0);
         setTelefono(0);
         setSelectedKeys(new Set(["Género"]));
-    }
+        setSelectedCountry("País");
+        setSelectedCity("Ciudad");
+    };
 
     const selectedGender = React.useMemo(
         () => Array.from(selectedKeys).join(", "),
@@ -43,8 +49,9 @@ export const RegisterClient = () => {
 
     const validateInputs = () => {
         if (nombre === "" || apellido === "" || correo === "" || contrasenia === "" ||
-            selectedGender === "" || selectedGender === "Género" || prefijo <= 0 || telefono <= 0) {
-            setErrMsg("Campos vacíos");
+            selectedGender === "" || prefijo <= 0 || telefono <= 0 ||
+            selectedCountry === "País" || selectedCity === "Ciudad" || selectedCity === "Elige una ciudad") {
+            setErrMsg("Campos vacíos, completalos");
             return false;
         } else if (prefijo.toString().length > 5) {
             setErrMsg("Prefijo de teléfono no existe");
@@ -57,7 +64,7 @@ export const RegisterClient = () => {
             return false;
         }
         return true;
-    }
+    };
 
     const fetchGeneros = async () => {
         try {
@@ -65,7 +72,6 @@ export const RegisterClient = () => {
             if (Array.isArray(data.generos)) {
                 setGeneros(data.generos);
             } else {
-                console.error("Data returned is not an array:", typeof data.generos);
                 setErrMsg("Error al obtener los géneros");
             }
         } catch (err) {
@@ -96,7 +102,7 @@ export const RegisterClient = () => {
         if (!validInputs) return;
 
         try {
-            const response = await registerRequestClient(nombre, apellido, correo, contrasenia, selectedGender, prefijo, telefono);
+            const response = await registerRequestClient(nombre, apellido, correo, contrasenia, selectedGender, prefijo, telefono, selectedCountry, selectedCity);
             console.log(response);
             setSuccess(true);
             resetInputs();
@@ -116,7 +122,7 @@ export const RegisterClient = () => {
     const msgStyle = {
         colorError: 'text-red-500',
         colorSuccess: 'text-green-500',
-    }
+    };
 
     return (
         <main className="mt-32">
@@ -222,6 +228,9 @@ export const RegisterClient = () => {
                                 ))}
                             </DropdownMenu>
                         </Dropdown>
+                    </div>
+                    <div>
+                        <BotonPaises setSelectedCountry={setSelectedCountry} setSelectedCity={setSelectedCity} />
                     </div>
                     <div className="flex items-start">
                         <div className="flex items-center h-5">
