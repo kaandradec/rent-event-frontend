@@ -15,6 +15,7 @@ export const ClientConfiguration = () => {
 
     const [genero, setGenero] = useState("");
     const [pais, setPais] = useState("");
+    const [region, setRegion] = useState("");
     const [prefijo, setPrefijo] = useState("");
     const [telefono, setTelefono] = useState("");
 
@@ -23,7 +24,7 @@ export const ClientConfiguration = () => {
     const fetchFullClient = async () => {
         try {
             const details = await obtenerDetallesCliente(correo || "");
-
+            setRegion(details.region)
             setGenero(details.genero ?? "");
             setPais(details.pais ?? "");
             setPrefijo(details.prefijo ?? "");
@@ -71,10 +72,7 @@ export const ClientConfiguration = () => {
                         value={genero}
                         readOnly
                     />
-                    <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
-                            color={"success"}>
-                        <PencilIcon />
-                    </Button>
+
                 </div>
                 <p className="container mb-2 text-lg font-medium">País:</p>
                 <div className="container flex align-super content-center gap-3 ">
@@ -86,8 +84,16 @@ export const ClientConfiguration = () => {
                         value={pais}
                         readOnly
                     />
+                    <Input
+                        className="mb-3 h-14 border-2"
+                        type="text"
+                        color={"primary"}
+                        name="Region"
+                        value={region}
+                        readOnly
+                    />
                     <Button isIconOnly variant="light" className="min-w-16 h-14 text-black dark:text-white"
-                            color={"success"}>
+                            color={"success"} onClick={() => navigate(`/account/config/region`)}>
                         <PencilIcon />
                     </Button>
                 </div>

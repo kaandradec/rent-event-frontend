@@ -19,6 +19,7 @@ import Services from './pages/client/Services.tsx'
 import { ClientTelefonoConf } from "@/pages/client/ClientTelefonoConf.tsx";
 import { ClientPassConf } from "@/pages/client/ClientPassConf.tsx";
 import Cart from './pages/client/Cart.tsx'
+import {ClienteRegionConf} from "@/pages/client/ClienteRegionConf.tsx";
 
 const USER_PATH = '/user'
 
@@ -44,6 +45,7 @@ function App() {
                     <Route path='/account/config/genero' element={<ClientConfiguration />} />
                     <Route path='/account/config/telefono' element={<ClientTelefonoConf />} />
                     <Route path='/account/config/pass' element={<ClientPassConf />} />
+                    <Route path='/account/config/region' element={<ClienteRegionConf />} />
 
                     {/* Rutas protegidas, solo acceso a usuario(Empleado)*/}
                     <Route element={<ProtectedRoute />}>

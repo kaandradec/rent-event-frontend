@@ -28,3 +28,22 @@ export const updateTelefonoRequestClient = async (
           // withCredentials: true,
         }
     );
+export const updateRegionRequestClient = async (
+    correo: string | null,
+    pais: string,
+    region: string
+) =>
+    await tokenApi.put(
+        `/clientes/actualizar/region`,
+        JSON.stringify({
+          correo: correo,
+          pais: pais,
+          region: region
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // withCredentials: true,
+        }
+    );
