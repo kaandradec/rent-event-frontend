@@ -1,13 +1,12 @@
 export interface ProductProps {
-  _id: number;
-  title: string;
-  brand: string;
-  category: string;
-  description: string;
-  image: string;
-  isNew: boolean;
-  oldPrice: number;
-  price: number;
+  id: number;
+  codigo: string;
+  nombre: string;
+  tipo: string;
+  estado: string
+  descripcion: string;
+  imagen: string;
+  costo: number;
 }
 export interface StoreProduct extends ProductProps {
   quantity: number;
