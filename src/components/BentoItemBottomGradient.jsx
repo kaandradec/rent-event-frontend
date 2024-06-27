@@ -13,7 +13,7 @@ export default function BentoItemBottomGradient({
       <div className="absolute z-10 top-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent from-40% via-black/65 to-black/80"></div>
       <div
         slot="image"
-        class="absolute w-full h-full bg-no-repeat bg-cover group-hover:scale-105 transition-all duration-500 ease-in-out opacity-90 bg-[#23374B] bg-blend-luminosity -z-10"
+        className="absolute w-full h-full bg-no-repeat bg-cover group-hover:scale-105 transition-all duration-500 ease-in-out opacity-90 bg-[#23374B] bg-blend-luminosity -z-10"
         style={{ backgroundImage: `url(${image})` }}
       ></div>
 

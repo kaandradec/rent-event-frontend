@@ -80,14 +80,14 @@ export default function AccountMenu() {
                 />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem isDisabled={true} key="profile" className="h-14 gap-2">
+                <DropdownItem isDisabled className="h-14 gap-2">
                     <p className="font-semibold">Signed in as</p>
                     <p className="font-semibold">{email}</p>
                 </DropdownItem>
-                <DropdownItem key="settings" color="success" onClick={myConfig}>
+                <DropdownItem color="success" onClick={myConfig}>
                     My Settings
                 </DropdownItem>
-                <DropdownItem key="logout" color="danger" onClick={logout}>
+                <DropdownItem color="danger" onClick={logout}>
                     Logout
                 </DropdownItem>
             </DropdownMenu>

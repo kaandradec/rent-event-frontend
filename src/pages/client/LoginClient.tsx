@@ -82,7 +82,6 @@ const Login = () => {
 
     try {
       const response = await loginRequestClient(correo, contrasenia);
-      console.log(response?.data);
       setAuthStore(response?.data);
       setSuccess(true);
       resetInputs();
