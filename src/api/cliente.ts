@@ -1,6 +1,4 @@
-import { tokenApi } from "@/lib/axios";
-import axios from "axios";
-import {code} from "@nextui-org/react";
+import {tokenApi} from "@/lib/axios";
 
 export const obtenerCliente = async (usuario: string) => {
   const response = await tokenApi.get(`/clientes/${encodeURIComponent(usuario)}`);
@@ -12,14 +10,14 @@ export const obtenerDetallesCliente = async (usuario: string) => {
 };
 
 export const updateTelefonoRequestClient = async (
-    email: string,
+    correo: string | null,
     prefijo: string,
     telefono: string
 ) =>
-    await axios.post(
-        `http://localhost:8080/clientes/actualizar/telefono/${code}`,
+    await tokenApi.put(
+        `/clientes/actualizar/telefono`,
         JSON.stringify({
-          correo: email,
+          correo: correo,
           prefijo: prefijo,
           telefono: telefono
         }),

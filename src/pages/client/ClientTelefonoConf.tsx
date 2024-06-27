@@ -1,69 +1,63 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useAuthStore} from "@/store/auth";
-import {obtenerDetallesCliente} from "@/api/cliente.ts";
+import {obtenerDetallesCliente, updateTelefonoRequestClient} from "@/api/cliente.ts";
 import {AxiosError} from "axios";
 import {Input} from "@/components/ui/input";
 import {UserInfo} from "@/components/UserInfo";
-import {useParams} from "react-router-dom";
 import {Button} from "@nextui-org/react";
 import {SendIcon} from "@/components/icons/SendIcon";
-import {dataFormApi} from "@/lib/axios.ts";
+import {useNavigate} from "react-router-dom";
 
 
 export const ClientTelefonoConf = () => {
-    // const navigate = useNavigate();
-    const {codigo} = useParams()
 
-    const {correo} = useAuthStore();
-    // const [success, setSuccess] = useState(false);
-    // const [loading, setLoading] = useState(false);
-
+    const correo = useAuthStore().correo;
+    const navigate = useNavigate();
+    const [success, setSuccess] = useState(false);
     const [prefijo, setPrefijo] = useState<string>("");
     const [telefono, setTelefono] = useState<string>("");
     const [errMsg, setErrMsg] = useState<string>("");
 
-    const handleSubmmit = async () => {
-        if (!validateInputs()) return;
-        // setLoading(true);
-        if (codigo) {// URL PARAM
-            console.log("Actualizando servicio");
-            sendUpdateCliente();
-        } else {
-            console.log("Creando nuevo servicio");
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const validInputs = validateInputs();
+        if (!validInputs) return;
+
+        try {
+
+            if (correo == null) return
+            const mensaje = await updateTelefonoRequestClient(correo, prefijo, telefono);
+            if (mensaje.status == 200) {
+                setSuccess(true)
+                setTimeout(() => {
+                        navigate("/account/config")
+                    },
+                    2500);
+            }
+
+        } catch (err) {
+
+            const error = err as AxiosError;
+            if (!error?.response) {
+                setErrMsg("El servidor no responde");
+            } else if (error.response?.status === 409) {
+                setErrMsg("Usuario ya registrado");
+            } else {
+                setErrMsg("Error desconocido");
+            }
         }
-    }
+    };
     const validateInputs = (): boolean => {
-        if (prefijo.length === 0 || telefono.length === 0) {
+        if (prefijo.length === 0 || telefono.length === 0 || correo?.length === 0) {
             setErrMsg("Campos vacíos");
             return false;
         }
         return true;
     }
-
-    const sendUpdateCliente = async () => {
-        const formData = new FormData();
-
-        formData.append('correo', correo || "");
-        formData.append('prefijo', prefijo);
-        formData.append('telefono', telefono);
-
-        try {
-            const response = await dataFormApi.put(`/clientes/actualizar/telefono/`,
-                formData,
-            );
-            console.log(response.data);
-            // setSuccess(true);
-        } catch (err) {
-            console.error('Error:', err);
-        }
-
-        // setLoading(false);
-
-        setTimeout(() => {
-            // setSuccess(false);
-        }, 1500);
-    }
-
+    const msgStyle = {
+        colorError: 'text-red-500',
+        colorSuccess: 'text-green-500',
+    };
 
     const fetchClient = async () => {
         try {
@@ -90,17 +84,10 @@ export const ClientTelefonoConf = () => {
         fetchClient();
     }, []);
 
-    // const displayInfo = () => {
-    //     if (success) return <span className="text-green-500">Guardado con éxito</span>
-    //     if (loading) return <span className="text-muted-foreground">Guardando...</span>
-    //     if (error) return <span className="text-red-500">{error}</span>
-    //     return null;
-    // }
-
     return (
         <main className="mt-40">
             <section className="max-w-lg border-2 rounded-3xl p-5 mx-auto">
-                <form className="mx-auto" onSubmit={handleSubmmit}>
+                <form className="mx-auto" onSubmit={handleSubmit}>
                     <UserInfo/>
                     <div className="container flex align-super content-center gap-3">
                         <Input
@@ -131,8 +118,12 @@ export const ClientTelefonoConf = () => {
                             <SendIcon/>
                         </Button>
                     </div>
-                    {errMsg && <p className="text-red-500">{errMsg}</p>}
                 </form>
+                {errMsg && <p className="text-red-500">{errMsg}</p>}
+                <p className={`h-5 text-center my-2 ${success ? msgStyle.colorSuccess : msgStyle.colorError}`}
+                   aria-live="assertive">
+                    {!success ? errMsg : '¡Cambio exitoso!'}
+                </p>
             </section>
         </main>
     );

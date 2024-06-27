@@ -8,11 +8,11 @@ import {EyeSlashFilledIcon} from "@/components/icons/EyeSlashFilledIcon";
 
 export const ClientPassConf = () => {
     const correo = useAuthStore.getState().correo;
-    const [success, setSuccess] = useState(false);
     const [contrasenia, setContrasenia] = useState("");
     const [contraseniaNueva, setContraseniaNueva] = useState("");
     const [contraseniaConfirmacion, setContraseniaConfirmacion] = useState("");
     const [errMsg, setErrMsg] = useState<string>("");
+    const [success, setSuccess] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
@@ -27,7 +27,6 @@ export const ClientPassConf = () => {
             setSuccess(true);
             resetInputs();
         } catch (err) {
-            console.log(err);
 
             const error = err as AxiosError;
             if (!error?.response) {
@@ -139,7 +138,7 @@ export const ClientPassConf = () => {
                 </form>
                 <p className={`h-5 text-center my-2 ${success ? msgStyle.colorSuccess : msgStyle.colorError}`}
                    aria-live="assertive">
-                    {!success ? errMsg : '¡Registro exitoso!'}
+                    {!success ? errMsg : '¡Cambio exitoso!'}
                 </p>
             </section>
         </main>
