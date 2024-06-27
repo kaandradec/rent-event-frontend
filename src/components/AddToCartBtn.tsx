@@ -5,35 +5,33 @@ import { Button } from "@nextui-org/react";
 import { useEffect } from "react";
 
 export default function AddToCartBtn({
-  _id,
-  title,
-  brand,
-  category,
-  description,
-  image,
-  isNew,
-  oldPrice,
-  price,
+  id,
+  codigo,
+  nombre,
+  tipo,
+  descripcion,
+  imagen,
+  costo,
+  estado,
   quantity,
 }: StoreProduct) {
   // Access cart state and functions from the store
   const cart = useStore((state) => state.cart);
-  const existingCartItem = cart.find((cartItem) => cartItem._id === _id);
+  const existingCartItem = cart.find((cartItem) => cartItem.id === id);
   const addToCart = useStore((state) => state.addToCart);
   const removeFromCart = useStore((state) => state.removeFromCart);
 
   // Handle the addition of an item to the cart
   const handleAddToCart = () => {
     addToCart({
-      _id,
-      title,
-      brand,
-      category,
-      description,
-      image,
-      isNew,
-      oldPrice,
-      price,
+      id,
+      codigo,
+      nombre,
+      tipo,
+      descripcion,
+      imagen,
+      costo,
+      estado,
       quantity,
     });
   };
@@ -47,7 +45,7 @@ export default function AddToCartBtn({
     <>
       {existingCartItem?.quantity > 0 ? (
         <Button
-          onClick={() => removeFromCart(_id)}
+          onClick={() => removeFromCart(id)}
           color="danger" startContent={<ShoppingCart
           />}>
           Quitar

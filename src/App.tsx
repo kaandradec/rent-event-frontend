@@ -18,6 +18,7 @@ import { About } from './pages/client/About.tsx'
 import Services from './pages/client/Services.tsx'
 import { ClientTelefonoConf } from "@/pages/client/ClientTelefonoConf.tsx";
 import { ClientPassConf } from "@/pages/client/ClientPassConf.tsx";
+import Cart from './pages/client/Cart.tsx'
 
 const USER_PATH = '/user'
 
@@ -36,6 +37,7 @@ function App() {
                     <Route path="/landing" element={<Landing />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/services" element={<Services />} />
+                    <Route path="/cart" element={<Cart />} />
                     <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
                     <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
                     <Route path='/account/config' element={<ClientConfiguration />} />

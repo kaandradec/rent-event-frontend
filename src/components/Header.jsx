@@ -4,6 +4,7 @@ import {
   Navbar,
   NavbarBrand,
   NavbarContent,
+  NavbarItem,
 } from "@nextui-org/react";
 import { RentEventLogo } from "../components/icons/RentEventLogo";
 import SwitchTheme from "./ui/SwitchTheme";
@@ -19,7 +20,7 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const path = location.pathname;
+  const pathName = location.pathname;
 
   // Cart Icon Style
   const linkStyle = {
@@ -30,25 +31,69 @@ export default function Header() {
 
   const cartQuantity = useStore((state) => state.cartQuantity);
 
-  if (path.startsWith("/user/dashboard")) {
+  if (pathName.startsWith("/user/dashboard")) {
     return null; // No renderiza nada si el path comienza con /dashboard
   }
+
+  const styles = {
+    navbarItem: "text-white hover:text-blue-400",
+  };
   return (
     <Navbar className="fixed">
       <NavbarBrand className="cursor-pointer">
         <Link to="/landing" className="flex">
-          <RentEventLogo />
-          <p className="font-bold text-inherit">Rent-Event</p>
+          <RentEventLogo
+            className={`${
+              (pathName.includes("/landing", "orders") || pathName === "/") &&
+              styles.navbarItem
+            } `}
+          />
+          <p
+            className={`${
+              (pathName.includes("/landing", "orders") || pathName === "/") &&
+              styles.navbarItem
+            } font-bold text-inherit`}
+          >
+            Rent-Event
+          </p>
         </Link>
+      </NavbarBrand>
+
+      <NavbarBrand className="cursor-pointer gap-4">
+        <NavbarItem>
+          <Link
+            color="primary"
+            to="/about"
+            className={`${
+              (pathName.includes("/landing", "orders") || pathName === "/") &&
+              styles.navbarItem
+            } `}
+          >
+            ACERCA DE
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link
+            color="primary"
+            to="#"
+            className={`${
+              (pathName.includes("/landing", "orders") || pathName === "/") &&
+              styles.navbarItem
+            } `}
+          >
+            MIS ORDENES
+          </Link>
+        </NavbarItem>
       </NavbarBrand>
 
       <NavbarContent as="div" justify="end">
         {/* Cart */}
+
         <Link
           to="cart"
-          className={`${
-            "/cart" === location.pathname && linkStyle.activeLink
-          } ${linkStyle.div} relative`}
+          className={`${"/cart" === pathName && linkStyle.activeLink} ${
+            linkStyle.div
+          } relative`}
         >
           <Badge
             color="danger"
