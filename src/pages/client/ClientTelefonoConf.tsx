@@ -7,6 +7,7 @@ import {UserInfo} from "@/components/UserInfo";
 import {Button} from "@nextui-org/react";
 import {SendIcon} from "@/components/icons/SendIcon";
 import {useNavigate} from "react-router-dom";
+import {BotonVolver} from "@/components/BotonVolver.tsx";
 
 
 export const ClientTelefonoConf = () => {
@@ -124,6 +125,7 @@ export const ClientTelefonoConf = () => {
                    aria-live="assertive">
                     {!success ? errMsg : '¡Cambio exitoso!'}
                 </p>
+                <BotonVolver/>
             </section>
         </main>
     );

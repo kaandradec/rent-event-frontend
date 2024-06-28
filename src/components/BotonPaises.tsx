@@ -55,7 +55,6 @@ export const BotonPaises: React.FC<BotonPaisesProps> = ({setSelectedCountry, set
         const selected = Array.from(keys)[0];
         setCountry(selected);
         setSelectedCountry(selected);
-
         // Fetch cities for the selected country
         const requestOptions = {
             method: 'POST',

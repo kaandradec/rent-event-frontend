@@ -1,4 +1,3 @@
-// RegisterClient.tsx
 import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from "@nextui-org/react";

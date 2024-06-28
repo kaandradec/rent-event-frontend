@@ -6,6 +6,7 @@ import {UserInfo} from "@/components/UserInfo";
 import {Button} from "@nextui-org/react";
 import {useNavigate} from "react-router-dom";
 import {BotonPaises} from "@/components/BotonPaises.tsx";
+import {BotonVolver} from "@/components/BotonVolver.tsx";
 
 
 export const ClienteRegionConf = () => {
@@ -90,12 +91,14 @@ export const ClienteRegionConf = () => {
                     <p className="container mb-2 text-lg font-medium">Actualizar datos:</p>
                     <div className="container flex-auto align-super content-center gap-3">
                         <BotonPaises setSelectedCountry={setPais} setSelectedCity={setRegion}/>
+                        <div className={"container flex"}>
 
-
-                            <Button variant="bordered" className="container flex max-w-40 h-14 text-black dark:text-white"
-                                    color="success" type="submit">
-                                Actualizar
-                            </Button>
+                        <BotonVolver/>
+                        <Button variant="bordered" className="container flex max-w-40 h-14 text-black dark:text-white"
+                                color="success" type="submit">
+                            Actualizar
+                        </Button>
+                        </div>
                     </div>
                 </form>
                 {errMsg && <p className="text-red-500">{errMsg}</p>}

@@ -120,7 +120,13 @@ export const ClientConfiguration = () => {
                         <PencilIcon />
                     </Button>
                 </div>
-                <div className="container flex align-super content-center gap-3 ">
+                <div className="container flex align-super content-center gap-3 mb-3">
+                    <Button isIconOnly variant="bordered" className=" flex w-full text-black dark:text-white"
+                            color={"success"} onClick={() => navigate(`/account/config/pregunta-segura`)}>
+                        Preguntas Seguras
+                    </Button>
+                </div>
+                <div className="container flex align-super content-center gap-3 mb-3">
                     <Button isIconOnly variant="bordered" className=" flex w-full text-black dark:text-white"
                             color={"primary"} onClick={() => navigate(`/account/config/pass`)}>
                         Cambiar Contraseña

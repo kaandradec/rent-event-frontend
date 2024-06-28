@@ -5,6 +5,7 @@ import {useAuthStore} from "@/store/auth";
 import {changePasswClient} from "@/api/auth.ts";
 import {EyeFilledIcon} from "@/components/icons/EyeFilledIcon";
 import {EyeSlashFilledIcon} from "@/components/icons/EyeSlashFilledIcon";
+import {BotonVolver} from "@/components/BotonVolver.tsx";
 
 export const ClientPassConf = () => {
     const correo = useAuthStore.getState().correo;
@@ -130,7 +131,8 @@ export const ClientPassConf = () => {
                         />
                     </div>
                     <div className="container flex align-super content-center gap-3 ">
-                        <Button variant="bordered" className="flex-auto font-semibold text-black dark:text-white"
+                        <BotonVolver/>
+                        <Button variant="bordered" className="container flex max-w-52 h-14 font-semibold text-black dark:text-white"
                                 color={"success"} type="submit">
                             Cambiar Contraseña
                         </Button>
