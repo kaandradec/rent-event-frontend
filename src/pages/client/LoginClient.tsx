@@ -1,6 +1,6 @@
 import { loginRequestClient } from "@/api/auth";
 import { CustomPasswordInput } from "@/components/CustomPasswordInput";
-import { Button } from "@/components/ui/button";
+import { Button } from "@nextui-org/react";
 import { useAuthStore } from "@/store/auth";
 import { Input } from "@nextui-org/react";
 import { AxiosError } from "axios";
@@ -32,6 +32,7 @@ const Login = () => {
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const { setToken, setRol, setNombre, setApellido, setMail } = useAuthStore((state) => ({
     setToken: state.setToken,
@@ -41,8 +42,10 @@ const Login = () => {
     setMail: state.setCorreo,
   }));
 
+  const register = () => {
+    navigate('/auth/register')
+  }
 
-  const navigate = useNavigate();
 
   const resetInputs = () => {
     // borrar los estados y los inputs controlados
@@ -110,7 +113,7 @@ const Login = () => {
         <h1 className="text-4xl font-bold mb-4 text-center">
           Iniciar sesión
         </h1>
-        <form className="max-w-xs mx-auto" onSubmit={handleSubmit}>
+        <form className="max-w-s mx-auto" onSubmit={handleSubmit}>
           <Input
             type="text"
             label="Correo"
@@ -131,15 +134,19 @@ const Login = () => {
           <p className={`h-5 text-center my-2 ${success ? msgStyle.colorSuccess : msgStyle.colorError}`} aria-live="assertive">
             {!success ? errMsg : '¡Acceso Exitoso!'}
           </p>
-          <Button className="w-full" color="primary" type="submit" size="lg">
-            Log In
+          <Button className="w-full mb-2" color="primary" type="submit" size="lg">
+            Entrar
+          </Button>
+          <Button className="w-full" color="secondary" size="lg" onClick={register}>
+            Registrarse
           </Button>
           <section className="flex justify-center my-2 cursor-pointer">
-            <p>No tienes una cuenta? <a
-              onClick={() => navigate("/auth/register")}
+
+            <p>Olvidaste tu contraseña? <a
+              onClick={() => navigate("/auth/recuperar-pass")}
               className="text-blue-600 hover:underline dark:text-blue-500 font-bold "
             >
-              Registrarse
+              Recuperar aqui!
             </a>
             </p>
           </section>

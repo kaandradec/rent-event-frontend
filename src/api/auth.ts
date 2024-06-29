@@ -92,3 +92,10 @@ export const changePasswClient = async (
         }
     );
 };
+export const validarCorreo = async (correo: string) =>
+    await authApi.put(
+        "/correo/validar",
+        JSON.stringify({
+            correo: correo,
+        })
+    );
