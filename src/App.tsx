@@ -22,6 +22,7 @@ import Cart from './pages/client/Cart.tsx'
 import {ClienteRegionConf} from "@/pages/client/ClienteRegionConf.tsx";
 import {ClientePreguntaSeguraConf} from "@/pages/client/ClientePreguntaSeguraConf.tsx";
 import {RecuperarContrasenia} from "@/pages/client/RecuperarContrasenia.tsx";
+import {CambiarPassPreguntaSegura} from "@/pages/client/CambiarPassPreguntaSegura.tsx";
 
 const USER_PATH = '/user'
 
@@ -37,6 +38,7 @@ function App() {
                     <Route path='/inicio' element={<Inicio />} />
                     <Route path='/auth/login' element={<LoginClient />} />
                     <Route path='/auth/recuperar-pass' element={<RecuperarContrasenia />} />
+                    <Route path='/auth/cambiar-pass' element={<CambiarPassPreguntaSegura />} />
                     <Route path='/auth/register' element={<RegisterClient />} />
                     <Route path="/landing" element={<Landing />} />
                     <Route path="/about" element={<About />} />

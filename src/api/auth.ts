@@ -92,6 +92,24 @@ export const changePasswClient = async (
         }
     );
 };
+export const changePassPreguntaCliente = async (
+    email: string | null,
+    contraseniaNueva: string,
+) => {
+    return await authApi.put(
+        "/clientes/account/pregunta-password",
+        {
+            correo: email,
+            contraseniaNueva: contraseniaNueva,
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }
+    );
+};
+
 export const validarCorreo = async (correo: string) =>
     await authApi.put(
         "/correo/validar",

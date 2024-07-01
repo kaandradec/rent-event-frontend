@@ -1,12 +1,12 @@
-import { AxiosError } from "axios";
-import React, { useEffect, useState } from "react";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from "@nextui-org/react";
-import { registerRequestClient } from "@/api/auth";
-import { useNavigate } from "react-router-dom";
-import { obtenerGeneros } from "@/api/generos.ts";
-import { EyeFilledIcon } from "@/components/icons/EyeFilledIcon";
-import { EyeSlashFilledIcon } from "@/components/icons/EyeSlashFilledIcon";
-import { BotonPaises } from "@/components/BotonPaises.tsx";
+import {AxiosError} from "axios";
+import React, {useEffect, useState} from "react";
+import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input} from "@nextui-org/react";
+import {registerRequestClient} from "@/api/auth";
+import {useNavigate} from "react-router-dom";
+import {obtenerGeneros} from "@/api/generos.ts";
+import {EyeFilledIcon} from "@/components/icons/EyeFilledIcon";
+import {EyeSlashFilledIcon} from "@/components/icons/EyeSlashFilledIcon";
+import {BotonPaises} from "@/components/BotonPaises.tsx";
 
 export const RegisterClient = () => {
     const [nombre, setNombre] = useState("");
@@ -64,7 +64,6 @@ export const RegisterClient = () => {
         }
         return true;
     };
-
     const fetchGeneros = async () => {
         try {
             const data = await obtenerGeneros();
@@ -112,6 +111,8 @@ export const RegisterClient = () => {
                 setErrMsg("El servidor no responde");
             } else if (error.response?.status === 409) {
                 setErrMsg("Usuario ya registrado");
+            }else if (error.response?.status === 404) {
+                setErrMsg("Correo ya registrado");
             } else {
                 setErrMsg("Error desconocido");
             }
@@ -229,7 +230,7 @@ export const RegisterClient = () => {
                         </Dropdown>
                     </div>
                     <div>
-                        <BotonPaises setSelectedCountry={setSelectedCountry} setSelectedCity={setSelectedCity} />
+                        <BotonPaises setSelectedCountry={setSelectedCountry} setSelectedCity={setSelectedCity}/>
                     </div>
                     <div className="flex items-start">
                         <div className="flex items-center h-5">

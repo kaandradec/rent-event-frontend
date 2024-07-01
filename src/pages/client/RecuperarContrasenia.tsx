@@ -4,7 +4,7 @@ import {AxiosError} from "axios";
 import React, {useState} from "react";
 import {PreguntaSeguraInput} from "@/components/PreguntaSeguraInput.tsx";
 import {validarPreguntaSeguraClient} from "@/api/preguntas_seguras.ts";
-import {useNavigate} from "react-router-dom";
+import {CambiarPassPreguntaSegura} from "@/pages/client/CambiarPassPreguntaSegura.tsx";
 
 export const RecuperarContrasenia = () => {
     return (
@@ -14,7 +14,7 @@ export const RecuperarContrasenia = () => {
                     <RecuperarPass/>
                 </div>
             </section>
-            <section className="hidden bg-muted lg:block hfu lg:overflow-hidden">
+            <section className="hidden mt-14 bg-muted lg:block hfu lg:overflow-hidden">
                 <img
                     src="/lunacat.png"
                     alt="Image"
@@ -31,8 +31,7 @@ const RecuperarPass = () => {
     const [existeCorreo, setExisteCorreo] = useState(false);
     const [pregunta, setPregunta] = useState("");
     const [respuesta, setRespuesta] = useState("");
-    // const [success, setSuccess] = useState(false);
-    const navigate = useNavigate();
+    const [success, setSuccess] = useState(false);
 
     const validateInputs = () => {
         if (correo === "") {
@@ -52,9 +51,9 @@ const RecuperarPass = () => {
                 await validarCorreo(correo)
                 setExisteCorreo(true);
             } else {
-                const success =await validarPreguntaSeguraClient(correo, pregunta, respuesta);
-                if (success.status==200)
-                    navigate('/auth/cambiar-pass')//todo
+                const successValidar = await validarPreguntaSeguraClient(correo, pregunta, respuesta);
+                if (successValidar.status == 200)
+                    setSuccess(true);
             }
         } catch (err) {
             const error = err as AxiosError;
@@ -78,8 +77,9 @@ const RecuperarPass = () => {
     }
 
     return (
+
         <main>
-            <section className="mt-28">
+            {!success?<section className="mt-28">
                 <h1 className="text-4xl font-bold mb-4 text-center">
                     Recuperar Contraseña
                 </h1>
@@ -117,8 +117,10 @@ const RecuperarPass = () => {
                     <section className="flex justify-center cursor-pointer">
                     </section>
                 </form>
-            </section>
+            </section>:
+                <CambiarPassPreguntaSegura correo={correo}/>}
         </main>
+
     );
 }
 
