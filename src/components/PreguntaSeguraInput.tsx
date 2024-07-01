@@ -20,9 +20,9 @@ export const PreguntaSeguraInput: React.FC<InputPreguntaSeguraProps> = ({correo,
             }
             const data =
                 await getPreguntaSeguraCliente(correo);
-            console.log(data.data.preguntasSeguras)
-            setPreguntaSegura(data.data.preguntasSeguras);
-            setPregunta(data.data.preguntasSeguras);
+            console.log(data.data.preguntasSeguras[0])
+            setPreguntaSegura(data.data.preguntasSeguras[0]);
+            setPregunta(data.data.preguntasSeguras[0]);
         } catch (err) {
             const error = err as AxiosError;
             if (!error?.response) {
@@ -45,25 +45,25 @@ export const PreguntaSeguraInput: React.FC<InputPreguntaSeguraProps> = ({correo,
 
     return (
         <div>
-            <Input
-                type="text"
-                label="Pregunta Segura"
-                placeholder="No has registrado preguntas..."
-                variant="bordered"
-                isReadOnly={true}
-                value={preguntaSegura}
-                className="mb-2"
-            />
-            <Input
-                type="text"
-                label="Respuesta"
-                placeholder="Escribe tu respuesta secreta"
-                variant="bordered"
-                className="mb-5"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setRespuesta(e.target.value);
-                }}
-            />
+                <Input
+                    type="text"
+                    label="Pregunta Segura"
+                    placeholder="No has registrado preguntas..."
+                    variant="bordered"
+                    isReadOnly={true}
+                    value={preguntaSegura}
+                    className="mb-2"
+                />
+                <Input
+                    type="text"
+                    label="Respuesta"
+                    placeholder="Escribe tu respuesta secreta"
+                    variant="bordered"
+                    className="mb-5"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setRespuesta(e.target.value.toUpperCase());
+                    }}
+                />
         </div>
-    );
+);
 }

@@ -148,7 +148,7 @@ export const ClientePreguntaSeguraConf = () => {
                             label="Respuesta 1"
                             isRequired={true}
                             variant="bordered"
-                            onChange={(e) => setRespuesta1(e.target.value)}
+                            onChange={(e) => setRespuesta1(e.target.value.toUpperCase())}
                         />
                     </div>
                     <div className="container flex-auto align-super content-center gap-3 mb-5">
@@ -169,7 +169,6 @@ export const ClientePreguntaSeguraConf = () => {
                                     (keys) => {
                                         handleSelection2(keys as Set<string>)
                                     }
-
                                 }
                                 className="max-h-60 overflow-auto"
                             >

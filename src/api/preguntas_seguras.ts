@@ -5,7 +5,7 @@ export const obtenerPreguntasSeguras = async () => {
     return response.data;
 };
 export const updatePreguntasSegurasClient = async (
-    correo: string ,
+    correo: string,
     pregunta1: string,
     respuesta1: string,
     pregunta2: string,
@@ -32,12 +32,32 @@ export const updatePreguntasSegurasClient = async (
         }
     );
 export const getPreguntaSeguraCliente = async (
-    correo: string ,
+    correo: string,
 ) =>
     await authApi.put(
         `/security/preguntasseguras/get`,
         JSON.stringify({
             correo: correo,
+        }),
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            // withCredentials: true,
+        }
+    );
+
+export const validarPreguntaSeguraClient = async (
+    correo: string,
+    pregunta: string,
+    respuesta: string,
+) =>
+    await authApi.put(
+        `/security/preguntasseguras/validar`,
+        JSON.stringify({
+            correo: correo,
+            pregunta: pregunta,
+            respuesta: respuesta
         }),
         {
             headers: {

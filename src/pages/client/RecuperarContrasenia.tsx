@@ -2,8 +2,9 @@ import {validarCorreo} from "@/api/auth";
 import {Button, Input} from "@nextui-org/react";
 import {AxiosError} from "axios";
 import React, {useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {PreguntaSeguraInput} from "@/components/PreguntaSeguraInput.tsx";
+import {validarPreguntaSeguraClient} from "@/api/preguntas_seguras.ts";
+import {useNavigate} from "react-router-dom";
 
 export const RecuperarContrasenia = () => {
     return (
@@ -26,14 +27,11 @@ export const RecuperarContrasenia = () => {
 
 const RecuperarPass = () => {
     const [correo, setCorreo] = useState("");
-    // const [contrasenia, setContrasenia] = useState("");
-
     const [errMsg, setErrMsg] = useState("");
     const [existeCorreo, setExisteCorreo] = useState(false);
     const [pregunta, setPregunta] = useState("");
     const [respuesta, setRespuesta] = useState("");
-    const [success, setSuccess] = useState(false);
-
+    // const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
 
     const validateInputs = () => {
@@ -50,8 +48,14 @@ const RecuperarPass = () => {
         if (!validInputs) return;
 
         try {
-            await validarCorreo(correo);
-            setExisteCorreo(true);
+            if (!existeCorreo) {
+                await validarCorreo(correo)
+                setExisteCorreo(true);
+            } else {
+                const success =await validarPreguntaSeguraClient(correo, pregunta, respuesta);
+                if (success.status==200)
+                    navigate('/auth/cambiar-pass')//todo
+            }
         } catch (err) {
             const error = err as AxiosError;
             console.log(error.response?.data);
@@ -66,29 +70,7 @@ const RecuperarPass = () => {
             }
         }
     };
-    //todo: hacer la validacion de respuesta y la pantalla de cambio de contraseña
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const validInputs = validateInputs();
-        if (!validInputs) return;
-
-        try {
-            await validarCorreo(correo);
-            setExisteCorreo(true);
-        } catch (err) {
-            const error = err as AxiosError;
-            console.log(error.response?.data);
-            if (!error?.response) {
-                setErrMsg("El servidor no responde");
-            } else if (error.response?.status === 409 || error.response?.data === 'Bad credentials') {
-                setErrMsg("Credenciales incorrectas");
-            } else if (error.response?.status === 404) {
-                setErrMsg("Correo no existe!");
-            } else {
-                setErrMsg("Error desconocido");
-            }
-        }
-    };
+    //todo: la pantalla de cambio de contraseña
 
     const msgStyle = {
         colorError: 'text-red-500',
@@ -101,16 +83,17 @@ const RecuperarPass = () => {
                 <h1 className="text-4xl font-bold mb-4 text-center">
                     Recuperar Contraseña
                 </h1>
-                <form className="max-w-s mx-auto" onSubmit={!existeCorreo?handleRequestCorreo:handleSubmit}>
+                <form className="max-w-s mx-auto" onSubmit={handleRequestCorreo}>
                     <Input
                         type="text"
                         label="Correo"
                         placeholder="ejemplo@email.com"
                         variant="bordered"
+                        className="mb-2"
+                        isReadOnly={existeCorreo}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             setCorreo(e.target.value)
                         }
-                        className="mb-2"
                     />
 
                     <div className={`h-5 text-center my-2 ${existeCorreo ? "mb-28" : "mb-1"}`}
@@ -131,8 +114,6 @@ const RecuperarPass = () => {
                             Validar
                         </Button>
                     }
-
-
                     <section className="flex justify-center cursor-pointer">
                     </section>
                 </form>
