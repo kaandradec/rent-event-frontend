@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import CartProduct from "@/components/CartProduct";
 import ResetCart from "@/components/ResetCart";
 import CartPayment from "@/components/CartPayment";
+import { useState } from "react";
+import { DatePicker, Input } from "@nextui-org/react";
+import { now, getLocalTimeZone } from "@internationalized/date";
+
 /**
  * Cart component displays the user's shopping cart with a list of cart items.
  */
@@ -12,17 +16,132 @@ const Cart = () => {
   const cart = useStore((state) => state.cart);
   const cartQuantity = useStore((state) => state.cartQuantity);
 
+  // Transporte
+  const [isSelected, setIsSelected] = useState(true);
+  // Asistentes
+  const [asistentes, setAsistentes] = useState(0);
+
+  // Fecha y hora del evento validación
+  const [fecha, setFecha] = useState("");
+
+
+
+  // CALCULO DE PRECIO SUBTOTAL Y TOTAL
+  const COSTO_TRANSPORTE = 0.25;
+  const IVA = 0.15;
+
+  const subtotal = (): number => {
+    let total: number = 0;
+    cart.map((item) => {
+      {
+        return item.quantity
+          ? (total += item.quantity * item.costo)
+          : (total += item.costo);
+      }
+    });
+    return total;
+  }
+
+  const totalIva = (): number => {
+    return subtotal() * IVA;
+  }
+
+  const costoTransporte = (): number => {
+    if (asistentes < 20)
+      return 0;
+    return asistentes * COSTO_TRANSPORTE;
+  }
+
+
+  const totalPrice = (): number => {
+    let total: number = subtotal();
+    // Transporte
+    if (isSelected && asistentes > 0) {
+      total += costoTransporte();
+    }
+    // IVA
+    total += totalIva();
+    return total;
+  };
+
+
   return (
-    <main className="mt-16 max-w-screen-2xl mx-auto px-6 grid grid-cols-7 xl:grid-cols-9 gap-10 py-4">
+
+    <main className="mt-14 max-w-screen-2xl mx-auto px-6 grid grid-cols-7 xl:grid-cols-9 gap-10 py-4">
+
       {cart.length > 0 ? (
         <>
+
           <section className="bg-white col-span-7 ls:col-span-5 xl:col-span-7 p-4 rounded-lg">
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col lg:flex-row gap-8">
+                <Input
+                  type="text"
+                  label="Nombre del evento"
+                  labelPlacement="outside"
+                  placeholder="Evento RentEvent"
+                  maxLength={20}
+                  description="Ingrese el nombre del evento que desea organizar."
+                  onValueChange={(value) => setAsistentes(parseInt(value))}
+                  validate={(value) => {
+                    if (value.length < 1) {
+                      return "Ingrese un nombre de evento";
+                    }
+                    return "";
+                  }}
+                />
+                <DatePicker
+                  labelPlacement="outside"
+                  label="Fecha y hora del evento"
+                  variant="flat"
+                  hideTimeZone
+                  showMonthAndYearPickers
+                  minValue={now(getLocalTimeZone()).add({ days: 2 })}
+                  maxValue={now(getLocalTimeZone()).add({ months: 2 })}
+                  defaultValue={now(getLocalTimeZone()).add({ days: 3 })}
+                  lang="es"
+                  description="(Mes/Día/Año, Hora) El evento debe ser programado con al menos 2 días de anticipación y máximo 2 meses de anticipación."
+                />
+              </div>
+              <Input
+                type="text"
+                label="Descripción del evento"
+                labelPlacement="outside"
+                placeholder="Descripción y detalles específicos del evento."
+                maxLength={20}
+                onValueChange={(value) => setAsistentes(parseInt(value))}
+                validate={(value) => {
+                  if (value.length < 1) {
+                    return "Ingrese un nombre de evento";
+                  }
+                  return "";
+                }}
+              />
+              <Input
+                type="text"
+                label="Dirección"
+                labelPlacement="outside"
+                placeholder="Calles, Referencias."
+                maxLength={200}
+                description="Ingrese la dirección del evento, si tiene alguna referencia adicional puede agregarla."
+                onValueChange={(value) => setAsistentes(parseInt(value))}
+                validate={(value) => {
+                  if (value.length < 1) {
+                    return "Ingrese una dirección";
+                  }
+                  return "";
+                }}
+              />
+
+            </div>
+
+
             <div
               className="flex items-center justify-between border-b-2
                          border-b-gray-400 pb-1 text-gray-700"
             >
               <p className="font-semibold md:text-lg">
-                Carrito de Servicios ({cartQuantity})
+                Servicios ({cartQuantity})
               </p>
               <p className="font-semibold hidden md:block">
                 Subtotal
@@ -41,9 +160,18 @@ const Cart = () => {
           </section>
           <section
             className="bg-white h-64 col-span-7 lg:col-span-2 p-4 rounded-lg
-                    flex items-center justify-center sticky top-5"
+                    flex items-center justify-center sticky lg:mt-20"
           >
-            <CartPayment />
+            <CartPayment
+              asistentes={asistentes}
+              isSelected={isSelected}
+              setAsistentes={setAsistentes}
+              setIsSelected={setIsSelected}
+              subtotal={subtotal}
+              costoTransporte={costoTransporte}
+              totalIva={totalIva}
+              totalPrice={totalPrice}
+            />
           </section>
         </>
       ) : (
@@ -65,5 +193,7 @@ const Cart = () => {
     </main>
   );
 };
+
+
 
 export default Cart;
