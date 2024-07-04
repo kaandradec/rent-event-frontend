@@ -84,6 +84,9 @@ function Products() {
         (item) => item[filter[0]] === filter[1]
       );
     }
+    // Filtrar productos activos
+    filteredProd = filteredProd.filter((item) => item.estado === "ACTIVO");
+
     // Ensure that filtered products are returned if available; otherwise, return the original product list
     return filteredProd.length > 0 ? filteredProd : product;
 

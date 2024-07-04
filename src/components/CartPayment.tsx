@@ -35,10 +35,7 @@ const CartPayment = ({
 
   const rol = useAuthStore.getState().rol;
 
-
   const navigate = useNavigate();
-
-
 
   return (
     <>
