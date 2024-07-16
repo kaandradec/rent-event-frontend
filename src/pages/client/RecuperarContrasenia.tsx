@@ -4,7 +4,7 @@ import {AxiosError} from "axios";
 import React, {useState} from "react";
 import {PreguntaSeguraInput} from "@/components/PreguntaSeguraInput.tsx";
 import {validarPreguntaSeguraClient} from "@/api/preguntas_seguras.ts";
-import {CambiarPassPreguntaSegura} from "@/pages/client/CambiarPassPreguntaSegura.tsx";
+import {CambiarPassPreguntaSegura} from "@/components/CambiarPassPreguntaSegura.tsx";
 
 export const RecuperarContrasenia = () => {
     return (
@@ -77,7 +77,6 @@ const RecuperarPass = () => {
     }
 
     return (
-
         <main>
             {!success?<section className="mt-28">
                 <h1 className="text-4xl font-bold mb-4 text-center">

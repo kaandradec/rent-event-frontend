@@ -63,13 +63,13 @@ export default function Header() {
         <NavbarItem>
           <Link
             color="primary"
-            to="/about"
+            to="/eventos"
             className={`${
               (pathName.includes("/landing", "orders") || pathName === "/") &&
               styles.navbarItem
             } `}
           >
-            ACERCA DE
+            MIS EVENTOS
           </Link>
         </NavbarItem>
         <NavbarItem>
@@ -82,6 +82,18 @@ export default function Header() {
             } `}
           >
             MIS ORDENES
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link
+            color="primary"
+            to="/about"
+            className={`${
+              (pathName.includes("/landing", "orders") || pathName === "/") &&
+              styles.navbarItem
+            } `}
+          >
+            NOSOTROS
           </Link>
         </NavbarItem>
       </NavbarBrand>

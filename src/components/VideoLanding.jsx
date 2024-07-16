@@ -1,9 +1,7 @@
 import "../styles/videoStyle.css";
-import { Button } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
+import {CrearEventoButton} from "@/components/CrearEventoButton.jsx";
 
 export default function VideoLanding() {
-  const navigate = useNavigate();
 
   return (
     <div className="w-full relative">
@@ -16,15 +14,7 @@ export default function VideoLanding() {
         <h2 className="text-lg md:text-xl text-white font-semibold text-center px-1">
           Empieza a crear tu evento y disfruta de una experiencia inolvidable
         </h2>
-        <Button
-          onClick={() => navigate("/services")}
-          size="lg"
-          color="warning"
-          variant="shadow"
-          className="font-bold px-12"
-        >
-          CREAR EVENTO
-        </Button>
+        <CrearEventoButton/>
       </section>
 
       <video

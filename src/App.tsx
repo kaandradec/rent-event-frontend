@@ -22,7 +22,7 @@ import Cart from './pages/client/Cart.tsx'
 import {ClienteRegionConf} from "@/pages/client/ClienteRegionConf.tsx";
 import {ClientePreguntaSeguraConf} from "@/pages/client/ClientePreguntaSeguraConf.tsx";
 import {RecuperarContrasenia} from "@/pages/client/RecuperarContrasenia.tsx";
-import {CambiarPassPreguntaSegura} from "@/pages/client/CambiarPassPreguntaSegura.tsx";
+import {MyEvents} from "@/pages/client/MyEvents.tsx";
 
 const USER_PATH = '/user'
 
@@ -38,7 +38,6 @@ function App() {
                     <Route path='/inicio' element={<Inicio />} />
                     <Route path='/auth/login' element={<LoginClient />} />
                     <Route path='/auth/recuperar-pass' element={<RecuperarContrasenia />} />
-                    <Route path='/auth/cambiar-pass' element={<CambiarPassPreguntaSegura />} />
                     <Route path='/auth/register' element={<RegisterClient />} />
                     <Route path="/landing" element={<Landing />} />
                     <Route path="/about" element={<About />} />
@@ -47,7 +46,7 @@ function App() {
                     <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
                     <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
                     <Route path='/account/config' element={<ClientConfiguration />} />
-                    <Route path='/account/config/genero' element={<ClientConfiguration />} />
+                    <Route path='/eventos' element={<MyEvents />} />
                     <Route path='/account/config/telefono' element={<ClientTelefonoConf />} />
                     <Route path='/account/config/pass' element={<ClientPassConf />} />
                     <Route path='/account/config/region' element={<ClienteRegionConf />} />
