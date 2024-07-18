@@ -18,8 +18,9 @@ Font.register({
 interface DatosCliente {
   nombre: string;
   direccion: string;
-  contacto: string;
   cedula: string;
+  tarjeta: string;
+  nombreTarjeta: string;
   correo: string;
 }
 
@@ -102,8 +103,8 @@ export default function PDF({ cliente, servicios }: PDFProps) {
         <Text style={styles.tableCell}>{cliente.direccion}</Text>
         <Text>Cedula: {cliente.cedula}</Text>
         <Text>Cedula: {cliente.correo}</Text>
-        <Text style={styles.tableCellHeader}>Contacto</Text>
-        <Text style={styles.tableCell}>{cliente.contacto}</Text>
+        <Text style={styles.tableCellHeader}>Tarjeta</Text>
+        <Text style={styles.tableCell}>{cliente.tarjeta}</Text>
         <Text style={styles.header}>Servicios Solicitados</Text>
         {servicios.map((servicio, index) => (
           <View key={index} style={styles.table}>

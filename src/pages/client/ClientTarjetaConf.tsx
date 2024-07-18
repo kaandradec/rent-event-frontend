@@ -15,10 +15,10 @@ export const ClientTarjetaConf = () => {
     const navigate = useNavigate();
     const [success, setSuccess] = useState(false);
     const [prefijo, setPrefijo] = useState<string>("");
-    const [numeroTarjeta, setNumeroTarjeta] = useState<string>("");
     const [errMsg, setErrMsg] = useState<string>("");
     const [nuevo, setNuevo] = useState<boolean>(false);
     const [nombre, setNombre] = useState<string>("");
+    const [numeroTarjeta, setNumeroTarjeta] = useState<string>("");
     const [month, setMonth] = useState("");
     const [year, setYear] = useState("");
 

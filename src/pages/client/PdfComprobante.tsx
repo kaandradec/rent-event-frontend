@@ -3,20 +3,68 @@ import { Button } from "@nextui-org/react"; // Asumiendo que Loading es un compo
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { useStore } from "@/store/store";
 import PDF from "@/components/PDF";
+import {useEffect, useState} from "react";
+import {obtenerDatosFacturacionCliente, obtenerTarjetasCliente} from "@/api/cliente.ts";
+import {AxiosError} from "axios";
 
 export default function PdfComprobante() {
-  const nombre = useAuthStore.getState().nombre;
-  const apellido = useAuthStore.getState().apellido;
-  const correo = useAuthStore.getState
   const carrito = useStore((state) => state.cart);
 
-  const datosCliente = {
-    nombre: nombre + " " + apellido,
-    direccion: "Calle Falsa 123",
-    telefono: "123456789",
-    correo: correo,
+  const [correo] = useState(useAuthStore().correo);
+  const [nombre, setNombre] = useState<string>("");
+  const [direccion, setDireccion] = useState<string>("");
+  const [numeroCedula, setNumeroCedula] = useState<string>("");
+  const [numeroTarjeta, setNumeroTarjeta] = useState<string>("");
+  const [nombreTarjeta, setNombreTarjeta] = useState("");
+  const [errMsg, setErrMsg] = useState<string>("");
+
+  const fetchClient = async () => {
+    try {
+      if (correo == null) return
+
+      const datosFacturacion = await obtenerDatosFacturacionCliente(correo);
+      const datosTarjeta = await obtenerTarjetasCliente(correo);
+      console.log(datosFacturacion)
+      console.log(datosTarjeta)
+      setNumeroTarjeta(datosTarjeta.tarjetaResponseList[0].token)
+      setNombreTarjeta(datosTarjeta.tarjetaResponseList[0].nombreTarjeta)
+      setNumeroCedula(datosFacturacion.cedula)
+      setDireccion(datosFacturacion.direccion)
+      setNombre(datosFacturacion.nombre)
+    } catch (err) {
+      const error = err as AxiosError;
+      if (!error?.response) {
+        setErrMsg("El servidor no responde");
+      } else if (
+          error.response?.status === 409 ||
+          error.response?.data === "Bad credentials"
+      ) {
+        setErrMsg("Credenciales incorrectas");
+      } else {
+        setErrMsg("Error desconocido");
+      }
+      console.log(errMsg);
+    }
   };
 
+  useEffect(() => {
+    fetchClient();
+  }, []);
+
+  const datosCliente = {
+    nombre: nombre,
+    direccion: direccion,
+    cedula: numeroCedula,
+    tarjeta: numeroTarjeta,
+    nombreTarjeta: nombreTarjeta,
+    correo: correo,
+  };
+  // nombre: string;
+  // direccion: string;
+  // cedula: string;
+  // tarjeta: string;
+  // nombreTarjeta: string;
+  // correo: string;
   return (
     <>
       <div className="mt-20 max-w-7xl m-auto flex flex-col items-center">

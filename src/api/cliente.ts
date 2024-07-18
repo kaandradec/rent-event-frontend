@@ -12,6 +12,10 @@ export const obtenerDatosFacturacionCliente = async (usuario: string) => {
     const response = await tokenApi.get(`/clientes/account/datos-facturacion/${encodeURIComponent(usuario)}`);
     return response.data;
 };
+export const obtenerTarjetasCliente = async (usuario: string) => {
+    const response = await tokenApi.get(`/clientes/account/tarjeta/${encodeURIComponent(usuario)}`);
+    return response.data;
+};
 export const updateTelefonoRequestClient = async (
     correo: string | null,
     prefijo: string,

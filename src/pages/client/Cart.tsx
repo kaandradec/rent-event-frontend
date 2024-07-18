@@ -6,9 +6,12 @@ import CartProduct from "@/components/CartProduct";
 import ResetCart from "@/components/ResetCart";
 import CartPayment from "@/components/CartPayment";
 import {useEffect, useState} from "react";
-import {Button, DatePicker, Input} from "@nextui-org/react";
+import {DatePicker, Input} from "@nextui-org/react";
 import {getLocalTimeZone, now} from "@internationalized/date";
 import {BotonPaises} from "@/components/BotonPaises.tsx";
+import {obtenerDatosFacturacionCliente, obtenerTarjetasCliente} from "@/api/cliente.ts";
+import {AxiosError} from "axios";
+import {useAuthStore} from "@/store/auth.ts";
 
 /**
  * Cart component displays the user's shopping cart with a list of cart items.
@@ -18,7 +21,6 @@ const Cart = () => {
     const cartQuantity = useStore((state) => state.cartQuantity);
     const [region, setRegion] = useState<string>("");
     const [pais, setPais] = useState<string>("");
-    const [rana, setRana] = useState<string>("");
     const [nombreEvento, setNombreEvento] = useState<string>("");
     const [descripcion, setDescripcion] = useState<string>("");
     const [callePrincipal, setCallePrincipal] = useState<string>("");
@@ -31,6 +33,46 @@ const Cart = () => {
     const [isSelected, setIsSelected] = useState(true);
     // Asistentes
     const [asistentes, setAsistentes] = useState(0);
+    const [correo] = useState(useAuthStore().correo);
+    const [nombre, setNombre] = useState<string>("");
+    const [direccion, setDireccion] = useState<string>("");
+    const [numeroCedula, setNumeroCedula] = useState<string>("");
+    const [numeroTarjeta, setNumeroTarjeta] = useState<string>("");
+    const [nombreTarjeta, setNombreTarjeta] = useState("");
+    const [errMsg, setErrMsg] = useState<string>("");
+
+    const fetchClient = async () => {
+        try {
+            if (correo == null) return
+
+            const datosFacturacion = await obtenerDatosFacturacionCliente(correo);
+            const datosTarjeta = await obtenerTarjetasCliente(correo);
+            console.log(datosFacturacion)
+            console.log(datosTarjeta)
+            setNumeroTarjeta(datosTarjeta.tarjetaResponseList[0].token)
+            setNombreTarjeta(datosTarjeta.tarjetaResponseList[0].nombreTarjeta)
+            setNumeroCedula(datosFacturacion.cedula)
+            setDireccion(datosFacturacion.direccion)
+            setNombre(datosFacturacion.nombre)
+        } catch (err) {
+            const error = err as AxiosError;
+            if (!error?.response) {
+                setErrMsg("El servidor no responde");
+            } else if (
+                error.response?.status === 409 ||
+                error.response?.data === "Bad credentials"
+            ) {
+                setErrMsg("Credenciales incorrectas");
+            } else {
+                setErrMsg("Error desconocido");
+            }
+            console.log(errMsg);
+        }
+    };
+
+    useEffect(() => {
+        fetchClient();
+    }, []);
 
 
     // CALCULO DE PRECIO SUBTOTAL Y TOTAL
@@ -75,7 +117,6 @@ const Cart = () => {
     return (
 
         <main className="mt-10 max-w-screen-2xl mx-auto px-6 grid grid-cols-7 xl:grid-cols-9 gap-10 py-4">
-
             {cart.length > 0 ? (
                 <>
                     {!confirmado?
@@ -221,9 +262,59 @@ const Cart = () => {
                             </div>
                         ))}
                         <ResetCart/>
-                    </section>):
-                        <div></div>
-                            }
+                    </section>)
+                        :
+                            <section className="bg-white col-span-7 ls:col-span-5 xl:col-span-7 p-4 rounded-lg">
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex flex-col lg:flex-row gap-8">
+                                        <Input
+                                            type="text"
+                                            label="Nombre de la factura"
+                                            labelPlacement="outside"
+                                            value={nombre}
+                                            isDisabled
+                                        />
+                                    </div>
+                                    <Input
+                                        type="text"
+                                        label="Direccion de la factura"
+                                        labelPlacement="outside"
+                                        value={direccion}
+                                        isDisabled
+                                    />
+                                    <Input
+                                        type="text"
+                                        label="Cedula/ RUC/ Id"
+                                        labelPlacement="outside"
+                                        value={numeroCedula}
+                                        isDisabled
+                                    />
+                                    <h1 className="font-normal">Tarjeta para el pago:</h1>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <Input
+                                                type="text"
+                                                label="Calle Secundaria"
+                                                labelPlacement="outside"
+                                                value={nombreTarjeta}
+                                                isDisabled
+                                            />
+                                            <Input
+                                                type="text"
+                                                label="Referencia"
+                                                labelPlacement="outside"
+                                                className="pt-2"
+                                                value={numeroTarjeta}
+                                                isDisabled
+                                            />
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </section>
+                    }
                     <section
                         className="bg-white h-64 col-span-7 lg:col-span-2 p-4 rounded-lg
                     flex items-center justify-center sticky lg:mt-36"

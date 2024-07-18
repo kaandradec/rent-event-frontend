@@ -13,11 +13,11 @@ export const ClientDatosFacturacionConf = () => {
     const correo = useAuthStore().correo;
     const navigate = useNavigate();
     const [success, setSuccess] = useState(false);
-    const [direccion, setDireccion] = useState<string>("");
-    const [numeroCedula, setNumeroCedula] = useState<string>("");
     const [errMsg, setErrMsg] = useState<string>("");
     const [editar, setEditar] = useState<boolean>(false);
     const [nombre, setNombre] = useState<string>("");
+    const [direccion, setDireccion] = useState<string>("");
+    const [numeroCedula, setNumeroCedula] = useState<string>("");
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,10 +32,10 @@ export const ClientDatosFacturacionConf = () => {
 
             if (mensaje.status == 200) {
                 setSuccess(true)
-                // setTimeout(() => {
-                //         navigate("/account/config")
-                //     },
-                //     2500);
+                setTimeout(() => {
+                        navigate("/account/config")
+                    },
+                    2500);
             }
 
         } catch (err) {

@@ -124,7 +124,7 @@ const CartPayment = ({
                     {
                         rol ? (
                                 confirmado ? (<Button
-                                        onClick={() => navigate("/")}
+                                        onClick={() => navigate("/comprobante")}
 
                                         color="success" size="lg" className="font-bold text-white">
                                         Proceder con la compra
@@ -133,7 +133,6 @@ const CartPayment = ({
                                         {/*//todo: poner !*/}
                                         {(region == "" || region == "Ciudad") ? (
                                                 <div>
-
                                                     <Button
                                                         onClick={() => {
                                                              setConfirmado(true) }}
@@ -147,9 +146,9 @@ const CartPayment = ({
                                             ) :
                                             (<Button
                                                 onClick={() => {
-                                                    (region == "" || region == "Ciudad") ? setConfirmado(true) : ""
+                                                     ""
                                                 }}
-                                                color={(region == "" || region == "Ciudad") ? "success" : "default"}
+                                                color={ "default"}
                                                 size="lg"
                                                 className="font-bold text-white"
                                             > Confirmar
