@@ -122,7 +122,7 @@ const CartPayment = ({
           {
             rol ? (
               <Button
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/comprobante")}
 
                 color="success" size="lg" className="font-bold text-white">
                 Proceder con la compra
