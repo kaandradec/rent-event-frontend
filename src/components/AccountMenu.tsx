@@ -39,7 +39,8 @@ export default function AccountMenu() {
 
             //todo esta comprobacion se ve peligrosa xd
             const data = rol?.startsWith('C') ?
-                await obtenerCliente(correo) : await obtenerUsuario(correo);
+                await obtenerCliente(correo)
+                : await obtenerUsuario(correo);
             /////////////////////////////////////////////////////////////////
 
             if (data && data.correo) {
@@ -76,13 +77,14 @@ export default function AccountMenu() {
                     color="primary"
                     name="Jason Hughes"
                     size="sm"
+                    aria-valuetext="fotoGato"
                     src="/lunacat.png"
                 />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownItem isDisabled className="h-14 gap-2">
                     <p className="font-semibold">Signed in as</p>
-                    <p className="font-semibold">{email}</p>
+                    <p className="font-semibold">{useAuthStore().correo}</p>
                 </DropdownItem>
                 <DropdownItem color="success" onClick={myConfig}>
                     My Settings

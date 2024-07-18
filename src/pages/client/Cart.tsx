@@ -5,9 +5,10 @@ import {Link} from "react-router-dom";
 import CartProduct from "@/components/CartProduct";
 import ResetCart from "@/components/ResetCart";
 import CartPayment from "@/components/CartPayment";
-import {useState} from "react";
-import {DatePicker, Input} from "@nextui-org/react";
+import {useEffect, useState} from "react";
+import {Button, DatePicker, Input} from "@nextui-org/react";
 import {getLocalTimeZone, now} from "@internationalized/date";
+import {BotonPaises} from "@/components/BotonPaises.tsx";
 
 /**
  * Cart component displays the user's shopping cart with a list of cart items.
@@ -15,14 +16,21 @@ import {getLocalTimeZone, now} from "@internationalized/date";
 const Cart = () => {
     const cart = useStore((state) => state.cart);
     const cartQuantity = useStore((state) => state.cartQuantity);
-
+    const [region, setRegion] = useState<string>("");
+    const [pais, setPais] = useState<string>("");
+    const [rana, setRana] = useState<string>("");
+    const [nombreEvento, setNombreEvento] = useState<string>("");
+    const [descripcion, setDescripcion] = useState<string>("");
+    const [callePrincipal, setCallePrincipal] = useState<string>("");
+    const [calleSecundaria, setCalleSecundaria] = useState<string>("");
+    const [referencia, setReferencia] = useState<string>("");
+    // Fecha y hora del evento validación
+    const [fecha, setFecha] = useState("");
+    const [confirmado, setConfirmado] = useState(false);
     // Transporte
     const [isSelected, setIsSelected] = useState(true);
     // Asistentes
     const [asistentes, setAsistentes] = useState(0);
-
-    // Fecha y hora del evento validación
-    const [fecha, setFecha] = useState("");
 
 
     // CALCULO DE PRECIO SUBTOTAL Y TOTAL
@@ -70,18 +78,54 @@ const Cart = () => {
 
             {cart.length > 0 ? (
                 <>
-
-                    <section className="bg-white col-span-7 ls:col-span-5 xl:col-span-7 p-4 rounded-lg">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col lg:flex-row gap-8">
+                    {!confirmado?
+                        (<section className="bg-white col-span-7 ls:col-span-5 xl:col-span-7 p-4 rounded-lg">
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-col lg:flex-row gap-8">
+                                    <Input
+                                        type="text"
+                                        label="Nombre del evento"
+                                        labelPlacement="outside"
+                                        placeholder="Evento RentEvent"
+                                        maxLength={20}
+                                        isRequired
+                                        description="Ingrese el nombre del evento que desea organizar."
+                                        onValueChange={(value) => {
+                                            setAsistentes(parseInt(value))
+                                            setNombreEvento(value)
+                                        }}
+                                        validate={(value) => {
+                                            if (value.length < 1) {
+                                                return "Ingrese un nombre de evento";
+                                            }
+                                            return "";
+                                        }}
+                                    />
+                                    <DatePicker
+                                        labelPlacement="outside"
+                                        label="Fecha y hora del evento"
+                                        variant="flat"
+                                        hideTimeZone
+                                        isRequired
+                                        showMonthAndYearPickers
+                                        minValue={now(getLocalTimeZone()).add({days: 2})}
+                                        maxValue={now(getLocalTimeZone()).add({months: 2})}
+                                        defaultValue={now(getLocalTimeZone()).add({days: 3})}
+                                        lang="es"
+                                        description="(Mes/Día/Año, Hora) El evento debe ser programado con al menos 2 días de anticipación y máximo 2 meses de anticipación."
+                                    />
+                                </div>
                                 <Input
                                     type="text"
-                                    label="Nombre del evento"
+                                    label="Descripción del evento"
                                     labelPlacement="outside"
-                                    placeholder="Evento RentEvent"
+                                    placeholder="Descripción y detalles específicos del evento."
                                     maxLength={20}
-                                    description="Ingrese el nombre del evento que desea organizar."
-                                    onValueChange={(value) => setAsistentes(parseInt(value))}
+                                    isRequired
+                                    onValueChange={(value) => {
+                                        setAsistentes(parseInt(value))
+                                        setDescripcion(value)
+                                    }}
                                     validate={(value) => {
                                         if (value.length < 1) {
                                             return "Ingrese un nombre de evento";
@@ -89,84 +133,72 @@ const Cart = () => {
                                         return "";
                                     }}
                                 />
-                                <DatePicker
+                                <h1 className="font-normal">Direccion:</h1>
+                                <Input
+                                    type="text"
+                                    label="Calle principal"
                                     labelPlacement="outside"
-                                    label="Fecha y hora del evento"
-                                    variant="flat"
-                                    hideTimeZone
-                                    showMonthAndYearPickers
-                                    minValue={now(getLocalTimeZone()).add({days: 2})}
-                                    maxValue={now(getLocalTimeZone()).add({months: 2})}
-                                    defaultValue={now(getLocalTimeZone()).add({days: 3})}
-                                    lang="es"
-                                    description="(Mes/Día/Año, Hora) El evento debe ser programado con al menos 2 días de anticipación y máximo 2 meses de anticipación."
+                                    placeholder="Av..."
+                                    maxLength={200}
+                                    isRequired
+                                    onValueChange={(value) => {
+                                        setAsistentes(parseInt(value))
+                                        setCallePrincipal(value)
+                                    }}
+                                    validate={(value) => {
+                                        if (value.length < 1) {
+                                            return "Ingrese una dirección";
+                                        }
+                                        return "";
+                                    }}
                                 />
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <Input
+                                            type="text"
+                                            label="Calle Secundaria"
+                                            labelPlacement="outside"
+                                            placeholder="Calle..."
+                                            maxLength={200}
+                                            isRequired
+                                            onValueChange={(value) => {
+                                                setAsistentes(parseInt(value))
+                                                setCalleSecundaria(value)
+                                            }}
+                                            validate={(value) => {
+                                                if (value.length < 1) {
+                                                    return "Ingrese una dirección";
+                                                }
+                                                return "";
+                                            }}
+                                        />
+                                        <Input
+                                            type="text"
+                                            label="Referencia"
+                                            labelPlacement="outside"
+                                            placeholder="Edificio... Piso..."
+                                            className="pt-2"
+                                            maxLength={200}
+                                            isRequired
+                                            onValueChange={(value) => {
+                                                setAsistentes(parseInt(value))
+                                                setReferencia(value)
+                                            }}
+                                            validate={(value) => {
+                                                if (value.length < 1) {
+                                                    return "Ingrese una dirección";
+                                                }
+                                                return "";
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-normal">Direccion:</h3>
+                                        <BotonPaises setSelectedCountry={setPais} setSelectedCity={setRegion}/>
+                                    </div>
+                                </div>
+
                             </div>
-                            <Input
-                                type="text"
-                                label="Descripción del evento"
-                                labelPlacement="outside"
-                                placeholder="Descripción y detalles específicos del evento."
-                                maxLength={20}
-                                onValueChange={(value) => setAsistentes(parseInt(value))}
-                                validate={(value) => {
-                                    if (value.length < 1) {
-                                        return "Ingrese un nombre de evento";
-                                    }
-                                    return "";
-                                }}
-                            />
-                            <h1 className="font-normal">Direccion:</h1>
-                            <Input
-                                type="text"
-                                label="Calle principal"
-                                labelPlacement="outside"
-                                placeholder="Av..."
-                                maxLength={200}
-                                description="Ingrese la dirección del evento, si tiene alguna referencia adicional puede agregarla."
-                                onValueChange={(value) => setAsistentes(parseInt(value))}
-                                validate={(value) => {
-                                    if (value.length < 1) {
-                                        return "Ingrese una dirección";
-                                    }
-                                    return "";
-                                }}
-                            />
-                          <div className="grid grid-cols-2 gap-4">
-                            <Input
-                                type="text"
-                                label="Calle Secundaria"
-                                labelPlacement="outside"
-                                placeholder="Calle..."
-                                maxLength={200}
-                                description="Ingrese la dirección del evento, si tiene alguna referencia adicional puede agregarla."
-                                onValueChange={(value) => setAsistentes(parseInt(value))}
-                                validate={(value) => {
-                                    if (value.length < 1) {
-                                        return "Ingrese una dirección";
-                                    }
-                                    return "";
-                                }}
-                            />
-                            <Input
-                                type="text"
-                                label="Referencia"
-                                labelPlacement="outside"
-                                placeholder="Edificio... Piso..."
-                                maxLength={200}
-                                description="Ingrese la dirección del evento, si tiene alguna referencia adicional puede agregarla."
-                                onValueChange={(value) => setAsistentes(parseInt(value))}
-                                validate={(value) => {
-                                    if (value.length < 1) {
-                                        return "Ingrese una dirección";
-                                    }
-                                    return "";
-                                }}
-                            />
-                          </div>
-
-                        </div>
-
 
                         <div
                             className="flex items-center justify-between border-b-2
@@ -189,10 +221,12 @@ const Cart = () => {
                             </div>
                         ))}
                         <ResetCart/>
-                    </section>
+                    </section>):
+                        <div></div>
+                            }
                     <section
                         className="bg-white h-64 col-span-7 lg:col-span-2 p-4 rounded-lg
-                    flex items-center justify-center sticky lg:mt-32"
+                    flex items-center justify-center sticky lg:mt-36"
                     >
                         <CartPayment
                             asistentes={asistentes}
@@ -203,8 +237,13 @@ const Cart = () => {
                             costoTransporte={costoTransporte}
                             totalIva={totalIva}
                             totalPrice={totalPrice}
+                            confirmado={confirmado}
+                            setConfirmado={setConfirmado}
+                            region={region}
                         />
+
                     </section>
+
                 </>
             ) : (
                 <section

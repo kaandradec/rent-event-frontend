@@ -23,6 +23,8 @@ import {ClienteRegionConf} from "@/pages/client/ClienteRegionConf.tsx";
 import {ClientePreguntaSeguraConf} from "@/pages/client/ClientePreguntaSeguraConf.tsx";
 import {RecuperarContrasenia} from "@/pages/client/RecuperarContrasenia.tsx";
 import {MyEvents} from "@/pages/client/MyEvents.tsx";
+import {ClientTarjetaConf} from "@/pages/client/ClientTarjetaConf.tsx";
+import {ClientDatosFacturacionConf} from "@/pages/client/ClientDatosFacturacionConf.tsx";
 
 const USER_PATH = '/user'
 
@@ -45,9 +47,11 @@ function App() {
                     <Route path="/cart" element={<Cart />} />
                     <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
                     <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
-                    <Route path='/account/config' element={<ClientConfiguration />} />
                     <Route path='/eventos' element={<MyEvents />} />
+                    <Route path='/account/config' element={<ClientConfiguration />} />
                     <Route path='/account/config/telefono' element={<ClientTelefonoConf />} />
+                    <Route path='/account/config/tarjeta' element={<ClientTarjetaConf />} />
+                    <Route path='/account/config/datos-facturacion' element={<ClientDatosFacturacionConf />} />
                     <Route path='/account/config/pass' element={<ClientPassConf />} />
                     <Route path='/account/config/region' element={<ClienteRegionConf />} />
                     <Route path='/account/config/pregunta-segura' element={<ClientePreguntaSeguraConf />} />

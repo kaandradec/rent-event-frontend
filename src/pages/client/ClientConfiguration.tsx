@@ -134,8 +134,14 @@ export const ClientConfiguration = () => {
                 </div>
                 <div className="container flex align-super content-center gap-3 mb-3">
                     <Button isIconOnly variant="bordered" className=" flex w-full text-black dark:text-white"
-                            color={"primary"} onClick={() => navigate(`/account/config/pass`)}>
-                        Cambiar Contraseña
+                            color={"primary"} onClick={() => navigate(`/account/config/tarjeta`)}>
+                        Metodos de Pago
+                    </Button>
+                </div>
+                <div className="container flex align-super content-center gap-3 mb-3">
+                    <Button isIconOnly variant="bordered" className=" flex w-full text-black dark:text-white"
+                            color={"primary"} onClick={() => navigate(`/account/config/datos-facturacion`)}>
+                        Mis Datos de Facturacion
                     </Button>
                 </div>
             </section>
