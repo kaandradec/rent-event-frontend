@@ -7,7 +7,10 @@ export default function VideoLanding() {
         <div className="w-full relative">
             <section className="w-full flex justify-center">
                 <h1 className="backdrop-blur-sm absolute mt-32 z-10 text-2xl md:text-5xl text-white top-20 uppercase font-semibold max-w-7xl text-center text-pretty px-1">
-                    Organiza tu evento aqui! Personalizalo a tu gusto en minutos
+                    Organiza tu evento aqui!
+                </h1>
+                <h1 className="backdrop-blur-sm absolute mt-48 z-10 text-2xl md:text-5xl text-white top-20 uppercase font-semibold max-w-7xl text-center text-pretty px-1">
+                    Personalizalo a tu gusto en minutos!
                 </h1>
             </section>
             <section
