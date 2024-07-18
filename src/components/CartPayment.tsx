@@ -21,6 +21,8 @@ interface CartPaymentProps {
     confirmado: boolean;
     setConfirmado: (valor: boolean) => boolean;
     region: string;
+    registrarEvento: () => Promise<void>; // Nuevo método
+
 }
 
 const CartPayment = ({
@@ -31,7 +33,12 @@ const CartPayment = ({
                          subtotal,
                          costoTransporte,
                          totalIva,
-                         totalPrice, confirmado, setConfirmado, region
+                         totalPrice,
+                         confirmado,
+                         setConfirmado,
+                         region,
+                         registrarEvento // Nuevo método
+
                      }: CartPaymentProps) => {
     // const cart = useStore((state) => state.cart);
 
@@ -124,14 +131,17 @@ const CartPayment = ({
                     {
                         rol ? (
                                 confirmado ? (<Button
-                                        onClick={() => navigate("/comprobante")}
+                                        onClick={() => {
+                                            registrarEvento
+                                            navigate("/comprobante")
+                                        }}
 
                                         color="success" size="lg" className="font-bold text-white">
                                         Proceder con la compra
                                     </Button>) :
                                     <div>
                                         {/*//todo: poner !*/}
-                                        {(region == "" || region == "Ciudad") ? (
+                                        {!(region == "" || region == "Ciudad") ? (
                                                 <div>
                                                     <Button
                                                         onClick={() => {

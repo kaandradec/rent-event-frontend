@@ -1,4 +1,5 @@
 import {tokenApi} from "@/lib/axios";
+import {StoreProduct} from "../../types.ts";
 
 export const obtenerCliente = async (usuario: string) => {
   const response = await tokenApi.get(`/clientes/${encodeURIComponent(usuario)}`);
@@ -71,6 +72,50 @@ export const registerTarjetaClient = async (
             codSeguridad: codigo,
             mes: mes,
             anio: anio
+
+        }),
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            // withCredentials: true,
+        }
+    );
+export const registerEventoClient = async (
+    correo: string ,
+    nombreTargeta: string ,
+    numeroTarjeta: string,
+    fecha: string,
+    direccionFactura: string,
+    nombreFactura: string,
+    pais: string,
+    ciudad: string,
+    nombreEvento: string,
+    descripcionEvento: string,
+    callePrincipal: string,
+    calleSecundaria: string,
+    referencia: string,
+    asistentes: string,
+    cart: StoreProduct[]
+) =>
+    await tokenApi.put(
+        `/eventos/generar`,
+        JSON.stringify({
+            correo: correo ,
+            nombreTargeta: nombreTargeta ,
+            numeroTarjeta: numeroTarjeta,
+            fecha: fecha,
+            direccionFactura: direccionFactura,
+            nombreFactura: nombreFactura,
+            pais: pais,
+            ciudad: ciudad,
+            nombreEvento: nombreEvento,
+            descripcionEvento: descripcionEvento,
+            callePrincipal: callePrincipal,
+            calleSecundaria: calleSecundaria,
+            referencia: referencia,
+            asistentes: asistentes,
+            cart: cart
 
         }),
         {

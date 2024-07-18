@@ -10,8 +10,12 @@ import {AxiosError} from "axios";
 export default function PdfComprobante() {
   const carrito = useStore((state) => state.cart);
 
-  const [correo] = useState(useAuthStore().correo);
-  const [nombre, setNombre] = useState<string>("");
+  // const [correo] = useState(useAuthStore().correo);
+  const nombre = useAuthStore.getState().nombre;
+  const apellido = useAuthStore.getState().apellido;
+  const correo = useAuthStore.getState().correo;
+
+  // const [nombre, setNombre] = useState<string>("");
   const [direccion, setDireccion] = useState<string>("");
   const [numeroCedula, setNumeroCedula] = useState<string>("");
   const [numeroTarjeta, setNumeroTarjeta] = useState<string>("");
@@ -52,7 +56,7 @@ export default function PdfComprobante() {
   }, []);
 
   const datosCliente = {
-    nombre: nombre,
+    nombre: nombre + " " + apellido,
     direccion: direccion,
     cedula: numeroCedula,
     tarjeta: numeroTarjeta,

@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 import {DatePicker, Input} from "@nextui-org/react";
 import {getLocalTimeZone, now} from "@internationalized/date";
 import {BotonPaises} from "@/components/BotonPaises.tsx";
-import {obtenerDatosFacturacionCliente, obtenerTarjetasCliente} from "@/api/cliente.ts";
+import {obtenerDatosFacturacionCliente, obtenerTarjetasCliente, registerEventoClient} from "@/api/cliente.ts";
 import {AxiosError} from "axios";
 import {useAuthStore} from "@/store/auth.ts";
 
@@ -34,7 +34,7 @@ const Cart = () => {
     // Asistentes
     const [asistentes, setAsistentes] = useState(0);
     const [correo] = useState(useAuthStore().correo);
-    const [nombre, setNombre] = useState<string>("");
+    const [nombreFacturacion, setNombreFacturacion] = useState<string>("");
     const [direccion, setDireccion] = useState<string>("");
     const [numeroCedula, setNumeroCedula] = useState<string>("");
     const [numeroTarjeta, setNumeroTarjeta] = useState<string>("");
@@ -53,7 +53,32 @@ const Cart = () => {
             setNombreTarjeta(datosTarjeta.tarjetaResponseList[0].nombreTarjeta)
             setNumeroCedula(datosFacturacion.cedula)
             setDireccion(datosFacturacion.direccion)
-            setNombre(datosFacturacion.nombre)
+            setNombreFacturacion(datosFacturacion.nombre)
+        } catch (err) {
+            const error = err as AxiosError;
+            if (!error?.response) {
+                setErrMsg("El servidor no responde");
+            } else if (
+                error.response?.status === 409 ||
+                error.response?.data === "Bad credentials"
+            ) {
+                setErrMsg("Credenciales incorrectas");
+            } else {
+                setErrMsg("Error desconocido");
+            }
+            console.log(errMsg);
+        }
+    };
+    const registrarEvento = async () => {
+        try {
+            if (correo == null) return
+
+            const response = await registerEventoClient(
+                correo, nombreTarjeta, numeroTarjeta, fecha,
+                direccion, nombreFacturacion, pais, region, nombreEvento,
+                descripcion, callePrincipal, calleSecundaria, referencia,
+                asistentes.toString(), cart);
+
         } catch (err) {
             const error = err as AxiosError;
             if (!error?.response) {
@@ -119,7 +144,7 @@ const Cart = () => {
         <main className="mt-10 max-w-screen-2xl mx-auto px-6 grid grid-cols-7 xl:grid-cols-9 gap-10 py-4">
             {cart.length > 0 ? (
                 <>
-                    {!confirmado?
+                    {!confirmado ?
                         (<section className="bg-white col-span-7 ls:col-span-5 xl:col-span-7 p-4 rounded-lg">
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-col lg:flex-row gap-8">
@@ -137,7 +162,7 @@ const Cart = () => {
                                         }}
                                         validate={(value) => {
                                             if (value.length < 1) {
-                                                return "Ingrese un nombre de evento";
+                                                return "Ingrese un nombreFacturacion de evento";
                                             }
                                             return "";
                                         }}
@@ -169,7 +194,7 @@ const Cart = () => {
                                     }}
                                     validate={(value) => {
                                         if (value.length < 1) {
-                                            return "Ingrese un nombre de evento";
+                                            return "Ingrese un nombreFacturacion de evento";
                                         }
                                         return "";
                                     }}
@@ -241,79 +266,79 @@ const Cart = () => {
 
                             </div>
 
-                        <div
-                            className="flex items-center justify-between border-b-2
-                         border-b-gray-400 pb-1 text-gray-700"
-                        >
-                            <p className="font-semibold md:text-lg">
-                                Servicios ({cartQuantity})
-                            </p>
-                            <p className="font-semibold hidden md:block">
-                                Subtotal
-                            </p>
-                        </div>
-
-                        {cart.map((item: StoreProduct) => (
                             <div
-                                key={item.id}
-                                className="pt-2 flex flex-col gag-2"
+                                className="flex items-center justify-between border-b-2
+                         border-b-gray-400 pb-1 text-gray-700"
                             >
-                                <CartProduct item={item}/>
+                                <p className="font-semibold md:text-lg">
+                                    Servicios ({cartQuantity})
+                                </p>
+                                <p className="font-semibold hidden md:block">
+                                    Subtotal
+                                </p>
                             </div>
-                        ))}
-                        <ResetCart/>
-                    </section>)
+
+                            {cart.map((item: StoreProduct) => (
+                                <div
+                                    key={item.id}
+                                    className="pt-2 flex flex-col gag-2"
+                                >
+                                    <CartProduct item={item}/>
+                                </div>
+                            ))}
+                            <ResetCart/>
+                        </section>)
                         :
-                            <section className="bg-white col-span-7 ls:col-span-5 xl:col-span-7 p-4 rounded-lg">
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex flex-col lg:flex-row gap-8">
+                        <section className="bg-white col-span-7 ls:col-span-5 xl:col-span-7 p-4 rounded-lg">
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-col lg:flex-row gap-8">
+                                    <Input
+                                        type="text"
+                                        label="Nombre de la factura"
+                                        labelPlacement="outside"
+                                        value={nombreFacturacion}
+                                        isDisabled
+                                    />
+                                </div>
+                                <Input
+                                    type="text"
+                                    label="Direccion de la factura"
+                                    labelPlacement="outside"
+                                    value={direccion}
+                                    isDisabled
+                                />
+                                <Input
+                                    type="text"
+                                    label="Cedula/ RUC/ Id"
+                                    labelPlacement="outside"
+                                    value={numeroCedula}
+                                    isDisabled
+                                />
+                                <h1 className="font-normal">Tarjeta para el pago:</h1>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
                                         <Input
                                             type="text"
-                                            label="Nombre de la factura"
+                                            label="Propietario de la tarjeta"
                                             labelPlacement="outside"
-                                            value={nombre}
+                                            value={nombreTarjeta}
                                             isDisabled
                                         />
-                                    </div>
-                                    <Input
-                                        type="text"
-                                        label="Direccion de la factura"
-                                        labelPlacement="outside"
-                                        value={direccion}
-                                        isDisabled
-                                    />
-                                    <Input
-                                        type="text"
-                                        label="Cedula/ RUC/ Id"
-                                        labelPlacement="outside"
-                                        value={numeroCedula}
-                                        isDisabled
-                                    />
-                                    <h1 className="font-normal">Tarjeta para el pago:</h1>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <Input
-                                                type="text"
-                                                label="Calle Secundaria"
-                                                labelPlacement="outside"
-                                                value={nombreTarjeta}
-                                                isDisabled
-                                            />
-                                            <Input
-                                                type="text"
-                                                label="Referencia"
-                                                labelPlacement="outside"
-                                                className="pt-2"
-                                                value={numeroTarjeta}
-                                                isDisabled
-                                            />
-                                        </div>
-
+                                        <Input
+                                            type="text"
+                                            label="Numero de la tarjeta"
+                                            labelPlacement="outside"
+                                            className="pt-2"
+                                            value={numeroTarjeta}
+                                            isDisabled
+                                        />
                                     </div>
 
                                 </div>
 
-                            </section>
+                            </div>
+
+                        </section>
                     }
                     <section
                         className="bg-white h-64 col-span-7 lg:col-span-2 p-4 rounded-lg
@@ -331,6 +356,7 @@ const Cart = () => {
                             confirmado={confirmado}
                             setConfirmado={setConfirmado}
                             region={region}
+                            registrarEvento={registrarEvento} // Pasar el método
                         />
 
                     </section>

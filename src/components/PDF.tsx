@@ -95,16 +95,12 @@ export default function PDF({ cliente, servicios }: PDFProps) {
   return (
     <Document>
       <Page style={styles.page}>
-        <Text style={styles.header}>Información del Cliente</Text>
+        <Text style={styles.header}>Comprobante de Pago</Text>
         <Image style={styles.image} src={logo} />
-        <Text style={styles.tableCellHeader}>Nombre</Text>
-        <Text style={styles.tableCell}>{cliente.nombre}</Text>
-        <Text style={styles.tableCellHeader}>Dirección</Text>
-        <Text style={styles.tableCell}>{cliente.direccion}</Text>
-        <Text>Cedula: {cliente.cedula}</Text>
-        <Text>Cedula: {cliente.correo}</Text>
-        <Text style={styles.tableCellHeader}>Tarjeta</Text>
-        <Text style={styles.tableCell}>{cliente.tarjeta}</Text>
+        <Text>NOMBRE: {cliente.nombre}</Text>
+        <Text>CEDULA: {cliente.cedula}</Text>
+        <Text>DIRECCION: {cliente.direccion}</Text>
+        <Text>TARJETA: {cliente.tarjeta}</Text>
         <Text style={styles.header}>Servicios Solicitados</Text>
         {servicios.map((servicio, index) => (
           <View key={index} style={styles.table}>

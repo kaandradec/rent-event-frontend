@@ -4,7 +4,7 @@ export const getEventos = async (
     correo: string,
 ) =>
     await authApi.put(
-        `/facturas/listar`,
+        `/eventos/listar`,
         JSON.stringify({
             correo: correo,
         }),
