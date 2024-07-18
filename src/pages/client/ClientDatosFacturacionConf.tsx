@@ -6,7 +6,6 @@ import {UserInfo} from "@/components/UserInfo";
 import {Button, Input} from "@nextui-org/react";
 import {useNavigate} from "react-router-dom";
 import {BotonVolver} from "@/components/BotonVolver.tsx";
-import {PencilIcon} from "@/components/icons/PencilIcon";
 
 
 export const ClientDatosFacturacionConf = () => {

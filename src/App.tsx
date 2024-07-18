@@ -19,17 +19,17 @@ import Services from './pages/client/Services.tsx'
 import { ClientTelefonoConf } from "@/pages/client/ClientTelefonoConf.tsx";
 import { ClientPassConf } from "@/pages/client/ClientPassConf.tsx";
 import Cart from './pages/client/Cart.tsx'
-import {ClienteRegionConf} from "@/pages/client/ClienteRegionConf.tsx";
-import {ClientePreguntaSeguraConf} from "@/pages/client/ClientePreguntaSeguraConf.tsx";
-import {RecuperarContrasenia} from "@/pages/client/RecuperarContrasenia.tsx";
-import {MyEvents} from "@/pages/client/MyEvents.tsx";
+import { ClienteRegionConf } from "@/pages/client/ClienteRegionConf.tsx";
+import { ClientePreguntaSeguraConf } from "@/pages/client/ClientePreguntaSeguraConf.tsx";
+import { RecuperarContrasenia } from "@/pages/client/RecuperarContrasenia.tsx";
+import { MyEvents } from "@/pages/client/MyEvents.tsx";
+import PdfComprobante from './pages/client/PdfComprobante.tsx'
 import {ClientTarjetaConf} from "@/pages/client/ClientTarjetaConf.tsx";
 import {ClientDatosFacturacionConf} from "@/pages/client/ClientDatosFacturacionConf.tsx";
 
 const USER_PATH = '/user'
 
 function App() {
-
     return (
         <main>
             <BrowserRouter>
@@ -55,7 +55,7 @@ function App() {
                     <Route path='/account/config/pass' element={<ClientPassConf />} />
                     <Route path='/account/config/region' element={<ClienteRegionConf />} />
                     <Route path='/account/config/pregunta-segura' element={<ClientePreguntaSeguraConf />} />
-
+                    <Route path='/comprobante' element={<PdfComprobante />} />
                     {/* Rutas protegidas, solo acceso a usuario(Empleado)*/}
                     <Route element={<ProtectedRoute />}>
                         <Route path={`${USER_PATH}/dashboard`} element={<Dashboard />} />
