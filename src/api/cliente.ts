@@ -97,12 +97,29 @@ export const registerEventoClient = async (
     referencia: string,
     asistentes: string,
     cart: StoreProduct[]
-) =>
+) => {
+    console.log(
+        correo
+        +nombreTargeta
+        +numeroTarjeta
+        +fecha
+        +direccionFactura
+        +nombreFactura
+        +pais
+        +ciudad
+        +nombreEvento
+        +descripcionEvento
+        +callePrincipal
+        +calleSecundaria
+        +referencia
+        +asistentes
+        +cart
+    )
     await tokenApi.put(
         `/eventos/generar`,
         JSON.stringify({
-            correo: correo ,
-            nombreTargeta: nombreTargeta ,
+            correo: correo,
+            nombreTargeta: nombreTargeta,
             numeroTarjeta: numeroTarjeta,
             fecha: fecha,
             direccionFactura: direccionFactura,
@@ -125,6 +142,7 @@ export const registerEventoClient = async (
             // withCredentials: true,
         }
     );
+}
 export const actualizarDatosFacturacionClient = async (
     correo: string ,
     nombre: string ,
