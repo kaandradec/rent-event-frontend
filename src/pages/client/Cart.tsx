@@ -1,4 +1,5 @@
 import {useStore} from "@/store/store";
+
 import {StoreProduct} from "../../../types";
 import CartProduct from "@/components/CartProduct";
 import ResetCart from "@/components/ResetCart";
@@ -7,7 +8,7 @@ import {useEffect, useState} from "react";
 import {DatePicker, Input} from "@nextui-org/react";
 import {getLocalTimeZone, now} from "@internationalized/date";
 import {BotonPaises} from "@/components/BotonPaises.tsx";
-import {obtenerDatosFacturacionCliente, obtenerTarjetasCliente, registerEventoClient} from "@/api/cliente.ts";
+import {obtenerDatosFacturacionCliente, obtenerTarjetasCliente} from "@/api/cliente.ts";
 import {AxiosError} from "axios";
 import {useAuthStore} from "@/store/auth.ts";
 import {InformacionPago} from "@/components/InformacionPago.tsx";
@@ -27,7 +28,7 @@ const Cart = () => {
     const [calleSecundaria, setCalleSecundaria] = useState<string>("");
     const [referencia, setReferencia] = useState<string>("");
     // Fecha y hora del evento validación
-    const [fecha, setFecha] = useState("");
+    const [fecha, setFecha] = useState(now(getLocalTimeZone()).add({days: 3}));
     const [confirmado, setConfirmado] = useState(false);
     // Transporte
     const [isSelected, setIsSelected] = useState(true);
@@ -70,31 +71,7 @@ const Cart = () => {
             console.log(errMsg);
         }
     };
-    const registrarEvento = async () => {
-        try {
-            if (correo == null) return
 
-            const response = await registerEventoClient(
-                correo, nombreTarjeta, numeroTarjeta, fecha,
-                direccion, nombreFacturacion, pais, region, nombreEvento,
-                descripcion, callePrincipal, calleSecundaria, referencia,
-                asistentes.toString(), cart);
-
-        } catch (err) {
-            const error = err as AxiosError;
-            if (!error?.response) {
-                setErrMsg("El servidor no responde");
-            } else if (
-                error.response?.status === 409 ||
-                error.response?.data === "Bad credentials"
-            ) {
-                setErrMsg("Credenciales incorrectas");
-            } else {
-                setErrMsg("Error desconocido");
-            }
-            console.log(errMsg);
-        }
-    };
 
     useEffect(() => {
         fetchClient();
@@ -109,8 +86,8 @@ const Cart = () => {
         let total: number = 0;
         cart.map((item) => {
             {
-                return item.quantity
-                    ? (total += item.quantity * item.costo)
+                return item.quantity ?
+                    (total += item.quantity * item.costo)
                     : (total += item.costo);
             }
         });
@@ -138,7 +115,6 @@ const Cart = () => {
         total += totalIva();
         return total;
     };
-
 
     return (
 
@@ -179,7 +155,7 @@ const Cart = () => {
                                                 minValue={now(getLocalTimeZone()).add({days: 2})}
                                                 maxValue={now(getLocalTimeZone()).add({months: 2})}
                                                 defaultValue={now(getLocalTimeZone()).add({days: 3})}
-                                                onChange={(value) => setFecha(value.toString)}
+                                                onChange={(value) => setFecha(value)}
                                                 lang="es"
                                                 description="(Mes/Día/Año, Hora) El evento debe ser programado con al menos 2 días de anticipación y máximo 2 meses de anticipación."
                                             />
@@ -292,7 +268,7 @@ const Cart = () => {
                                     <ResetCart/>
                                 </section>)
                             :
-                            <InformacionPago/>
+                            <InformacionPago setTotal={totalPrice()} />
                         }
                         <section
                             className="bg-white h-64 col-span-7 lg:col-span-2 p-4 rounded-lg
@@ -310,7 +286,22 @@ const Cart = () => {
                                 confirmado={confirmado}
                                 setConfirmado={setConfirmado}
                                 region={region}
-                                registrarEvento={registrarEvento}
+                                correo={correo}
+                                nombreTargeta={nombreTarjeta}
+                                numeroTarjeta={numeroTarjeta}
+                                fecha={fecha}
+                                direccionFactura={direccion}
+                                nombreFactura={nombreFacturacion}
+                                pais={pais}
+                                ciudad={region}
+                                numeroCedula ={numeroCedula}
+                                nombreEvento={nombreEvento}
+                                descripcionEvento={descripcion}
+                                callePrincipal={callePrincipal}
+                                calleSecundaria={calleSecundaria}
+                                referencia={referencia}
+                                cart={cart}
+
                             />
 
                         </section>

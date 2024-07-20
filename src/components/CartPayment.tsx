@@ -1,13 +1,12 @@
-import {Coins} from "lucide-react";
-import {Link, useNavigate} from "react-router-dom";
+import { Coins } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import FormattedPrice from "./FormattedPrice";
-import {useAuthStore} from "@/store/auth";
-import {Button, Checkbox, Input} from "@nextui-org/react";
-import {SetStateAction, useEffect, useState} from "react";
-
-/**
- * CartPayment component displays the payment details section in the cart.
- */
+import { useAuthStore } from "@/store/auth";
+import { Button, Checkbox, Input } from "@nextui-org/react";
+import { SetStateAction, useEffect, useState } from "react";
+import {registerEventoClient} from "@/api/cliente.ts";
+import {AxiosError} from "axios";
+import {StoreProduct} from "../../types.ts";
 
 interface CartPaymentProps {
     setAsistentes: React.Dispatch<SetStateAction<number>>;
@@ -21,8 +20,21 @@ interface CartPaymentProps {
     confirmado: boolean;
     setConfirmado: (valor: boolean) => boolean;
     region: string;
-    registrarEvento: () => Promise<void>; // Nuevo método
-
+    correo: string ;
+    nombreTargeta: string ;
+    numeroTarjeta: string;
+    fecha: string;
+    direccionFactura: string;
+    nombreFactura: string;
+    pais: string;
+    ciudad: string;
+    numeroCedula:number;
+    nombreEvento: string;
+    descripcionEvento: string;
+    callePrincipal: string;
+    calleSecundaria: string;
+    referencia: string;
+    cart: StoreProduct[]
 }
 
 const CartPayment = ({
@@ -37,21 +49,61 @@ const CartPayment = ({
                          confirmado,
                          setConfirmado,
                          region,
-                         registrarEvento // Nuevo método
-
+                         correo,
+                         nombreTargeta,
+                         numeroTarjeta,
+                         fecha,
+                         direccionFactura,
+                         nombreFactura,
+                         pais,
+                         ciudad,
+                         numeroCedula,
+                         nombreEvento,
+                         descripcionEvento,
+                         callePrincipal,
+                         calleSecundaria,
+                         referencia,
+                         cart,
                      }: CartPaymentProps) => {
     // const cart = useStore((state) => state.cart);
 
     const rol = useAuthStore.getState().rol;
-    const [valido, setValido] = useState<boolean>(false)
+    const [valido, setValido] = useState<boolean>(false);
+    const [errMsg, setErrMsg] = useState<string>("");
 
     const navigate = useNavigate();
     useEffect(() => {
         setValido(region == "" || region === "Ciudad" || region === "Elige una ciudad")
     }, [region]);
 
-    return (
+    const registrarEvento = async () => {
+        try {
+            if (correo == null) return;
 
+            const response = await registerEventoClient(
+                correo, nombreTargeta, numeroTarjeta, fecha.toString(),
+                direccionFactura, nombreFactura, pais, ciudad,numeroCedula, nombreEvento,
+                descripcionEvento, callePrincipal, calleSecundaria, referencia,
+                asistentes.toString(), cart);
+
+            console.log(response);
+        } catch (err) {
+            const error = err as AxiosError;
+            if (!error?.response) {
+                setErrMsg("El servidor no responde");
+            } else if (
+                error.response?.status === 409 ||
+                error.response?.data === "Bad credentials"
+            ) {
+                setErrMsg("Credenciales incorrectas");
+            } else {
+                setErrMsg("Error desconocido");
+            }
+            console.log(errMsg);
+        }
+    };
+
+    return (
         <>
             <section className="flex flex-col gap-4 mt-24">
                 <div>
@@ -74,71 +126,49 @@ const CartPayment = ({
                     </div>
                 </div>
                 <div className="flex gap-2 text-[0.8rem] md:text-sm space-y-2">
-          <span
-              className="bg-green-600 rounded-full px-1 h-6 w-6 flex
-                    items-center justify-center mt-1 text-white text-sm"
-          >
-            <Coins/>
-          </span>
+                    <span className="bg-green-600 rounded-full px-1 h-6 w-6 flex items-center justify-center mt-1 text-white text-sm">
+                        <Coins />
+                    </span>
                     <p>
                         Se cobrará un abono del 50% para confirmar la reserva.
                         El pago restante deberá realizarse 24 horas antes del evento en la sección
+                        <span onClick={() => navigate("/orders")} className="text-blue-600 hover:text-blue-800 cursor-pointer"> MIS ORDENES</span>
+                    </p>
+                </div>
 
-                                <span
-                                    onClick={() => navigate("/orders")}
-                                    className="text-blue-600 hover:text-blue-800 cursor-pointer"
-                                > MIS ORDENES</span>
-                            </p>
-                        </div>
-
-
-                <p
-                    className="flex items-center justify-between px-2
-            font-semibold text-sm md:text-base"
-                >
+                <p className="flex items-center justify-between px-2 font-semibold text-sm md:text-base">
                     Servicios:
                     <span className="font-semibold md:font-bold text-sm md:text-lg text-cPrimary">
-            <FormattedPrice amount={subtotal()}/>
-          </span>
+                        <FormattedPrice amount={subtotal()} />
+                    </span>
                 </p>
 
-                <p
-                    className="flex items-center justify-between px-2
-            font-semibold text-sm md:text-base"
-                >
+                <p className="flex items-center justify-between px-2 font-semibold text-sm md:text-base">
                     Transporte:
                     <span className="font-semibold md:font-bold text-sm md:text-lg text-cPrimary">
-            {
-                asistentes > 20 ? <FormattedPrice amount={isSelected ? costoTransporte() : 0}/> : "Gratis"
-            }
-          </span>
+                        {asistentes > 20 ? <FormattedPrice amount={isSelected ? costoTransporte() : 0} /> : "Gratis"}
+                    </span>
                 </p>
 
-                <p
-                    className="flex items-center justify-between px-2
-            font-semibold text-sm md:text-base"
-                >
+                <p className="flex items-center justify-between px-2 font-semibold text-sm md:text-base">
                     IVA:
                     <span className="font-semibold md:font-bold text-sm md:text-lg text-cPrimary">
-            <FormattedPrice amount={totalIva()}/>
-          </span>
+                        <FormattedPrice amount={totalIva()} />
+                    </span>
                 </p>
 
-                <p
-                    className="flex items-center justify-between px-2
-            font-semibold text-sm md:text-base"
-                >
+                <p className="flex items-center justify-between px-2 font-semibold text-sm md:text-base">
                     Total:
                     <span className="font-semibold md:font-bold text-sm md:text-lg text-cPrimary">
-            <FormattedPrice amount={totalPrice()}/>
-          </span>
+                        <FormattedPrice amount={totalPrice()} />
+                    </span>
                 </p>
                 <div className="flex flex-col items-center text-sm space-y-2">
                     {
                         rol ? (
                                 confirmado ? (<Button
                                         onClick={() => {
-                                            registrarEvento
+                                            registrarEvento()
                                             // navigate("/comprobante")
                                         }}
 
@@ -147,7 +177,7 @@ const CartPayment = ({
                                     </Button>) :
                                     <div>
                                         {/*//todo: poner !*/}
-                                        {valido? (
+                                        {!valido? (
                                                 <div>
                                                     <Button
                                                         onClick={() => {
@@ -185,8 +215,7 @@ const CartPayment = ({
                 </div>
             </section>
         </>
-    )
-        ;
+    );
 };
 
 export default CartPayment;
