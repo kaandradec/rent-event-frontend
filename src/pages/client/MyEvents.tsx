@@ -3,7 +3,7 @@ import {useAuthStore} from "@/store/auth";
 import {AxiosError} from "axios";
 import {getEventos} from "@/api/eventos.ts";
 import {Event} from "@/components/Evento.tsx"
-import {CrearEventoButton} from "@/components/CrearEventoButton";
+import {BotonCrearEvento} from "@/components/BotonCrearEvento";
 
 export const MyEvents = () => {
     const correo = useAuthStore().correo,
@@ -65,7 +65,7 @@ export const MyEvents = () => {
                     ) : (
                         <div>
                             <p className="text-primary py-4">No hay eventos disponibles</p>
-                            <CrearEventoButton/>
+                            <BotonCrearEvento/>
                         </div>
                     )}
                 </section>

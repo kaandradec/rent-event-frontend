@@ -1,5 +1,5 @@
 import "../styles/videoStyle.css";
-import {CrearEventoButton} from "@/components/CrearEventoButton.jsx";
+import {BotonCrearEvento} from "@/components/BotonCrearEvento.jsx";
 
 export default function VideoLanding() {
 
@@ -18,7 +18,7 @@ export default function VideoLanding() {
                 <h2 className="text-lg md:text-xl text-white font-semibold text-center px-1">
                     Empieza a crear tu evento y disfruta de una experiencia inolvidable
                 </h2>
-                <CrearEventoButton/>
+                <BotonCrearEvento/>
             </section>
 
             <video

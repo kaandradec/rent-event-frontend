@@ -15,7 +15,7 @@ const ResetCart = () => {
       }
     >
       <RotateCcw className="text-base md:text-lg stroke-2" />
-      <span className="text-sm md:text-base">Resetear Carrito</span>
+      <span className="text-sm md:text-base ">Vaciar Carrito</span>
     </button>
   );
 };

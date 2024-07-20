@@ -36,6 +36,9 @@ export const BotonPaises: React.FC<BotonPaisesProps> = ({setSelectedCountry, set
     const [city, setCity] = useState<string>("Ciudad");
 
     useEffect(() => {
+        setCity("Elige una ciudad")
+    }, [country]);
+    useEffect(() => {
         const requestOptions = {
             method: 'GET',
             url: "https://countriesnow.space/api/v0.1/countries/population/cities"

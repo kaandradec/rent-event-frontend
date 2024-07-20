@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import FormattedPrice from "./FormattedPrice";
 import {useAuthStore} from "@/store/auth";
 import {Button, Checkbox, Input} from "@nextui-org/react";
-import {SetStateAction} from "react";
+import {SetStateAction, useEffect, useState} from "react";
 
 /**
  * CartPayment component displays the payment details section in the cart.
@@ -43,10 +43,15 @@ const CartPayment = ({
     // const cart = useStore((state) => state.cart);
 
     const rol = useAuthStore.getState().rol;
+    const [valido, setValido] = useState<boolean>(false)
 
     const navigate = useNavigate();
+    useEffect(() => {
+        setValido(region == "" || region === "Ciudad" || region === "Elige una ciudad")
+    }, [region]);
 
     return (
+
         <>
             <section className="flex flex-col gap-4 mt-24">
                 <div>
@@ -79,12 +84,13 @@ const CartPayment = ({
                         Se cobrará un abono del 50% para confirmar la reserva.
                         El pago restante deberá realizarse 24 horas antes del evento en la sección
 
-                        <span
-                            onClick={() => navigate("/orders")}
-                            className="text-blue-600 hover:text-blue-800 cursor-pointer"
-                        > MIS ORDENES</span>
-                    </p>
-                </div>
+                                <span
+                                    onClick={() => navigate("/orders")}
+                                    className="text-blue-600 hover:text-blue-800 cursor-pointer"
+                                > MIS ORDENES</span>
+                            </p>
+                        </div>
+
 
                 <p
                     className="flex items-center justify-between px-2
@@ -133,20 +139,21 @@ const CartPayment = ({
                                 confirmado ? (<Button
                                         onClick={() => {
                                             registrarEvento
-                                            navigate("/comprobante")
+                                            // navigate("/comprobante")
                                         }}
 
                                         color="success" size="lg" className="font-bold text-white">
-                                        Proceder con la compra
+                                        Proceder a la reserva
                                     </Button>) :
                                     <div>
                                         {/*//todo: poner !*/}
-                                        {!(region == "" || region == "Ciudad") ? (
+                                        {valido? (
                                                 <div>
                                                     <Button
                                                         onClick={() => {
-                                                             setConfirmado(true) }}
-                                                        color= "success"
+                                                            setConfirmado(true)
+                                                        }}
+                                                        color="success"
                                                         size="lg"
                                                         className="font-bold text-white"
                                                     >
@@ -156,9 +163,10 @@ const CartPayment = ({
                                             ) :
                                             (<Button
                                                 onClick={() => {
-                                                     ""
+                                                    ""
                                                 }}
-                                                color={ "default"}
+                                                type={"button"}
+                                                color={"default"}
                                                 size="lg"
                                                 className="font-bold text-white"
                                             > Confirmar
