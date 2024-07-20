@@ -1,4 +1,4 @@
-import {authApi} from "@/lib/axios";
+import { authApi } from "@/lib/axios";
 
 export const getEventos = async (
     correo: string,
@@ -15,3 +15,7 @@ export const getEventos = async (
             // withCredentials: true,
         }
     );
+
+
+export const getEventosDeCliente = async (correo: string) =>
+    await authApi.get(`/eventos/listarTodos/${correo}`)
