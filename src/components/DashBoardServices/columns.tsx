@@ -95,12 +95,12 @@ export function useColumns() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
+                <span className="sr-only">Abrir menu</span>
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(servicio.code)}
               >
@@ -112,7 +112,6 @@ export function useColumns() {
               >
                 Actualizar
               </DropdownMenuItem>
-              <DropdownMenuItem>Eliminar</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu >
         )

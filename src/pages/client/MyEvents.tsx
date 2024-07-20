@@ -1,17 +1,55 @@
-import {useEffect, useState} from "react";
-import {useAuthStore} from "@/store/auth";
-import {AxiosError} from "axios";
-import {getEventos} from "@/api/eventos.ts";
-import {Event} from "@/components/Evento.tsx"
-import {CrearEventoButton} from "@/components/CrearEventoButton";
+import { useEffect, useState } from "react";
+import { useAuthStore } from "@/store/auth";
+import { AxiosError, AxiosResponse } from "axios";
+import { getEventos, getEventosDeCliente } from "@/api/eventos.ts";
+import { Event } from "@/components/Evento.tsx"
+import { CrearEventoButton } from "@/components/CrearEventoButton";
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image } from "@nextui-org/react";
+
+interface Evento {
+    nombre: string;
+    fecha: string;
+    hora: string;
+    pais: string;
+    region: string;
+    callePrincipal: string;
+    calleSecundaria: string;
+    referenciaDireccion: string;
+    iva: number;
+    precio: number;
+    pagos: Pago[]
+}
+
+interface Pago {
+    fecha: string,
+    monto: number
+}
 
 export const MyEvents = () => {
-    const correo = useAuthStore().correo,
-        nombre = useAuthStore().nombre,
-        apellido = useAuthStore().apellido,
-        [errMsg, setErrMsg] = useState("");
-    const [eventos, setEventos] = useState([]);
-    const [fechas, setFechas] = useState([]);
+    const { correo, nombre, apellido } = useAuthStore();
+    const [errMsg, setErrMsg] = useState("");
+
+    const [eventos, setEventos] = useState<Evento[]>();
+
+    const mapearEventos = (eventos: AxiosResponse) => {
+        return eventos.map(evento => {
+            const eventoMapeado: Evento = {
+                nombre: evento.nombre,
+                fecha: evento.fecha,
+                hora: evento.hora,
+                pais: evento.pais,
+                region: evento.region,
+                callePrincipal: evento.callePrincipal,
+                calleSecundaria: evento.calleSecundaria,
+                referenciaDireccion: evento.referenciaDireccion,
+                iva: evento.iva,
+                precio: evento.precio,
+                pagos: evento.pagos
+            }
+            return eventoMapeado;
+        }
+        )
+    }
 
     const fetchEventos = async () => {
         try {
@@ -19,9 +57,12 @@ export const MyEvents = () => {
                 setErrMsg("Correo no definido");
             }
             if (correo != null) {
-                const response = await getEventos(correo);
-                setEventos(response.data.nombreEvento);
-                setFechas(response.data.fechaEvento);
+                const response = await getEventosDeCliente(correo);
+
+                const eventos: Evento[] = mapearEventos(response.data)
+
+                setEventos(eventos)
+                console.log(response.data)
             }
         } catch (err) {
             const error = err as AxiosError;
@@ -49,7 +90,7 @@ export const MyEvents = () => {
                 <section className="max-w-sm max-h-fit border-2 rounded-3xl p-5 mx-5">
                     <div className="container flex justify-center items-center h-screen ">
                         <div className="flex flex-col items-center">
-                            <img src="/lunacat.png" className="rounded-full border-4 border-gray-200"/>
+                            <img src="/lunacat.png" className="rounded-full border-4 border-gray-200" />
                             <p className="mt-4 text-primary">{correo}</p>
                             <p className="text-primary">{nombre + " " + apellido}</p>
                         </div>
@@ -57,19 +98,75 @@ export const MyEvents = () => {
                 </section>
                 <section className="w-full">
                     <h1 className="font-semibold text-4xl pb-4">Mis Eventos:</h1>
-
-                    {eventos.length > 0 ? (
+                    {/* {eventos ? (
                         eventos.map((evento, index) => (
-                            <Event key={index} nombre={evento} fecha={fechas[index]}/>
+                            <Event key={index} nombre={evento.} fecha={fechas[index]} />
                         ))
                     ) : (
                         <div>
                             <p className="text-primary py-4">No hay eventos disponibles</p>
-                            <CrearEventoButton/>
+                            <CrearEventoButton />
                         </div>
-                    )}
+                    )} */}
+                    {
+                        eventos ?
+                            eventos?.map((event: Evento, index: number) => (<EventoCard evento={event} id={index} />))
+                            : "Sin eventos"
+                    }
                 </section>
             </div>
         </main>
     );
 };
+
+const EventoCard = ({ evento, id }: { evento: Evento, id: number }) => (
+    <Card className="w-full" key={id}>
+        <CardHeader className="flex gap-3">
+            <Image
+                alt="nextui logo"
+                height={40}
+                radius="sm"
+                src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+                width={40}
+            />
+            <div className="flex flex-col">
+                <p className="text-md">{evento.nombre}</p>
+                <p className="text-small text-default-500">{evento.pais + ' - ' + evento.region}</p>
+                <p className="text-small text-default-500">{evento.fecha + ' - ' + evento.hora}</p>
+            </div>
+        </CardHeader>
+        <Divider />
+        <CardBody>
+            <p><strong>Dirección:</strong>{` ${evento.callePrincipal}, ${evento.calleSecundaria}, ${evento.referenciaDireccion}`}</p>
+            <p><strong>Precio Total a pagar:</strong>{` ${evento.precio} $`}</p>
+            <Divider className="my-4" />
+            {evento.pagos.length === 1 ?
+                <>
+                    <span className="font-bold"> - Primer pago</span>
+                    <p><strong>Fecha de cobro:</strong> {JSON.stringify(evento.pagos[0].fecha)}</p>
+                    <p><strong>Monto:</strong> {JSON.stringify(evento.pagos[0].monto)}</p>
+
+                </> : ""
+            }
+            {evento.pagos.length === 2 ?
+                <>
+                    <span className="font-bold"> - Segundo pago</span>
+                    <p><strong>Fecha de cobro:</strong> {JSON.stringify(evento.pagos[1].fecha)}</p>
+                    <p><strong>Monto:</strong> {JSON.stringify(evento.pagos[1].monto)}</p>
+
+                </> : ""
+            }
+        </CardBody>
+        <Divider />
+        <CardFooter>
+            { // Si solo hay un pago, se muestra el botón para completar el pago
+                evento.pagos.length === 1 ?
+                    <Button color="success" onClick={() => alert('Enlazar a ventana de completar pago')}>
+                        Completar pago
+                    </Button> : <Button color="warning" onClick={() => alert('Enlazar a ventana para ver y descargar factura')}>
+                        Ver Factura
+                    </Button>
+            }
+        </CardFooter>
+    </Card>
+)

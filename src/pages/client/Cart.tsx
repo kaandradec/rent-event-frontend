@@ -1,17 +1,17 @@
-import {useStore} from "@/store/store";
-import {StoreProduct} from "../../../types";
+import { useStore } from "@/store/store";
+import { StoreProduct } from "../../../types";
 
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import CartProduct from "@/components/CartProduct";
 import ResetCart from "@/components/ResetCart";
 import CartPayment from "@/components/CartPayment";
-import {useEffect, useState} from "react";
-import {DatePicker, Input} from "@nextui-org/react";
-import {getLocalTimeZone, now} from "@internationalized/date";
-import {BotonPaises} from "@/components/BotonPaises.tsx";
-import {obtenerDatosFacturacionCliente, obtenerTarjetasCliente, registerEventoClient} from "@/api/cliente.ts";
-import {AxiosError} from "axios";
-import {useAuthStore} from "@/store/auth.ts";
+import { useEffect, useState } from "react";
+import { DatePicker, Input } from "@nextui-org/react";
+import { getLocalTimeZone, now } from "@internationalized/date";
+import { BotonPaises } from "@/components/BotonPaises.tsx";
+import { obtenerDatosFacturacionCliente, obtenerTarjetasCliente, registerEventoClient } from "@/api/cliente.ts";
+import { AxiosError } from "axios";
+import { useAuthStore } from "@/store/auth.ts";
 
 /**
  * Cart component displays the user's shopping cart with a list of cart items.
@@ -174,9 +174,9 @@ const Cart = () => {
                                         hideTimeZone
                                         isRequired
                                         showMonthAndYearPickers
-                                        minValue={now(getLocalTimeZone()).add({days: 2})}
-                                        maxValue={now(getLocalTimeZone()).add({months: 2})}
-                                        defaultValue={now(getLocalTimeZone()).add({days: 3})}
+                                        minValue={now(getLocalTimeZone()).add({ days: 2 })}
+                                        maxValue={now(getLocalTimeZone()).add({ months: 2 })}
+                                        defaultValue={now(getLocalTimeZone()).add({ days: 3 })}
                                         lang="es"
                                         description="(Mes/Día/Año, Hora) El evento debe ser programado con al menos 2 días de anticipación y máximo 2 meses de anticipación."
                                     />
@@ -260,7 +260,7 @@ const Cart = () => {
                                     </div>
                                     <div>
                                         <h3 className="font-normal">Direccion:</h3>
-                                        <BotonPaises setSelectedCountry={setPais} setSelectedCity={setRegion}/>
+                                        <BotonPaises setSelectedCountry={setPais} setSelectedCity={setRegion} />
                                     </div>
                                 </div>
 
@@ -283,10 +283,10 @@ const Cart = () => {
                                     key={item.id}
                                     className="pt-2 flex flex-col gag-2"
                                 >
-                                    <CartProduct item={item}/>
+                                    <CartProduct item={item} />
                                 </div>
                             ))}
-                            <ResetCart/>
+                            <ResetCart />
                         </section>)
                         :
                         <section className="bg-white col-span-7 ls:col-span-5 xl:col-span-7 p-4 rounded-lg">

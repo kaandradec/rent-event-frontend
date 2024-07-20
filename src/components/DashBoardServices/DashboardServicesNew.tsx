@@ -112,6 +112,8 @@ export default function DashboardServicesNew({ code, setSubpage }: DashboardServ
     formData.append('estado', state);
     formData.append('costo', cost.toString());
 
+    console.log("TIPO", type);
+
     try {
       const response = await dataFormApi.post(`/servicios/guardar`,
         formData,
@@ -298,12 +300,12 @@ const DetallesServicio = ({ name, setName, type, setType, description, setDescri
                 <SelectItem value="CATERING">Catering</SelectItem>
                 <SelectItem value="DECORACION">Decoración</SelectItem>
                 <SelectItem value="ENTRETENIMIENTO">Entretenimiento</SelectItem>
-                <SelectItem value="FOTOGRAFIA">Fotografía</SelectItem>
-                <SelectItem value="MUSICA">Música</SelectItem>
+                <SelectItem value="FOTOGRAFIAYVIDEO">Fotografía y video</SelectItem>
+                <SelectItem value="SONIDO">Sonido</SelectItem>
                 <SelectItem value="ILUMINACION">Iluminación</SelectItem>
                 <SelectItem value="SEGURIDAD">Seguridad</SelectItem>
                 <SelectItem value="TRANSPORTE">Transporte</SelectItem>
-                <SelectItem value="OTROS">Otros</SelectItem>
+                <SelectItem value="OTRO">Otro</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -359,7 +361,9 @@ const ServiceProvider = ({ provider, setProvider }: ServiceProviderProps) => {
                 <SelectValue placeholder="Selecciona el proveedor" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Proveedor1">Proveedor1</SelectItem>
+                <SelectItem value="Renta Todo">Renta Todo</SelectItem>
+                <SelectItem value="Lumiere">Lumiere</SelectItem>
+                <SelectItem value="Grupo Ambrosía">Grupo Ambrosía</SelectItem>
               </SelectContent>
             </Select>
           </div>
