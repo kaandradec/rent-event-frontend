@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/auth";
 import { AxiosError, AxiosResponse } from "axios";
-import { getEventos, getEventosDeCliente } from "@/api/eventos.ts";
-import { Event } from "@/components/Evento.tsx"
-import { CrearEventoButton } from "@/components/CrearEventoButton";
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image } from "@nextui-org/react";
+import { getEventosDeCliente } from "@/api/eventos";
+import { BotonCrearEvento } from "@/components/BotonCrearEvento";
 
 interface Evento {
     nombre: string;
@@ -30,6 +29,7 @@ export const MyEvents = () => {
     const [errMsg, setErrMsg] = useState("");
 
     const [eventos, setEventos] = useState<Evento[]>();
+
 
     const mapearEventos = (eventos: AxiosResponse) => {
         return eventos.map(evento => {
@@ -98,20 +98,16 @@ export const MyEvents = () => {
                 </section>
                 <section className="w-full">
                     <h1 className="font-semibold text-4xl pb-4">Mis Eventos:</h1>
-                    {/* {eventos ? (
-                        eventos.map((evento, index) => (
-                            <Event key={index} nombre={evento.} fecha={fechas[index]} />
-                        ))
-                    ) : (
-                        <div>
-                            <p className="text-primary py-4">No hay eventos disponibles</p>
-                            <CrearEventoButton/>
-                        </div>
-                    )} */}
                     {
-                        eventos ?
-                            eventos?.map((event: Evento, index: number) => (<EventoCard evento={event} id={index} />))
-                            : "Sin eventos"
+                        eventos && (
+
+                            eventos?.length > 0 ?
+                                eventos?.map((event: Evento, index: number) => (<EventoCard evento={event} key={index} />))
+                                : <div>
+                                    <p className="text-primary py-4">No hay eventos disponibles</p>
+                                    <BotonCrearEvento />
+                                </div>
+                        )
                     }
                 </section>
             </div>
@@ -119,8 +115,8 @@ export const MyEvents = () => {
     );
 };
 
-const EventoCard = ({ evento, id }: { evento: Evento, id: number }) => (
-    <Card className="w-full" key={id}>
+const EventoCard = ({ evento, key }: { evento: Evento, key: number }) => (
+    <Card className="w-full">
         <CardHeader className="flex gap-3">
             <Image
                 alt="nextui logo"
