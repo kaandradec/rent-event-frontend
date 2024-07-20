@@ -58,18 +58,20 @@ export const updateRegionRequestClient = async (
 export const registerTarjetaClient = async (
     correo: string ,
     nombre: string ,
-    tarjeta: string,
+    numero: string,
+    tipoTarjetaSeleccionada: string,
+    codSeguridad:string,
     mes: string,
-    anio: string,
-    codigo: string
+    anio: string
 ) =>
     await tokenApi.put(
         `/clientes/account/tarjeta/nueva`,
         JSON.stringify({
             correo: correo,
             nombre: nombre,
-            numero: tarjeta,
-            codSeguridad: codigo,
+            numero: numero,
+            tipoTarjetaSeleccionada: tipoTarjetaSeleccionada,
+            codSeguridad: codSeguridad,
             mes: mes,
             anio: anio
 

@@ -1,12 +1,13 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useAuthStore} from "@/store/auth";
-import { registerTarjetaClient} from "@/api/cliente.ts";
+import {registerTarjetaClient} from "@/api/cliente.ts";
 import {AxiosError} from "axios";
 import {UserInfo} from "@/components/UserInfo";
-import {Button} from "@nextui-org/react";
+import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
 import {Input} from "@/components/ui/input";
 import {useNavigate} from "react-router-dom";
 import {BotonVolver} from "@/components/BotonVolver.tsx";
+import {obtenerTiposTarjetas} from "@/api/tipos_tarjetas.ts";
 
 
 export const ClientTarjetaConf = () => {
@@ -21,6 +22,8 @@ export const ClientTarjetaConf = () => {
     const [numeroTarjeta, setNumeroTarjeta] = useState<string>("");
     const [month, setMonth] = useState("");
     const [year, setYear] = useState("");
+    const [tipoTarjeta, setTipoTarjeta] = useState<string[]>([]);
+    const [tipoTarjetaSeleccionada, setTipoTarjetaSeleccionada] = useState<string>("Tipo de Tarjeta");
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,9 +32,8 @@ export const ClientTarjetaConf = () => {
         if (!validInputs) return;
 
         try {
-
             if (correo == null) return
-            const mensaje = await registerTarjetaClient(correo, nombre, numeroTarjeta, month, year, prefijo);
+            const mensaje = await registerTarjetaClient(correo, nombre, numeroTarjeta, tipoTarjetaSeleccionada, prefijo, month, year);
             if (mensaje.status == 200) {
                 setSuccess(true)
                 setTimeout(() => {
@@ -68,6 +70,9 @@ export const ClientTarjetaConf = () => {
         } else if (year.length > 4 || parseInt(year, 10) < 2023) {
             setErrMsg("Año Incorrecto");
             return false;
+        }else if (tipoTarjetaSeleccionada === "" || tipoTarjetaSeleccionada === "Tipo de Tarjeta") {
+            setErrMsg("Selecciona una tarjeta");
+            return false;
         }
         return true;
     }
@@ -76,32 +81,38 @@ export const ClientTarjetaConf = () => {
         colorSuccess: 'text-green-500',
     };
 
-    // const fetchClient = async () => {
-    //     try {
-    //         if (correo == null) return
-    //
-    //         const details = await obtenerTarjetasCliente(correo);
-    //         setPrefijo(details.prefijo ?? "");
-    //         setNumeroTarjeta(details.telefono ?? "");
-    //     } catch (err) {
-    //         const error = err as AxiosError;
-    //         if (!error?.response) {
-    //             setErrMsg("El servidor no responde");
-    //         } else if (
-    //             error.response?.status === 409 ||
-    //             error.response?.data === "Bad credentials"
-    //         ) {
-    //             setErrMsg("Credenciales incorrectas");
-    //         } else {
-    //             setErrMsg("Error desconocido");
-    //         }
-    //         console.log(errMsg);
-    //     }
-    // };
+    const fetchClient = async () => {
+        try {
+            if (correo == null) return
 
-    // useEffect(() => {
-    //     fetchClient();
-    // }, []);
+            const details = await obtenerTiposTarjetas();
+
+            setTipoTarjeta(details.tipoTarjeta)
+            console.log(details)
+        } catch (err) {
+            const error = err as AxiosError;
+            if (!error?.response) {
+                setErrMsg("El servidor no responde");
+            } else if (
+                error.response?.status === 409 ||
+                error.response?.data === "Bad credentials"
+            ) {
+                setErrMsg("Credenciales incorrectas");
+            } else {
+                setErrMsg("Error desconocido");
+            }
+            console.log(errMsg);
+        }
+    };
+    const handleCitySelection = (keys: Set<string>) => {
+        const selected = Array.from(keys)[0];
+        setTipoTarjetaSeleccionada(selected);
+        console.log(tipoTarjetaSeleccionada)
+    };
+
+    useEffect(() => {
+        fetchClient();
+    }, []);
 
     return (
         <main className="mt-40">
@@ -116,6 +127,7 @@ export const ClientTarjetaConf = () => {
                                     <Input
                                         className="mb-3 h-11 border-2"
                                         color="primary"
+                                        autoCapitalize={"capitalize"}
                                         name="Número Telefonico"
                                         value={nombre}
                                         onChange={(e) => setNombre(e.target.value)}
@@ -125,17 +137,47 @@ export const ClientTarjetaConf = () => {
                                         className="mb-3 h-11 border-2"
                                         type="number"
                                         color="primary"
+                                        inputMode={"numeric"}
                                         value={numeroTarjeta}
                                         onChange={(e) => setNumeroTarjeta(e.target.value)}
                                     />
-                                    <h1>Codigo de seguridad</h1>
-                                    <Input
-                                        className="mb-3 h-11 border-2"
-                                        type="number"
-                                        color="primary"
-                                        value={prefijo}
-                                        onChange={(e) => setPrefijo(e.target.value)}
-                                    />
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <h1>Codigo de seguridad:</h1>
+                                        <h1>Tipo de Tarjeta:</h1>
+
+                                        <Input
+                                            className="mb-3 h-11 border-2"
+                                            type="number"
+                                            color="primary"
+                                            inputMode={"numeric"}
+                                            value={prefijo}
+                                            onChange={(e) => setPrefijo(e.target.value)}
+                                        />
+                                        <Dropdown>
+                                            <DropdownTrigger>
+                                                <Button variant="bordered" className="flex w-full h-11 rounded-sm border-input" aria-label={"Ciudad"}>
+                                                    {tipoTarjetaSeleccionada}
+                                                </Button>
+                                            </DropdownTrigger>
+                                            <DropdownMenu
+                                                variant="flat"
+                                                disallowEmptySelection
+                                                selectionMode="single"
+                                                aria-label={"Ciudad"}
+                                                selectedKeys={new Set([tipoTarjetaSeleccionada])}
+                                                onSelectionChange={(keys) => handleCitySelection(keys as Set<string>)}
+                                                className="max-h-60 overflow-auto"
+                                            >
+                                                {tipoTarjeta.length > 0 ? (
+                                                    tipoTarjeta.map((valor) => (
+                                                        <DropdownItem value={valor} key={valor}>{valor}</DropdownItem>
+                                                    ))
+                                                ) : (
+                                                    <DropdownItem key="no-cities">Intentalo mas tarde...</DropdownItem>
+                                                )}
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </div>
                                     <h1>Fecha Expiracion</h1>
                                     <div className="grid grid-cols-2 gap-3">
                                         <h1>Mes:</h1>
