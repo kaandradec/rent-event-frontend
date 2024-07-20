@@ -105,7 +105,7 @@ export const MyEvents = () => {
                     ) : (
                         <div>
                             <p className="text-primary py-4">No hay eventos disponibles</p>
-                            <CrearEventoButton />
+                            <CrearEventoButton/>
                         </div>
                     )} */}
                     {

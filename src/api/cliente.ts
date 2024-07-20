@@ -90,6 +90,7 @@ export const registerEventoClient = async (
     nombreFactura: string,
     pais: string,
     ciudad: string,
+    numeroCedula:number,
     nombreEvento: string,
     descripcionEvento: string,
     callePrincipal: string,
@@ -98,23 +99,7 @@ export const registerEventoClient = async (
     asistentes: string,
     cart: StoreProduct[]
 ) => {
-    console.log(
-        correo
-        +nombreTargeta
-        +numeroTarjeta
-        +fecha
-        +direccionFactura
-        +nombreFactura
-        +pais
-        +ciudad
-        +nombreEvento
-        +descripcionEvento
-        +callePrincipal
-        +calleSecundaria
-        +referencia
-        +asistentes
-        +cart
-    )
+
     await tokenApi.put(
         `/eventos/generar`,
         JSON.stringify({
@@ -126,6 +111,7 @@ export const registerEventoClient = async (
             nombreFactura: nombreFactura,
             pais: pais,
             ciudad: ciudad,
+            numeroCedula:numeroCedula,
             nombreEvento: nombreEvento,
             descripcionEvento: descripcionEvento,
             callePrincipal: callePrincipal,

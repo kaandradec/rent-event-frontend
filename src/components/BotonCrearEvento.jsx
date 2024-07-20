@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/react";
 import {useNavigate} from "react-router-dom";
 
-export const CrearEventoButton= () => {
+export const BotonCrearEvento= () => {
 const navigate = useNavigate();
     return (
             <Button
