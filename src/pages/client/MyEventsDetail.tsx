@@ -135,13 +135,14 @@ export default function MyEventsDetail() {
     }
 
   }
-  const isNotLoggedIn = () => {
-    return useAuthStore.getState().rol === "" || useAuthStore.getState().rol === null;
-  }
+  // const isNotLoggedIn = () => {
+  //   return useAuthStore.getState().rol === "" || useAuthStore.getState().rol === null;
+  // }
 
   useEffect(() => {
-    console.log(isNotLoggedIn());
-    !isNotLoggedIn() ? fetchEvento() : navigate("/")
+    // console.log(isNotLoggedIn());
+    // !isNotLoggedIn() ? fetchEvento() : navigate("/")
+    fetchEvento()
   }, [])
 
   return (
