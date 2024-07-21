@@ -86,14 +86,26 @@ export default function AccountMenu() {
                     <p className="font-semibold">Signed in as</p>
                     <p className="font-semibold">{useAuthStore().correo}</p>
                 </DropdownItem>
-                <DropdownItem color="success" onClick={myConfig}>
-                    My Settings
-                </DropdownItem>
-                <DropdownItem color="danger" onClick={logout}>
-                    Logout
-                </DropdownItem>
+                {rol?.startsWith('C') ?
+                    (
+                        <>
+                            <DropdownItem color="success" onClick={myConfig}>
+                                My Settings
+                            </DropdownItem>
+
+                        </>
+                    )
+                    :
+                    <DropdownItem isDisabled>
+                    </DropdownItem>
+                }
+                    <DropdownItem color="danger" onClick={logout}>
+                        Logout
+                    </DropdownItem>
+
             </DropdownMenu>
         </Dropdown>
 
-    );
+    )
+        ;
 }

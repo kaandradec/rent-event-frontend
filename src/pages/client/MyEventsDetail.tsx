@@ -4,6 +4,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { Coins, Download, Trash, Trash2, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
+import {useAuthStore} from "@/store/auth.ts";
 
 interface Evento {
   codigo: string;
@@ -81,9 +82,13 @@ export default function MyEventsDetail() {
     }
 
   }
+  const isNotLoggedIn = ()=>{
+     return  useAuthStore.getState().rol==="" || useAuthStore.getState().rol===null;
+  }
 
   useEffect(() => {
-    fetchEvento()
+    console.log(isNotLoggedIn());
+    !isNotLoggedIn()? fetchEvento():navigate("/")
   }, [])
 
 
