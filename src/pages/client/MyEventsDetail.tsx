@@ -5,6 +5,7 @@ import { Coins, Download, MessageCircle, Send, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
+import { useAuthStore } from '@/store/auth';
 
 interface Evento {
   codigo: string;
