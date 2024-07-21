@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/auth";
-import { obtenerTarjetasCliente, registerTarjetaClient } from "@/api/cliente.ts";
+import {obtenerTarjetasCliente, registerTarjetaClient} from "@/api/cliente.ts";
 import { AxiosError } from "axios";
 import { UserInfo } from "@/components/UserInfo";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
@@ -24,6 +24,8 @@ export const ClientTarjetaConf: React.FC = () => {
     const [tipoTarjeta, setTipoTarjeta] = useState<string[]>([]);
     const [tipoTarjetaSeleccionada, setTipoTarjetaSeleccionada] = useState<string>("Tipo de Tarjeta");
     const [listaTarjetas, setListaTarjetas] = useState<{ token: string; nombreTarjeta: string; }[]>([]);
+    const [reemplazar, setReemplazar] = useState(false);
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -32,7 +34,7 @@ export const ClientTarjetaConf: React.FC = () => {
 
         try {
             if (correo == null) return;
-            const mensaje = await registerTarjetaClient(correo, nombre, numeroTarjeta, tipoTarjetaSeleccionada, prefijo, month, year);
+            const mensaje =  await registerTarjetaClient(correo, nombre, numeroTarjeta, tipoTarjetaSeleccionada, prefijo, month, year);
             if (mensaje.status === 200) {
                 setSuccess(true);
                 setTimeout(() => {
@@ -122,7 +124,7 @@ export const ClientTarjetaConf: React.FC = () => {
                 <form onSubmit={handleSubmit}>
                     <UserInfo />
                     <div className="container flex align-super content-center">
-                        {nuevo ? (
+                        {nuevo || reemplazar? (
                             <div className="flex-auto">
                                 <h1>Nombre Propietario</h1>
                                 <Input
@@ -205,16 +207,17 @@ export const ClientTarjetaConf: React.FC = () => {
                                 </div>
                                 <Button
                                     variant="bordered"
-                                    className="container flex max-w-52 h-14 font-semibold text-success dark:text-white"
-                                    color="success"
+                                    className={"container flex max-w-52 h-14 font-semibold text-black dark:text-white"}
+                                    color={reemplazar?"warning":"success"}
                                     type="submit"
                                 >
-                                    Añadir
+                                    {reemplazar?"Reemplazar":"Añadir"}
                                 </Button>
                             </div>
                         ) : (
                             <div className=" w-full grid grid-cols-1 flex">
                                 <TarjetaList tarjetas={listaTarjetas} />
+                                {!(listaTarjetas.length>=1)?
                                 <Button
                                     variant="bordered"
                                     className="min-w-16 h-11 text-success dark:text-white text-lg flex-auto"
@@ -222,7 +225,16 @@ export const ClientTarjetaConf: React.FC = () => {
                                     onClick={() => setNuevo(true)}
                                 >
                                     Añadir metodo de pago
-                                </Button>
+                                </Button>:
+                                    <Button
+                                        variant="bordered"
+                                        className="min-w-16 h-11 text-warning dark:text-white text-lg flex-auto"
+                                        color="warning"
+                                        onClick={() => setReemplazar(true)}
+                                    >
+                                        Reemplazar
+                                    </Button>
+                                }
                             </div>
                         )}
                     </div>

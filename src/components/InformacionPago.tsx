@@ -29,11 +29,12 @@ export const InformacionPago: React.FC<InformacionPagoProps> = ({ setTotal }) =>
 
             const datosFacturacion = await obtenerDatosFacturacionCliente(correo);
             const datosTarjeta = await obtenerTarjetasCliente(correo);
-            setNumeroTarjeta(datosTarjeta.tarjetaResponseList[0].token)
-            setNombreTarjeta(datosTarjeta.tarjetaResponseList[0].nombreTarjeta)
-            setNombreFacturacion(datosFacturacion.nombre)
+            const ultimaTarjeta = datosTarjeta.tarjetaResponseList[datosTarjeta.tarjetaResponseList.length-1];
+            setNumeroTarjeta(ultimaTarjeta.token)
+            setNombreTarjeta(ultimaTarjeta.nombreTarjeta)
             setNumeroCedula(datosFacturacion.cedula)
             setDireccion(datosFacturacion.direccion)
+            setNombreFacturacion(datosFacturacion.nombre)
 
             setExisteTarjeta(!(numeroTarjeta == null || numeroTarjeta == "" || nombreTarjeta == ""));
 
@@ -175,7 +176,7 @@ export const InformacionPago: React.FC<InformacionPagoProps> = ({ setTotal }) =>
                                 description="El anticipo del 30% asegura la disponibilidad del servicio y cubre costos iniciales, garantizando compromiso y seriedad en la transacción para ambas partes."
                             />
                             {!isPagoValido?
-                                <p className={"text-warning"}>Abono minimio ${0.3 * setTotal} (30%)</p>
+                                <p className={"text-warning"}>Abono minimio ${(0.3 * setTotal).toFixed(2)} (30%)</p>
                             :
                                 <div></div>
                                 }

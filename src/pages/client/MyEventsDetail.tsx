@@ -134,9 +134,13 @@ export default function MyEventsDetail() {
     }
 
   }
+  const isNotLoggedIn = () => {
+    return useAuthStore.getState().rol === "" || useAuthStore.getState().rol === null;
+  }
 
   useEffect(() => {
-    fetchEvento()
+    console.log(isNotLoggedIn());
+    !isNotLoggedIn() ? fetchEvento() : navigate("/")
   }, [])
 
   return (
@@ -270,6 +274,7 @@ export default function MyEventsDetail() {
                 }
               </CardFooter>
             </Card>
+
           </main >
         )
       }
