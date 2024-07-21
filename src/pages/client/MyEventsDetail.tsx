@@ -163,6 +163,7 @@ export default function MyEventsDetail() {
               <CardFooter>
               </CardFooter>
             </Card>
+
           </main >
         )
       }

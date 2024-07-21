@@ -51,8 +51,9 @@ const Cart = () => {
 
             const datosFacturacion = await obtenerDatosFacturacionCliente(correo);
             const datosTarjeta = await obtenerTarjetasCliente(correo);
-            setNumeroTarjeta(datosTarjeta.tarjetaResponseList[0].token)
-            setNombreTarjeta(datosTarjeta.tarjetaResponseList[0].nombreTarjeta)
+            const ultimaTarjeta = datosTarjeta.tarjetaResponseList[datosTarjeta.tarjetaResponseList.length-1];
+            setNumeroTarjeta(ultimaTarjeta.token)
+            setNombreTarjeta(ultimaTarjeta.nombreTarjeta)
             setNumeroCedula(datosFacturacion.cedula)
             setDireccion(datosFacturacion.direccion)
             setNombreFacturacion(datosFacturacion.nombre)
