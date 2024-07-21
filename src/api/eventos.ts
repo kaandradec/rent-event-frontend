@@ -16,6 +16,8 @@ export const getEventos = async (
         }
     );
 
-
 export const getEventosDeCliente = async (correo: string) =>
     await authApi.get(`/eventos/listarTodos/${correo}`)
+
+export const getEventoPorCodigo = async (codigo: string | undefined) =>
+    await authApi.get(`/eventos/obtener/${codigo}`)

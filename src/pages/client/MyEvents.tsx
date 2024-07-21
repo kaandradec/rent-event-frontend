@@ -4,8 +4,10 @@ import { AxiosError, AxiosResponse } from "axios";
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image } from "@nextui-org/react";
 import { getEventosDeCliente } from "@/api/eventos";
 import { BotonCrearEvento } from "@/components/BotonCrearEvento";
+import { useNavigate } from "react-router-dom";
 
 interface Evento {
+    codigo: string;
     nombre: string;
     fecha: string;
     hora: string;
@@ -31,9 +33,11 @@ export const MyEvents = () => {
     const [eventos, setEventos] = useState<Evento[]>();
 
 
+
     const mapearEventos = (eventos: AxiosResponse) => {
         return eventos.map(evento => {
             const eventoMapeado: Evento = {
+                codigo: evento.codigo,
                 nombre: evento.nombre,
                 fecha: evento.fecha,
                 hora: evento.hora,
@@ -115,54 +119,31 @@ export const MyEvents = () => {
     );
 };
 
-const EventoCard = ({ evento, key }: { evento: Evento, key: number }) => (
-    <Card className="w-full">
-        <CardHeader className="flex gap-3">
-            <Image
-                alt="nextui logo"
-                height={40}
-                radius="sm"
-                src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-                width={40}
-            />
-            <div className="flex flex-col">
-                <p className="text-md">{evento.nombre}</p>
-                <p className="text-small text-default-500">{evento.pais + ' - ' + evento.region}</p>
-                <p className="text-small text-default-500">{evento.fecha + ' - ' + evento.hora}</p>
-            </div>
-        </CardHeader>
-        <Divider />
-        <CardBody>
-            <p><strong>Dirección:</strong>{` ${evento.callePrincipal}, ${evento.calleSecundaria}, ${evento.referenciaDireccion}`}</p>
-            <p><strong>Precio Total a pagar:</strong>{` ${evento.precio} $`}</p>
-            <Divider className="my-4" />
-            {evento.pagos.length === 1 ?
-                <>
-                    <span className="font-bold"> - Primer pago</span>
-                    <p><strong>Fecha de cobro:</strong> {JSON.stringify(evento.pagos[0].fecha)}</p>
-                    <p><strong>Monto:</strong> {JSON.stringify(evento.pagos[0].monto)}</p>
+const EventoCard = ({ evento, key }: { evento: Evento, key: number }) => {
 
-                </> : ""
-            }
-            {evento.pagos.length === 2 ?
-                <>
-                    <span className="font-bold"> - Segundo pago</span>
-                    <p><strong>Fecha de cobro:</strong> {JSON.stringify(evento.pagos[1].fecha)}</p>
-                    <p><strong>Monto:</strong> {JSON.stringify(evento.pagos[1].monto)}</p>
+    const navigate = useNavigate();
 
-                </> : ""
-            }
-        </CardBody>
-        <Divider />
-        <CardFooter>
-            { // Si solo hay un pago, se muestra el botón para completar el pago
-                evento.pagos.length === 1 ?
-                    <Button color="success" onClick={() => alert('Enlazar a ventana de completar pago')}>
-                        Completar pago
-                    </Button> : <Button color="warning" onClick={() => alert('Enlazar a ventana para ver y descargar factura')}>
-                        Ver Factura
-                    </Button>
-            }
-        </CardFooter>
-    </Card>
-)
+    return (
+        <Card className="w-full">
+            <CardHeader className="flex gap-3 justify-between">
+                <section className="flex gap-4">
+                    <Image
+                        alt="nextui logo"
+                        height={40}
+                        radius="sm"
+                        src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+                        width={40}
+                    />
+                    <div className="flex flex-col">
+                        <p className="text-md">{evento.nombre}</p>
+                        <p className="text-small text-default-500">{evento.pais + ' - ' + evento.region}</p>
+                        <p className="text-small text-default-500">{evento.fecha + ' - ' + evento.hora}</p>
+                    </div>
+                </section>
+                <Button onClick={() => navigate(`/eventos/detalle/${evento.codigo}`)}>
+                    Ver detalles
+                </Button>
+            </CardHeader>
+        </Card>
+    )
+}

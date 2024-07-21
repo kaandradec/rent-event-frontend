@@ -24,8 +24,9 @@ import { ClientePreguntaSeguraConf } from "@/pages/client/ClientePreguntaSeguraC
 import { RecuperarContrasenia } from "@/pages/client/RecuperarContrasenia.tsx";
 import { MyEvents } from "@/pages/client/MyEvents.tsx";
 import PdfComprobante from './pages/client/PdfComprobante.tsx'
-import {ClientTarjetaConf} from "@/pages/client/ClientTarjetaConf.tsx";
-import {ClientDatosFacturacionConf} from "@/pages/client/ClientDatosFacturacionConf.tsx";
+import { ClientTarjetaConf } from "@/pages/client/ClientTarjetaConf.tsx";
+import { ClientDatosFacturacionConf } from "@/pages/client/ClientDatosFacturacionConf.tsx";
+import MyEventsDetail from './pages/client/MyEventsDetail.tsx'
 
 const USER_PATH = '/user'
 
@@ -48,6 +49,7 @@ function App() {
                     <Route path={`/auth${USER_PATH}/register`} element={<RegisterUser />} />
                     <Route path={`/auth${USER_PATH}/login`} element={<LoginUser />} />
                     <Route path='/eventos' element={<MyEvents />} />
+                    <Route path='/eventos/detalle/:codigo' element={<MyEventsDetail />} />
                     <Route path='/account/config' element={<ClientConfiguration />} />
                     <Route path='/account/config/telefono' element={<ClientTelefonoConf />} />
                     <Route path='/account/config/tarjeta' element={<ClientTarjetaConf />} />
