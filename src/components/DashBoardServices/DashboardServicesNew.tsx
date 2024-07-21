@@ -1,24 +1,24 @@
-import React, {useEffect, useState} from 'react'
-import {ChevronLeft, Upload,} from "lucide-react"
+import React, { useEffect, useState } from 'react'
+import { ChevronLeft, Upload, } from "lucide-react"
 
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@/components/ui/card"
 
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
 
-import {Image} from '@nextui-org/react'
-import {Textarea} from '../ui/textarea'
-import {dataFormApi} from '@/lib/axios'
-import {useNavigate} from 'react-router-dom'
+import { Image } from '@nextui-org/react'
+import { Textarea } from '../ui/textarea'
+import { dataFormApi } from '@/lib/axios'
+import { useNavigate } from 'react-router-dom'
 
 interface DashboardServicesNewProps {
     code?: string | undefined,
     setSubpage?: React.Dispatch<React.SetStateAction<number>>
 }
 
-export default function DashboardServicesNew({code, setSubpage}: DashboardServicesNewProps) {
+export default function DashboardServicesNew({ code, setSubpage }: DashboardServicesNewProps) {
     const [image, setImage] = useState("");
 
     const [file, setFile] = useState<File | null>(null);
@@ -49,7 +49,7 @@ export default function DashboardServicesNew({code, setSubpage}: DashboardServic
             setDescription(response.data.descripcion);
             setType(response.data.tipo);
             setState(response.data.estado);
-            setProvider(response.data.proveedor.nombre);
+            setProvider(response.data.proveedor);
             setCost(response.data.costo);
             setImage(response.data.imagenes[0].url);
 
@@ -174,7 +174,7 @@ export default function DashboardServicesNew({code, setSubpage}: DashboardServic
                     <Button
                         onClick={handleExit}
                         variant="outline" size="icon" className="h-7 w-7">
-                        <ChevronLeft className="h-4 w-4"/>
+                        <ChevronLeft className="h-4 w-4" />
                         <span className="sr-only">Back</span>
                     </Button>
                     <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
@@ -206,11 +206,11 @@ export default function DashboardServicesNew({code, setSubpage}: DashboardServic
                             setType={setType}
                             setCost={setCost}
                         />
-                        <ServiceProvider provider={provider} setProvider={setProvider}/>
+                        <ServiceProvider provider={provider} setProvider={setProvider} />
                     </div>
                     <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
-                        <StatusCard state={state} setState={setState}/>
-                        <ImageCard image={image} handleFileChange={handleFileChange}/>
+                        <StatusCard state={state} setState={setState} />
+                        <ImageCard image={image} handleFileChange={handleFileChange} />
                     </div>
                 </section>
                 <div className="flex items-center justify-center gap-2 md:hidden">
@@ -238,15 +238,15 @@ type DetallesServicioProps = {
 }
 
 const DetallesServicio = ({
-                              name,
-                              setName,
-                              type,
-                              setType,
-                              description,
-                              setDescription,
-                              cost,
-                              setCost
-                          }: DetallesServicioProps) => {
+    name,
+    setName,
+    type,
+    setType,
+    description,
+    setDescription,
+    cost,
+    setCost
+}: DetallesServicioProps) => {
     return (
         <Card x-chunk="dashboard-07-chunk-0">
             <CardHeader>
@@ -277,7 +277,7 @@ const DetallesServicio = ({
                                 id="category"
                                 aria-label="Select category"
                             >
-                                <SelectValue placeholder="Selecciona el tipo"/>
+                                <SelectValue placeholder="Selecciona el tipo" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="CATERING">Catering</SelectItem>
@@ -323,7 +323,7 @@ type ServiceProviderProps = {
 }
 
 
-const ServiceProvider = ({provider, setProvider}: ServiceProviderProps) => {
+const ServiceProvider = ({ provider, setProvider }: ServiceProviderProps) => {
     return (
         <Card x-chunk="dashboard-07-chunk-2">
             <CardHeader>
@@ -341,7 +341,7 @@ const ServiceProvider = ({provider, setProvider}: ServiceProviderProps) => {
                                 id="category"
                                 aria-label="Selecciona el proveedor"
                             >
-                                <SelectValue placeholder="Selecciona el proveedor"/>
+                                <SelectValue placeholder="Selecciona el proveedor" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="Renta Todo">Renta Todo</SelectItem>
@@ -361,7 +361,7 @@ type StatusCardProps = {
     setState: (state: string) => void
 }
 
-const StatusCard = ({state, setState}: StatusCardProps) => {
+const StatusCard = ({ state, setState }: StatusCardProps) => {
     return (
         <Card x-chunk="dashboard-07-chunk-3">
             <CardHeader>
@@ -376,7 +376,7 @@ const StatusCard = ({state, setState}: StatusCardProps) => {
                             defaultValue={state}
                         >
                             <SelectTrigger id="status" aria-label="Select status">
-                                <SelectValue placeholder="Selecciona un estado"/>
+                                <SelectValue placeholder="Selecciona un estado" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="ACTIVO">Activo</SelectItem>
@@ -389,7 +389,7 @@ const StatusCard = ({state, setState}: StatusCardProps) => {
         </Card>)
 }
 
-const ImageCard = ({image, handleFileChange}: {
+const ImageCard = ({ image, handleFileChange }: {
     image: string,
     handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }) => {
@@ -433,11 +433,11 @@ const ImageCard = ({image, handleFileChange}: {
                         </button>
                         <div>
                             <label htmlFor="dropzone-file"
-                                   className="flex aspect-square w-full items-center justify-center rounded-md border border-dashed">
-                                <Upload className="h-4 w-4 text-muted-foreground"/>
+                                className="flex aspect-square w-full items-center justify-center rounded-md border border-dashed">
+                                <Upload className="h-4 w-4 text-muted-foreground" />
                                 <span className="sr-only">Upload</span>
                             </label>
-                            <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange}/>
+                            <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} />
                         </div>
                     </div>
                 </div>

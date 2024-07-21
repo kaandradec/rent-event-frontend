@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/auth";
 import { AxiosError, AxiosResponse } from "axios";
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Chip, Divider, Image } from "@nextui-org/react";
 import { getEventosDeCliente } from "@/api/eventos";
 import { BotonCrearEvento } from "@/components/BotonCrearEvento";
 import { useNavigate } from "react-router-dom";
 
 interface Evento {
     codigo: string;
+    estado: string;
     nombre: string;
     fecha: string;
     hora: string;
@@ -38,6 +39,7 @@ export const MyEvents = () => {
         return eventos.map(evento => {
             const eventoMapeado: Evento = {
                 codigo: evento.codigo,
+                estado: evento.estado,
                 nombre: evento.nombre,
                 fecha: evento.fecha,
                 hora: evento.hora,
@@ -106,7 +108,8 @@ export const MyEvents = () => {
                         eventos && (
 
                             eventos?.length > 0 ?
-                                eventos?.map((event: Evento, index: number) => (<EventoCard evento={event} key={index} />))
+                                eventos?.filter((evento: Evento) => evento.estado === 'ACTIVO' || evento.estado === 'COMPLETADO')
+                                    .map((event: Evento, index: number) => (<EventoCard evento={event} key={index} />))
                                 : <div>
                                     <p className="text-primary py-4">No hay eventos disponibles</p>
                                     <BotonCrearEvento />
@@ -124,7 +127,7 @@ const EventoCard = ({ evento, key }: { evento: Evento, key: number }) => {
     const navigate = useNavigate();
 
     return (
-        <Card className="w-full">
+        <Card className="w-full my-4">
             <CardHeader className="flex gap-3 justify-between">
                 <section className="flex gap-4">
                     <Image
@@ -135,7 +138,12 @@ const EventoCard = ({ evento, key }: { evento: Evento, key: number }) => {
                         width={40}
                     />
                     <div className="flex flex-col">
-                        <p className="text-md">{evento.nombre}</p>
+                        <p className="text-md flex gap-4">
+                            {evento.nombre}
+                            {
+                                evento.estado === 'COMPLETADO' ? <Chip variant="dot" color="default">Completado</Chip> : <Chip variant="dot" color="success">Activo</Chip>
+                            }
+                        </p>
                         <p className="text-small text-default-500">{evento.pais + ' - ' + evento.region}</p>
                         <p className="text-small text-default-500">{evento.fecha + ' - ' + evento.hora}</p>
                     </div>

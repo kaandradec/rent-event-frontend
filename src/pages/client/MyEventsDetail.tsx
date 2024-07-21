@@ -1,12 +1,14 @@
-import { getEventoPorCodigo } from '@/api/eventos';
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image } from '@nextui-org/react';
+import { cancelarEvento, enviarIncidencia, getEventoPorCodigo } from '@/api/eventos';
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Input } from '@nextui-org/react';
 import { AxiosError, AxiosResponse } from 'axios';
-import { Coins, Download, Trash, Trash2, X } from 'lucide-react';
+import { Coins, Download, MessageCircle, Send, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 
 interface Evento {
   codigo: string;
+  estado: string;
   nombre: string;
   fecha: string;
   hora: string;
@@ -18,28 +20,78 @@ interface Evento {
   iva: number;
   precio: number;
   pagos: Pago[]
+  servicios: Servicio[]
 }
 
 interface Pago {
   fecha: string,
   monto: number
 }
+interface Servicio {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  costo: number;
+  tipo: string;
+  imagenes: Imagen[];
+}
 
-
+interface Imagen {
+  url: string;
+}
 
 export default function MyEventsDetail() {
   const [errorMsg, setErrorMsg] = useState('');
   const [evento, setEvento] = useState<Evento>();
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [backdrop, setBackdrop] = useState('blur')
+  const [incidenciaMsg, setIncidenciaMsg] = useState('')
+  const [msgEnviado, setMsgEnviado] = useState(false)
+
   const { codigo } = useParams();
 
   const navigate = useNavigate()
+
+  const handleOpen = (backdrop) => {
+    setBackdrop(backdrop)
+    onOpen();
+  }
+
+  const fetchCancelEvent = async () => {
+    try {
+      const response = await cancelarEvento(evento?.codigo)
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleCancelEvent = () => {
+    fetchCancelEvent()
+    onClose()
+    navigate('/landing')
+  }
+
+  const handleSendIncidencia = async (codigo: string, descripcion: string) => {
+    try {
+      await enviarIncidencia(codigo, descripcion)
+      setMsgEnviado(true)
+
+      setTimeout(() => {
+        setMsgEnviado(false)
+      }, 3000)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const mapearEvento = (eventoResponse: AxiosResponse) => {
     console.log(eventoResponse.data)
 
     const eventoMapeado: Evento = {
       codigo: eventoResponse.data.codigo,
+      estado: eventoResponse.data.estado,
       nombre: eventoResponse.data.nombre,
       fecha: eventoResponse.data.fecha,
       hora: eventoResponse.data.hora,
@@ -50,7 +102,8 @@ export default function MyEventsDetail() {
       referenciaDireccion: eventoResponse.data.referenciaDireccion,
       iva: eventoResponse.data.iva,
       precio: eventoResponse.data.precio,
-      pagos: eventoResponse.data.pagos
+      pagos: eventoResponse.data.pagos,
+      servicios: eventoResponse.data.servicios
     }
 
     return eventoMapeado;
@@ -86,12 +139,11 @@ export default function MyEventsDetail() {
     fetchEvento()
   }, [])
 
-
   return (
     <>
       {
         evento && (
-          <main className='mt-20 max-w-7xl mx-auto'>
+          <main className='mt-20 max-w-7xl mx-auto px-4'>
             <Card className="w-full">
               <CardHeader className="flex gap-3 justify-between">
                 <section className="flex gap-4">
@@ -108,33 +160,39 @@ export default function MyEventsDetail() {
                     <p className="text-small text-default-500">{evento.fecha + ' - ' + evento.hora}</p>
                   </div>
                 </section>
-                <section>
-                  {
-                    evento.pagos.length === 2 ?
-                      <Button
-                        className='font-semibold'
-                        onClick={() => null}
-                        color='danger'
-                        endContent={<Download />}
-                      >
-                        Descargar factura
-                      </Button> : (
-                        <section className='flex gap-4'>
-                          <Button className='font-semibold' color='danger' endContent={<X />}>
-                            Cancelar evento
-                          </Button>
+                {
+                  (evento?.estado === 'ACTIVO') ?
+                    <section>
+                      {
+                        evento.pagos.length === 2 ?
                           <Button
                             className='font-semibold'
                             onClick={() => null}
-                            color='success'
-                            endContent={<Coins />}
+                            color='danger'
+                            endContent={<Download />}
                           >
-                            Completar pago
-                          </Button>
-                        </section>
-                      )
-                  }
-                </section>
+                            Descargar factura
+                          </Button> : (
+                            <section className='flex gap-4'>
+                              <Button
+                                onClick={() => handleOpen('blur')}
+                                className='font-semibold' color='danger' endContent={<X />}>
+                                Cancelar evento
+                              </Button>
+                              <Button
+                                className='font-semibold'
+                                onClick={() => null}
+                                color='success'
+                                endContent={<Coins />}
+                              >
+                                Completar pago
+                              </Button>
+                            </section>
+                          )
+                      }
+                    </section> : ""
+                }
+
 
               </CardHeader>
               <Divider />
@@ -158,14 +216,97 @@ export default function MyEventsDetail() {
 
                   </> : ""
                 }
+                <div className='grid grid-cols-4 gap-4'>
+                  {
+                    evento.servicios.map((servicio) =>
+                      <Card className="py-4" key={servicio.id}>
+                        <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+                          <p className="text-tiny uppercase font-bold">{servicio.nombre}</p>
+                          <small className="text-default-500">{servicio.descripcion}</small>
+                          <h4 className="font-bold text-large">{servicio.costo} $</h4>
+                        </CardHeader>
+                        <CardBody className="overflow-visible py-2">
+                          <Image
+                            alt="Card background"
+                            className="object-cover rounded-xl"
+                            src={servicio.imagenes[0].url}
+                            width={270}
+                          />
+                        </CardBody>
+                      </Card>)
+                  }
+                </div>
+
               </CardBody>
               <Divider />
-              <CardFooter>
+              <CardFooter >
+                {
+                  evento.estado === 'COMPLETADO' ?
+                    <section className='font-semibold w-full'>
+
+                      <div className='flex gap-2'>
+                        <MessageCircle />
+                        <h3>
+                          Danos tu opinión del servicio
+                          {
+                            msgEnviado ? <span className='text-green-500'> ¡Gracias por tu opinión!</span> : ""
+                          }
+                        </h3>
+                      </div>
+
+                      <div className='flex gap-2'>
+                        <Input
+                          onChange={(e) => setIncidenciaMsg(e.target.value)}
+                          type="text" placeholder="El servicio fue una experiencia ..." />
+                        <Button
+                          onClick={() => handleSendIncidencia(evento.codigo, incidenciaMsg)}
+                          endContent={<Send />}>
+                          Enviar
+                        </Button>
+
+                      </div>
+
+                    </section> : ""
+                }
               </CardFooter>
             </Card>
           </main >
         )
       }
+      <DeleteModal isOpen={isOpen} onClose={onClose} handleCancelEvent={handleCancelEvent} />
     </>
+  )
+}
+
+
+const DeleteModal = ({ isOpen, onClose, handleCancelEvent }) => {
+
+
+  return (
+    <Modal backdrop='blur' isOpen={isOpen} onClose={onClose}>
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">¿Está seguro de que desea cancelar el evento?</ModalHeader>
+            <ModalBody>
+              <p>
+                Al cancelar el evento, tendrá que pagar una multa del 30% del costo total del evento.
+              </p>
+              <p>
+                Esta acción no se puede deshacer. Si está seguro de que desea cancelar el evento, haga clic en "Cancelar Evento".
+              </p>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="default" variant="light" onPress={onClose}>
+                Cerrar ventana
+              </Button>
+              <Button color="danger" onPress={handleCancelEvent}>
+                Cancelar Evento
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   )
 }

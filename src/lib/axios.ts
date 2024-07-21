@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/store/auth";
 import axios from "axios";
 
 const baseURL = "http://localhost:8080";
@@ -55,14 +56,18 @@ authApi.interceptors.request.use((config) => {
 });
 
 tokenApi.interceptors.request.use((config) => {
+  const token = useAuthStore.getState().token;
 
-  config.headers['Content-Type'] = "application/json"
+  config.headers['Content-Type'] = "application/json";
+  config.headers['Authorization'] = `Bearer ${token}`;
   return config;
 });
 
 dataFormApi.interceptors.request.use((config) => {
+  const token = useAuthStore.getState().token;
 
-  config.headers['Content-Type'] = "multipart/form-data"
+  config.headers['Content-Type'] = "multipart/form-data";
+  config.headers['Authorization'] = `Bearer ${token}`;
   return config;
 });
 
