@@ -152,11 +152,11 @@ export const InformacionPago: React.FC<InformacionPagoProps> = ({ setTotal }) =>
                             />
                             <Button
 
-                                className="min-w-16 h-11 mt-4 mx-auto text-black dark:text-white text-lg flex flex-auto hover:bg-warning"
+                                className="min-w-16 mb-14 h-11 mt-4 mx-auto text-black dark:text-white text-lg flex flex-auto hover:bg-warning "
                                 color="default"
                                 onClick={() => navigate("/account/config/tarjeta")}
                             >
-                                Añade una Tarjeta
+                                Cambia tu Tarjeta de pago
                             </Button>
                         </div>
                         <div>
@@ -168,7 +168,6 @@ export const InformacionPago: React.FC<InformacionPagoProps> = ({ setTotal }) =>
                                 labelPlacement="outside"
                                 className=""
                                 isRequired
-
                                 value={pago}
                                 onChange={(valor) => {
                                     setPago(valor.target.value);

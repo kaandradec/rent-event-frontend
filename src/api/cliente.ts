@@ -100,8 +100,7 @@ export const registerEventoClient = async (
     referencia: string,
     asistentes: string,
     cart: StoreProduct[]
-) => {
-
+) =>
     await tokenApi.put(
         `/eventos/generar`,
         JSON.stringify({
@@ -130,7 +129,7 @@ export const registerEventoClient = async (
             // withCredentials: true,
         }
     );
-}
+
 export const actualizarDatosFacturacionClient = async (
     correo: string ,
     nombre: string ,

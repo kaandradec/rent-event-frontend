@@ -28,6 +28,7 @@ import { ClientTarjetaConf } from "@/pages/client/ClientTarjetaConf.tsx";
 import { ClientDatosFacturacionConf } from "@/pages/client/ClientDatosFacturacionConf.tsx";
 import MyEventsDetail from './pages/client/MyEventsDetail.tsx'
 
+
 const USER_PATH = '/user'
 
 function App() {

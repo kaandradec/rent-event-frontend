@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import FormattedPrice from "./FormattedPrice";
 import { useAuthStore } from "@/store/auth";
 import { Button, Checkbox, Input } from "@nextui-org/react";
-import { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import {registerEventoClient} from "@/api/cliente.ts";
 import {AxiosError} from "axios";
 import {StoreProduct} from "../../types.ts";
@@ -70,6 +70,8 @@ const CartPayment = ({
     const rol = useAuthStore.getState().rol;
     const [valido, setValido] = useState<boolean>(false);
     const [errMsg, setErrMsg] = useState<string>("");
+    const [success, setSuccess] = useState(false);
+
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -85,6 +87,13 @@ const CartPayment = ({
                 direccionFactura, nombreFactura, pais, ciudad,numeroCedula, nombreEvento,
                 descripcionEvento, callePrincipal, calleSecundaria, referencia,
                 asistentes.toString(), cart);
+            if (response.status == 200) {
+                setSuccess(true)
+                setTimeout(() => {
+                        navigate("/eventos")
+                    },
+                    2500);
+            }
 
             console.log(response);
         } catch (err) {
@@ -166,7 +175,14 @@ const CartPayment = ({
                 <div className="flex flex-col items-center text-sm space-y-2">
                     {
                         rol ? (
-                                confirmado ? (<Button
+                                confirmado ? (
+                                    <div>
+                                        {errMsg && <p className="text-red-500">{errMsg}</p>}
+                                        <p className={`h-5 text-center my-2 ${success ? "text-success" : "text-danger"}`}
+                                           aria-live="assertive">
+                                            {!success ? errMsg : "Evento Registrado con Exito"}
+                                        </p>
+                                    <Button
                                         onClick={() => {
                                             registrarEvento()
                                             // navigate("/comprobante")
@@ -174,7 +190,10 @@ const CartPayment = ({
 
                                         color="success" size="lg" className="font-bold text-white">
                                         Proceder a la reserva
-                                    </Button>) :
+                                    </Button>
+                                    </div>
+                                        )
+                                        :
                                     <div>
                                         {/*//todo: poner !*/}
                                         {!valido? (
