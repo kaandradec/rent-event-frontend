@@ -1,6 +1,6 @@
-import {tokenApi} from "@/lib/axios.ts";
+import { authApi, tokenApi } from "@/lib/axios.ts";
 
 export const obtenerGeneros = async () => {
-    const response = await tokenApi.get(`/generos/get`);
+    const response = await authApi.get(`/generos/get`);
     return response.data;
 };

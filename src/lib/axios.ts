@@ -10,7 +10,7 @@ export const authApi = axios.create({
 
 export const authPass = axios.create({
   baseURL,
-  withCredentials: true,
+  withCredentials: false,
 });
 
 export const tokenApi = axios.create({

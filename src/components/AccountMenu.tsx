@@ -1,10 +1,10 @@
-import {Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger,} from "@nextui-org/react";
-import {useNavigate} from "react-router-dom";
-import {useAuthStore} from "@/store/auth.js";
-import {useEffect, useState} from "react";
-import {obtenerCliente} from "@/api/cliente.ts";
-import {AxiosError} from "axios";
-import {obtenerUsuario} from "@/api/usuario.ts";
+import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/auth.js";
+import { useEffect, useState } from "react";
+import { obtenerCliente } from "@/api/cliente.ts";
+import { AxiosError } from "axios";
+import { obtenerUsuario } from "@/api/usuario.ts";
 
 
 export default function AccountMenu() {
@@ -26,7 +26,7 @@ export default function AccountMenu() {
         navigate("/account/config");
     };
 
-    const {correo} = useAuthStore();
+    const { correo } = useAuthStore();
     const [email, setEmail] = useState("");
 
     const fetchAccount = async () => {
@@ -99,9 +99,9 @@ export default function AccountMenu() {
                     <DropdownItem isDisabled>
                     </DropdownItem>
                 }
-                    <DropdownItem color="danger" onClick={logout}>
-                        Logout
-                    </DropdownItem>
+                <DropdownItem color="danger" onClick={logout}>
+                    Logout
+                </DropdownItem>
 
             </DropdownMenu>
         </Dropdown>
