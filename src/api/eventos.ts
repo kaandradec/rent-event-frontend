@@ -34,3 +34,18 @@ export const enviarIncidencia = async (codigoServicio: string, descripcion: stri
             "Content-Type": "application/json",
         }
     })
+export const obtenerServiciosFactura = async (
+    codEvento: string | undefined
+) =>
+    await tokenApi.put(
+        `/servicios/facturar`,
+        JSON.stringify({
+            codEvento:codEvento
+        }),
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            // withCredentials: true,
+        }
+    );

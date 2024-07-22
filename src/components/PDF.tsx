@@ -1,3 +1,4 @@
+
 import {
   Document,
   Page,
@@ -8,7 +9,7 @@ import {
   Font,
 } from "@react-pdf/renderer";
 import logo from "../../public/logoPDF.png";
-import { StoreProduct } from "types";
+import { Servicios, StoreProduct } from "types";
 
 Font.register({
   family: "Open Sans",
@@ -26,7 +27,7 @@ interface DatosCliente {
 
 type PDFProps = {
   cliente: DatosCliente;
-  servicios: StoreProduct[];
+  servicios: Servicios[];
 };
 
 export default function PDF({ cliente, servicios }: PDFProps) {
@@ -93,46 +94,50 @@ export default function PDF({ cliente, servicios }: PDFProps) {
   });
 
   return (
-    <Document>
-      <Page style={styles.page}>
-        <Text style={styles.header}>Comprobante de Pago</Text>
-        <Image style={styles.image} src={logo} />
-        <Text>NOMBRE: {cliente.nombre}</Text>
-        <Text>CEDULA: {cliente.cedula}</Text>
-        <Text>DIRECCION: {cliente.direccion}</Text>
-        <Text>TARJETA: {cliente.tarjeta}</Text>
-        <Text style={styles.header}>Servicios Solicitados</Text>
-        {servicios.map((servicio, index) => (
-          <View key={index} style={styles.table}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableColHeader}>
-                <Text style={styles.tableCellHeader}>Servicio</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{servicio.nombre}</Text>
-              </View>
-            </View>
-            <View style={styles.tableRow}>
-              <View style={styles.tableColHeader}>
-                <Text style={styles.tableCellHeader}>Descripción</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>
-                  {servicio.descripcion || "N/A"}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.tableRow}>
-              <View style={styles.tableColHeader}>
-                <Text style={styles.tableCellHeader}>Precio</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>${servicio.costo}</Text>
-              </View>
-            </View>
-          </View>
-        ))}
-      </Page>
-    </Document>
+      <Document>
+        <Page style={styles.page}>
+          <Text style={styles.header}>Comprobante de Pago</Text>
+          <Image style={styles.image} src={logo} />
+          <Text>NOMBRE: {cliente.nombre}</Text>
+          <Text>CEDULA: {cliente.cedula}</Text>
+          <Text>DIRECCION: {cliente.direccion}</Text>
+          <Text>TARJETA: {cliente.tarjeta}</Text>
+          <Text style={styles.header}>Servicios Solicitados</Text>
+          {Array.isArray(servicios) && servicios.length > 0 ? (
+              servicios.map((servicio, index) => (
+                  <View key={index} style={styles.table}>
+                    <View style={styles.tableRow}>
+                      <View style={styles.tableColHeader}>
+                        <Text style={styles.tableCellHeader}>Servicio</Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCell}>{servicio.nombre}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.tableRow}>
+                      <View style={styles.tableColHeader}>
+                        <Text style={styles.tableCellHeader}>Descripción</Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCell}>
+                          {servicio.descripcion || "N/A"}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.tableRow}>
+                      <View style={styles.tableColHeader}>
+                        <Text style={styles.tableCellHeader}>Precio</Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCell}>${servicio.precio.toFixed(2)}</Text>
+                      </View>
+                    </View>
+                  </View>
+              ))
+          ) : (
+              <Text>No hay servicios disponibles</Text>
+          )}
+        </Page>
+      </Document>
   );
 }

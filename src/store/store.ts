@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist, devtools } from "zustand/middleware";
+import {create} from "zustand";
+import {devtools, persist} from "zustand/middleware";
 import productSlice from "./productSlice";
 import cartSlice from "./cartSlice";
 

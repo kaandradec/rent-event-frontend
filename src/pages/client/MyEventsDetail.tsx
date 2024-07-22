@@ -169,7 +169,7 @@ export default function MyEventsDetail() {
                                     {evento.pagos.length === 2 ? (
                                         <Button
                                             className='font-semibold'
-                                            onClick={() => navigate("/comprobante")}
+                                            onClick={() => navigate(`/comprobante/${evento?.codigo}`)}
                                             color='danger'
                                             endContent={<Download />}
                                         >

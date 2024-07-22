@@ -11,3 +11,8 @@ export interface ProductProps {
 export interface StoreProduct extends ProductProps {
   quantity: number;
 }
+export interface Servicios{
+  nombre: string;
+  precio: number;
+  descripcion: string;
+}

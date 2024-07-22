@@ -58,7 +58,7 @@ function App() {
                     <Route path='/account/config/pass' element={<ClientPassConf />} />
                     <Route path='/account/config/region' element={<ClienteRegionConf />} />
                     <Route path='/account/config/pregunta-segura' element={<ClientePreguntaSeguraConf />} />
-                    <Route path='/comprobante' element={<PdfComprobante />} />
+                    <Route path='/comprobante/:codEvento' element={<PdfComprobante />} />
                     {/* Rutas protegidas, solo acceso a usuario(Empleado)*/}
                     <Route element={<ProtectedRoute />}>
                         <Route path={`${USER_PATH}/dashboard`} element={<Dashboard />} />
