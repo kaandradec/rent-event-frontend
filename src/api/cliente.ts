@@ -92,14 +92,16 @@ export const registerEventoClient = async (
     nombreFactura: string,
     pais: string,
     ciudad: string,
-    numeroCedula:number,
+    numeroCedula:string,
     nombreEvento: string,
     descripcionEvento: string,
     callePrincipal: string,
     calleSecundaria: string,
     referencia: string,
     asistentes: string,
-    cart: StoreProduct[]
+    cart: StoreProduct[],
+    pago:number,
+    total:number
 ) =>
     await tokenApi.put(
         `/eventos/generar`,
@@ -119,7 +121,9 @@ export const registerEventoClient = async (
             calleSecundaria: calleSecundaria,
             referencia: referencia,
             asistentes: asistentes,
-            cart: cart
+            cart: cart,
+            pago:pago,
+            total:total
 
         }),
         {

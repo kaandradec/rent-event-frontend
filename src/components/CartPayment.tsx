@@ -28,13 +28,16 @@ interface CartPaymentProps {
     nombreFactura: string;
     pais: string;
     ciudad: string;
-    numeroCedula:number;
+    numeroCedula:string;
     nombreEvento: string;
     descripcionEvento: string;
     callePrincipal: string;
     calleSecundaria: string;
     referencia: string;
-    cart: StoreProduct[]
+    cart: StoreProduct[];
+    pago:number;
+    isPagoValido:boolean;
+
 }
 
 const CartPayment = ({
@@ -64,6 +67,8 @@ const CartPayment = ({
                          calleSecundaria,
                          referencia,
                          cart,
+                         pago,
+                         isPagoValido
                      }: CartPaymentProps) => {
     // const cart = useStore((state) => state.cart);
 
@@ -86,7 +91,7 @@ const CartPayment = ({
                 correo, nombreTargeta, numeroTarjeta, fecha.toString(),
                 direccionFactura, nombreFactura, pais, ciudad,numeroCedula, nombreEvento,
                 descripcionEvento, callePrincipal, calleSecundaria, referencia,
-                asistentes.toString(), cart);
+                asistentes.toString(), cart, pago, totalPrice() );
             if (response.status == 200) {
                 setSuccess(true)
                 setTimeout(() => {
@@ -184,8 +189,8 @@ const CartPayment = ({
                                         </p>
                                     <Button
                                         onClick={() => {
-                                            registrarEvento()
-                                            // navigate("/comprobante")
+                                            isPagoValido?
+                                            registrarEvento():""
                                         }}
 
                                         color="success" size="lg" className="font-bold text-white">

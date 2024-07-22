@@ -6,16 +6,18 @@ import PDF from "@/components/PDF";
 import {useEffect, useState} from "react";
 import {obtenerDatosFacturacionCliente, obtenerTarjetasCliente} from "@/api/cliente.ts";
 import {AxiosError} from "axios";
+import {useNavigate} from "react-router-dom";
 
 export default function PdfComprobante() {
   const carrito = useStore((state) => state.cart);
 
-  // const [correo] = useState(useAuthStore().correo);
-  const nombre = useAuthStore.getState().nombre;
-  const apellido = useAuthStore.getState().apellido;
   const correo = useAuthStore.getState().correo;
+  const rol = useAuthStore.getState().rol;
+  const navigate = useNavigate();
+
 
   // const [nombre, setNombre] = useState<string>("");
+  const [nombreFacturacion, setNombreFacturacion] = useState<string>("");
   const [direccion, setDireccion] = useState<string>("");
   const [numeroCedula, setNumeroCedula] = useState<string>("");
   const [numeroTarjeta, setNumeroTarjeta] = useState<string>("");
@@ -28,13 +30,13 @@ export default function PdfComprobante() {
 
       const datosFacturacion = await obtenerDatosFacturacionCliente(correo);
       const datosTarjeta = await obtenerTarjetasCliente(correo);
-      console.log(datosFacturacion)
-      console.log(datosTarjeta)
-      setNumeroTarjeta(datosTarjeta.tarjetaResponseList[0].token)
-      setNombreTarjeta(datosTarjeta.tarjetaResponseList[0].nombreTarjeta)
-      setNumeroCedula(datosFacturacion.cedula)
+      const ultimaTarjeta = datosTarjeta.tarjetaResponseList[datosTarjeta.tarjetaResponseList.length - 1];
+
+      setNumeroTarjeta(ultimaTarjeta.token)
+      setNombreTarjeta(ultimaTarjeta.nombreTarjeta)
       setDireccion(datosFacturacion.direccion)
-      setNombre(datosFacturacion.nombre)
+      setNumeroCedula(datosFacturacion.cedula)
+      setNombreFacturacion(datosFacturacion.nombre)
     } catch (err) {
       const error = err as AxiosError;
       if (!error?.response) {
@@ -52,11 +54,12 @@ export default function PdfComprobante() {
   };
 
   useEffect(() => {
+    ((rol===null) || (rol ===""))?navigate("/"):"";
     fetchClient();
   }, []);
 
   const datosCliente = {
-    nombre: nombre + " " + apellido,
+    nombre: nombreFacturacion,
     direccion: direccion,
     cedula: numeroCedula,
     tarjeta: numeroTarjeta,
