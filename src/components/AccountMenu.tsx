@@ -88,12 +88,9 @@ export default function AccountMenu() {
                 </DropdownItem>
                 {rol?.startsWith('C') ?
                     (
-                        <>
                             <DropdownItem color="success" onClick={myConfig}>
                                 My Settings
                             </DropdownItem>
-
-                        </>
                     )
                     :
                     <DropdownItem isDisabled>
