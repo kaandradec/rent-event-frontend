@@ -49,7 +49,6 @@ export const PagoModal = ({isOpenPago, onClosePago, handleCerrarPago, total, pag
         }
     };
     const handlePagar = async () => {
-        handleCerrarPago
         try {
             if (correo == null) return
 
@@ -57,6 +56,7 @@ export const PagoModal = ({isOpenPago, onClosePago, handleCerrarPago, total, pag
                 await hacerPagoCliente(evento,nombreTarjeta,numeroTarjeta,direccion,nombreFacturacion,numeroCedula,parseFloat(pago))
             console.log(datosFacturacion)
             datosFacturacion.status==200?setSuccess(true):"";
+            datosFacturacion.status==200?navigate("/eventos"):"";
 
         } catch (err) {
             const error = err as AxiosError;
@@ -171,9 +171,7 @@ export const PagoModal = ({isOpenPago, onClosePago, handleCerrarPago, total, pag
                                aria-live="assertive">
                                 {!success ? errMsg : "Evento Registrado con Exito"}
                             </p>
-                            <Button color="success" onPress={
-                                handlePagar
-                            }>
+                            <Button color="success" onPress={handleCerrarPago} onClick={handlePagar}>
                                 Pagar Evento
                             </Button>
                         </ModalFooter>

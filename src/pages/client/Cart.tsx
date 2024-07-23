@@ -47,6 +47,9 @@ const Cart = () => {
     useEffect(() => {
         setRegion("Elige una ciudad")
     }, [pais]);
+    useEffect(() => {
+        setConfirmado(region!=="Elige una ciudad")
+    }, [region]);
 
     const fetchClient = async () => {
         try {
@@ -318,7 +321,7 @@ const Cart = () => {
                             </section>
 
                         }
-                        <section className="bg-white h-64 col-span-7 lg:col-span-2 p-4 rounded-lg
+                        <section className="bg-white mt-8 h-64 col-span-7 lg:col-span-2 p-4 rounded-lg
                     flex items-center justify-center sticky lg:mt-36">
                             <CartPayment
                                 asistentes={asistentes}
