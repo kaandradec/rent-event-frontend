@@ -68,7 +68,7 @@ function App() {
                     <Route path={`${USER_PATH}/analytics`} element={<Analytics />} />
                 </Routes>
             </BrowserRouter>
-            <DevTool />
+            {/*<DevTool />*/}
         </main>
     )
 }
