@@ -75,16 +75,6 @@ export default function Header() {
           </NavbarItem>
         ) : (
           <NavbarItem className="container flex">
-            <Link
-              color="primary"
-              to="/about"
-              className={`${
-                (pathName.includes("/landing", "orders") || pathName === "/") &&
-                styles.navbarItem
-              } `}
-            >
-              NOSOTROS
-            </Link>
           </NavbarItem>
         )}
       </NavbarBrand>

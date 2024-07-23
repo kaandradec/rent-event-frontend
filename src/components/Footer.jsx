@@ -9,80 +9,33 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row max-w-7xl justify-between mx-auto">
           <aside className="mx-auto">
             <div className="flex flex-col justify-start items-center max-w-60 bottom-12 relative">
-              <FooterLink href="/" className="relative z-10">
-                <RentEventLogo className="absolute w-36 blur-sm opacity-0 transition-opacity duration-300 hover:opacity-100" />
-                <RentEventLogo className="w-36" />
+              <FooterLink href="/" className="relative z-10 group">
+                <RentEventLogo className="absolute w-36 blur-sm opacity-0 transition-opacity duration-500 group-hover:opacity-50 text-violet-600" />
+                <RentEventLogo className="w-36 " />
               </FooterLink>
+
               <FooterLink
-                className="text__glowing__medium text-2xl text-pretty text-center"
+                className="text__glowing__medium text-2xl text-pretty text-center text-secondary dark:text-primary"
                 href="/"
               >
-                Lorem Ipsum
+                Rent-Event
               </FooterLink>
             </div>
           </aside>
 
           <aside className="flex flex-col md:flex-row items-center md:justify-evenly w-full py-0 md:py-10 gap-10 text-center mb-10 md:mb-0">
             <div>
-              <h3 className="uppercase text-xl mb-2">Lorem Ipsum</h3>
+              <h3 className="uppercase text-xl mb-2 text-secondary dark:text-primary">Sobre Nosotros</h3>
               <ul>
                 <li>
-                  <FooterLink className="text__glowing__min hover:text-[#66c0f4]">
-                    Lorem Ipsum
-                  </FooterLink>
-                </li>
-                <li>
-                  <FooterLink className="text__glowing__min hover:text-[#66c0f4]">
-                    Lorem Ipsum
-                  </FooterLink>
-                </li>
-                <li>
-                  <FooterLink className="text__glowing__min hover:text-[#66c0f4]">
-                    Lorem Ipsum
+                  <FooterLink className="text__glowing__min hover:text-[#66c0f4] text-secondary dark:text-primary"
+                  href={"/about"}>
+                    Mision y Vision
                   </FooterLink>
                 </li>
               </ul>
             </div>
-            <div>
-              <h3 className="uppercase text-xl mb-2">Lorem Ipsum</h3>
-              <ul>
-                <li>
-                  <FooterLink className="text__glowing__min hover:text-[#66c0f4]">
-                    Lorem Ipsum
-                  </FooterLink>
-                </li>
-                <li>
-                  <FooterLink className="text__glowing__min hover:text-[#66c0f4]">
-                    Lorem Ipsum
-                  </FooterLink>
-                </li>
-                <li>
-                  <FooterLink className="text__glowing__min hover:text-[#66c0f4]">
-                    Lorem Ipsum
-                  </FooterLink>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="uppercase text-xl mb-2">Lorem Ipsum</h3>
-              <ul>
-                <li>
-                  <FooterLink className="text__glowing__min hover:text-[#66c0f4]">
-                    Lorem Ipsum
-                  </FooterLink>
-                </li>
-                <li>
-                  <FooterLink className="text__glowing__min hover:text-[#66c0f4]">
-                    Lorem Ipsum
-                  </FooterLink>
-                </li>
-                <li>
-                  <FooterLink className="text__glowing__min hover:text-[#66c0f4]">
-                    Lorem Ipsum
-                  </FooterLink>
-                </li>
-              </ul>
-            </div>
+
           </aside>
         </div>
       </section>

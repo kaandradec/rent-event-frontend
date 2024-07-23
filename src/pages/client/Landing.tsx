@@ -21,11 +21,8 @@ export default function Landing() {
         sed rerum non incidunt illum nemo eaque ad obcaecati cumque!" />
       <Bento2 />
       <IntroContent
-        title="Lorem ipsum dolor sit amet"
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint ducimus
-        quas impedit, debitis at laborum iusto nisi consequuntur quod excepturi
-        sed rerum non incidunt illum nemo eaque ad obcaecati cumque!"
-        description2="Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint ducimus quas impedit, debitis at laborum iusto nisi consequuntur quod excepturi sed rerum non incidunt illum nemo eaque ad obcaecati cumque!"
+        title="Tu Evento, Nuestro Compromiso"
+        description="En nuestra plataforma, tu evento es nuestra prioridad. Nos dedicamos a ofrecerte los mejores servicios, desde la selección de proveedores hasta la implementación de cada detalle. Nuestro objetivo es que disfrutes de una experiencia sin preocupaciones, sabiendo que estás en manos de profesionales. ¡Contáctanos hoy mismo y comienza a planificar el evento de tus sueños con nosotros!"
       />
       <Footer />
     </main>
