@@ -87,7 +87,7 @@ export const BotonPaises: React.FC<BotonPaisesProps> = ({setSelectedCountry, set
     };
 
     return (
-        <div className="flex flex-col gap-3 mb-5">
+        <div className="flex flex-col gap-4 mb-5">
             <Dropdown>
                 <DropdownTrigger>
                     <Button variant="bordered" className="flex w-full" aria-label={"País"}>

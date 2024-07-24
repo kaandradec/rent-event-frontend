@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useAuthStore } from "@/store/auth";
-import { AxiosError, AxiosResponse } from "axios";
-import { Button, Card, CardBody, CardFooter, CardHeader, Chip, Divider, Image } from "@nextui-org/react";
-import { getEventosDeCliente } from "@/api/eventos";
-import { BotonCrearEvento } from "@/components/BotonCrearEvento";
-import { useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useAuthStore} from "@/store/auth";
+import {AxiosError, AxiosResponse} from "axios";
+import {Button, Card, CardHeader, Chip, Image} from "@nextui-org/react";
+import {getEventosDeCliente} from "@/api/eventos";
+import {BotonCrearEvento} from "@/components/BotonCrearEvento";
+import {useNavigate} from "react-router-dom";
 
 interface Evento {
     codigo: string;
@@ -28,32 +28,31 @@ interface Pago {
 }
 
 export const MyEvents = () => {
-    const { correo, nombre, apellido } = useAuthStore();
+    const {correo, nombre, apellido} = useAuthStore();
     const [errMsg, setErrMsg] = useState("");
 
     const [eventos, setEventos] = useState<Evento[]>();
 
 
-
     const mapearEventos = (eventos: AxiosResponse) => {
         return eventos.map(evento => {
-            const eventoMapeado: Evento = {
-                codigo: evento.codigo,
-                estado: evento.estado,
-                nombre: evento.nombre,
-                fecha: evento.fecha,
-                hora: evento.hora,
-                pais: evento.pais,
-                region: evento.region,
-                callePrincipal: evento.callePrincipal,
-                calleSecundaria: evento.calleSecundaria,
-                referenciaDireccion: evento.referenciaDireccion,
-                iva: evento.iva,
-                precio: evento.precio,
-                pagos: evento.pagos
+                const eventoMapeado: Evento = {
+                    codigo: evento.codigo,
+                    estado: evento.estado,
+                    nombre: evento.nombre,
+                    fecha: evento.fecha,
+                    hora: evento.hora,
+                    pais: evento.pais,
+                    region: evento.region,
+                    callePrincipal: evento.callePrincipal,
+                    calleSecundaria: evento.calleSecundaria,
+                    referenciaDireccion: evento.referenciaDireccion,
+                    iva: evento.iva,
+                    precio: evento.precio,
+                    pagos: evento.pagos
+                }
+                return eventoMapeado;
             }
-            return eventoMapeado;
-        }
         )
     }
 
@@ -96,7 +95,7 @@ export const MyEvents = () => {
                 <section className="max-w-sm max-h-fit border-2 rounded-3xl p-5 mx-5">
                     <div className="container flex justify-center items-center h-screen ">
                         <div className="flex flex-col items-center">
-                            <img src="/lunacat.png" className="rounded-full border-4 border-gray-200" />
+                            <img src="/lunacat.png" className="rounded-full border-4 border-gray-200"/>
                             <p className="mt-4 text-primary">{correo}</p>
                             <p className="text-primary">{nombre + " " + apellido}</p>
                         </div>
@@ -104,6 +103,8 @@ export const MyEvents = () => {
                 </section>
                 <section className="w-full">
                     <h1 className="font-semibold text-4xl pb-4">Mis Eventos:</h1>
+                    <BotonCrearEvento />
+
                     {
                         eventos && (
 
@@ -122,7 +123,7 @@ export const MyEvents = () => {
     );
 };
 
-const EventoCard = ({ evento, key }: { evento: Evento, key: number }) => {
+const EventoCard = ({evento, key}: { evento: Evento, key: number }) => {
 
     const navigate = useNavigate();
 
@@ -141,7 +142,8 @@ const EventoCard = ({ evento, key }: { evento: Evento, key: number }) => {
                         <p className="text-md flex gap-4">
                             {evento.nombre}
                             {
-                                evento.estado === 'COMPLETADO' ? <Chip variant="dot" color="default">Completado</Chip> : <Chip variant="dot" color="success">Activo</Chip>
+                                evento.estado === 'COMPLETADO' ? <Chip variant="dot" color="default">Completado</Chip> :
+                                    <Chip variant="dot" color="success">Activo</Chip>
                             }
                         </p>
                         <p className="text-small text-default-500">{evento.pais + ' - ' + evento.region}</p>

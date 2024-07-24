@@ -47,9 +47,6 @@ const Cart = () => {
     useEffect(() => {
         setRegion("Elige una ciudad")
     }, [pais]);
-    useEffect(() => {
-        setConfirmado(region!=="Elige una ciudad")
-    }, [region]);
 
     const fetchClient = async () => {
         try {

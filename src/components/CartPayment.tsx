@@ -83,6 +83,7 @@ const CartPayment = ({
         setValido(region == "" || region === "Ciudad" || region === "Elige una ciudad")
     }, [region]);
 
+
     const registrarEvento = async () => {
         try {
             if (correo == null) return;
