@@ -20,6 +20,7 @@ interface Evento {
     iva: number;
     precio: number;
     pagos: Pago[]
+    map?: any
 }
 
 interface Pago {
@@ -34,25 +35,26 @@ export const MyEvents = () => {
     const [eventos, setEventos] = useState<Evento[]>();
 
 
-    const mapearEventos = (eventos: any) => {
-        return eventos.map((evento: any) => {
+    const mapearEventos = (eventos: Evento) => {
+        return eventos.map((evento: Evento) => {
             const eventoMapeado: Evento = {
-                codigo: evento.data.codigo,
-                estado: evento.data.estado,
-                nombre: evento.data.nombre,
-                fecha: evento.data.fecha,
-                hora: evento.data.hora,
-                pais: evento.data.pais,
-                region: evento.data.region,
-                callePrincipal: evento.data.callePrincipal,
-                calleSecundaria: evento.data.calleSecundaria,
-                referenciaDireccion: evento.data.referenciaDireccion,
-                iva: evento.data.iva,
-                precio: evento.data.precio,
-                pagos: evento.data.pagos
+                codigo: evento.codigo,
+                estado: evento.estado,
+                nombre: evento.nombre,
+                fecha: evento.fecha,
+                hora: evento.hora,
+                pais: evento.pais,
+                region: evento.region,
+                callePrincipal: evento.callePrincipal,
+                calleSecundaria: evento.calleSecundaria,
+                referenciaDireccion: evento.referenciaDireccion,
+                iva: evento.iva,
+                precio: evento.precio,
+                pagos: evento.pagos
             }
             return eventoMapeado;
-        });
+        }
+        )
     }
 
     const fetchEventos = async () => {
@@ -63,7 +65,7 @@ export const MyEvents = () => {
             if (correo != null) {
                 const response = await getEventosDeCliente(correo);
 
-                const eventos: Evento[] = mapearEventos(response)
+                const eventos: Evento[] = mapearEventos(response.data)
 
                 setEventos(eventos)
                 console.log(response.data)
