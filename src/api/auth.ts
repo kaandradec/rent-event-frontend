@@ -54,7 +54,7 @@ export const registerRequestClient = async (
     ciudad: string
 ) =>
     await axios.post(
-        "http://localhost:8080/auth/register",
+        "https://rent-event-backend.onrender.com/auth/register",
         JSON.stringify({
             nombre: nombre,
             apellido: apellido,
