@@ -149,7 +149,7 @@ const Cart = () => {
                                             isRequired
                                             description="Ingrese el nombre del evento que desea organizar."
                                             onValueChange={(value) => {
-                                                setAsistentes(parseInt(value))
+                                                // setAsistentes(parseInt(value))
                                                 setNombreEvento(value)
                                             }}
                                             validate={(value) => {

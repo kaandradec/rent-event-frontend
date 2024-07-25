@@ -114,7 +114,6 @@ export const MyEvents = () => {
                                     .map((event: Evento, index: number) => (<EventoCard evento={event} key={index} />))
                                 : <div>
                                     <p className="text-primary py-4">No hay eventos disponibles</p>
-                                    <BotonCrearEvento />
                                 </div>
                         )
                     }
