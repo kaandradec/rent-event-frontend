@@ -43,8 +43,7 @@ const DashboardDashboard = () => (<>
 </>)
 
 const DashboardOrders = () => (<>
-  <h1>Gestion de ordenes</h1>
-  <p>Aqui se gestionan las ordenes de generación del evento del cliente</p>
+  <h1>PROXIMAMENTE: Gestion de ordenes</h1>
 </>)
 
 const DashboardClients = () => (<>
