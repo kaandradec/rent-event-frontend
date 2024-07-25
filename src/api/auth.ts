@@ -1,4 +1,4 @@
-import {authApi} from "@/lib/axios";
+import { authApi } from "@/lib/axios";
 import axios from "axios";
 
 export const loginRequest = async (correo: string, contrasenia: string) =>
@@ -17,7 +17,7 @@ export const registerRequest = async (
     contrasenia: string
 ) =>
     await axios.post(
-        "http://localhost:8080/auth/user/register",
+        // "http://localhost:8080/auth/user/register",
         JSON.stringify({
             nombre: nombre,
             lastname: apellido,
@@ -54,7 +54,7 @@ export const registerRequestClient = async (
     ciudad: string
 ) =>
     await axios.post(
-        "http://localhost:8080/auth/register",
+        // "http://localhost:8080/auth/register",
         JSON.stringify({
             nombre: nombre,
             apellido: apellido,
@@ -64,7 +64,7 @@ export const registerRequestClient = async (
             prefijo: prefijo,
             telefono: telefono,
             pais: pais,
-            ciudad:ciudad
+            ciudad: ciudad
         }),
         {
             headers: {
