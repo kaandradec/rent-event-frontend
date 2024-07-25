@@ -17,7 +17,7 @@ export const registerRequest = async (
     contrasenia: string
 ) =>
     await axios.post(
-        "https://rent-event-backend.onrender.com",
+        "https://rent-event-backend.onrender.com/auth/user/register",
         JSON.stringify({
             nombre: nombre,
             lastname: apellido,
@@ -54,7 +54,7 @@ export const registerRequestClient = async (
     ciudad: string
 ) =>
     await axios.post(
-        "https://rent-event-backend.onrender.com",
+        "http://localhost:8080/auth/register",
         JSON.stringify({
             nombre: nombre,
             apellido: apellido,
