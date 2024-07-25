@@ -40,7 +40,7 @@ export const obtenerServiciosFactura = async (
     await tokenApi.put(
         `/servicios/facturar`,
         JSON.stringify({
-            codEvento:codEvento
+            codEvento: codEvento
         }),
         {
             headers: {
@@ -49,3 +49,6 @@ export const obtenerServiciosFactura = async (
             // withCredentials: true,
         }
     );
+
+export const obtenerFacturaPorCodigoEvento = async (codigoEvento: string | undefined) =>
+    await tokenApi.get(`/facturas/obtener/${codigoEvento}`)

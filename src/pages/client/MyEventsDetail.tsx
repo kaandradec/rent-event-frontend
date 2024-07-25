@@ -1,11 +1,11 @@
-import {cancelarEvento, enviarIncidencia, getEventoPorCodigo} from '@/api/eventos';
-import {Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Input, useDisclosure} from '@nextui-org/react';
-import {AxiosError, AxiosResponse} from 'axios';
-import {Coins, Download, MessageCircle, Send, X} from 'lucide-react';
-import {useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom'
-import {DeleteModal} from "@/components/DeleteModal.tsx";
-import {PagoModal} from "@/components/PagoModal.tsx";
+import { cancelarEvento, enviarIncidencia, getEventoPorCodigo } from '@/api/eventos';
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Input, useDisclosure } from '@nextui-org/react';
+import { AxiosError, AxiosResponse } from 'axios';
+import { Coins, Download, MessageCircle, Send, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'
+import { DeleteModal } from "@/components/DeleteModal.tsx";
+import { PagoModal } from "@/components/PagoModal.tsx";
 
 interface Evento {
     codigo: string;
@@ -268,8 +268,8 @@ export default function MyEventsDetail() {
             )}
             <DeleteModal isOpen={isOpen} onClose={onClose} handleCancelEvent={handleCancelEvent} />
             <PagoModal isOpenPago={isOpenPago} onClosePago={onClosePago}
-                       handleCerrarPago={handlePagarEvent} total={evento?.precio}
-                       pagoAnterior={evento?.pagos[0].monto} evento={evento?.codigo} />
+                handleCerrarPago={handlePagarEvent} total={evento?.precio}
+                pagoAnterior={evento?.pagos[0].monto} evento={evento?.codigo} />
         </>
     );
 }

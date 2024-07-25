@@ -9,7 +9,7 @@ import {
   Font,
 } from "@react-pdf/renderer";
 import logo from "../../public/logoPDF.png";
-import { Servicios, StoreProduct } from "types";
+import { Factura, Servicios, StoreProduct } from "types";
 
 Font.register({
   family: "Open Sans",
@@ -26,11 +26,11 @@ interface DatosCliente {
 }
 
 type PDFProps = {
-  cliente: DatosCliente;
+  factura: Factura | undefined;
   servicios: Servicios[];
 };
 
-export default function PDF({ cliente, servicios }: PDFProps) {
+export default function PDF({ factura, servicios }: PDFProps) {
   const styles = StyleSheet.create({
     page: {
       flexDirection: "column",
@@ -94,50 +94,57 @@ export default function PDF({ cliente, servicios }: PDFProps) {
   });
 
   return (
-      <Document>
-        <Page style={styles.page}>
-          <Text style={styles.header}>Comprobante de Pago</Text>
-          <Image style={styles.image} src={logo} />
-          <Text>NOMBRE: {cliente.nombre}</Text>
-          <Text>CEDULA: {cliente.cedula}</Text>
-          <Text>DIRECCION: {cliente.direccion}</Text>
-          <Text>TARJETA: {cliente.tarjeta}</Text>
-          <Text style={styles.header}>Servicios Solicitados</Text>
-          {Array.isArray(servicios) && servicios.length > 0 ? (
-              servicios.map((servicio, index) => (
-                  <View key={index} style={styles.table}>
-                    <View style={styles.tableRow}>
-                      <View style={styles.tableColHeader}>
-                        <Text style={styles.tableCellHeader}>Servicio</Text>
-                      </View>
-                      <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>{servicio.nombre}</Text>
-                      </View>
-                    </View>
-                    <View style={styles.tableRow}>
-                      <View style={styles.tableColHeader}>
-                        <Text style={styles.tableCellHeader}>Descripción</Text>
-                      </View>
-                      <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>
-                          {servicio.descripcion || "N/A"}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.tableRow}>
-                      <View style={styles.tableColHeader}>
-                        <Text style={styles.tableCellHeader}>Precio</Text>
-                      </View>
-                      <View style={styles.tableCol}>
-                        <Text style={styles.tableCell}>${servicio.precio.toFixed(2)}</Text>
-                      </View>
-                    </View>
-                  </View>
-              ))
-          ) : (
-              <Text>No hay servicios disponibles</Text>
-          )}
-        </Page>
-      </Document>
+    <Document>
+      <Page style={styles.page}>
+        <Text style={styles.header}>Comprobante de Pago</Text>
+        <Image style={styles.image} src={logo} />
+        <Text style={styles.header}>Rent Event</Text>
+        <Text>NUMERO DE FACTURA: {factura?.numero}</Text>
+        <Text>RUC: {factura?.rucEmpresa}</Text>
+        <Text>DIRECCION: {factura?.direccionEmpresa}</Text>
+        <Text>FECHA: {factura?.fechaEmision}</Text>
+        <Text>IVA: {factura?.iva}</Text>
+        <Text style={styles.header}>Datos del cliente</Text>
+        <Text>NOMBRE: {factura?.nombreCliente}</Text>
+        <Text>CEDULA: {factura?.cedulaCliente}</Text>
+        <Text>DIRECCION: {factura?.direccionCliente}</Text>
+        <Text style={styles.header}>Servicios Solicitados</Text>
+        {Array.isArray(servicios) && servicios.length > 0 ? (
+          servicios.map((servicio, index) => (
+            <View key={index} style={styles.table}>
+              <View style={styles.tableRow}>
+                <View style={styles.tableColHeader}>
+                  <Text style={styles.tableCellHeader}>Servicio</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{servicio.nombre}</Text>
+                </View>
+              </View>
+              <View style={styles.tableRow}>
+                <View style={styles.tableColHeader}>
+                  <Text style={styles.tableCellHeader}>Descripción</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>
+                    {servicio.descripcion || "N/A"}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.tableRow}>
+                <View style={styles.tableColHeader}>
+                  <Text style={styles.tableCellHeader}>Precio</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>${servicio.precio.toFixed(2)}</Text>
+                </View>
+              </View>
+            </View>
+          ))
+        ) : (
+          <Text>No hay servicios disponibles</Text>
+        )}
+        <Text>Monto Total a pagar: {factura?.montoTotal}</Text>
+      </Page>
+    </Document>
   );
 }
