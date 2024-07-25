@@ -1,12 +1,12 @@
-const cartSlice = (set, get) => ({
+const cartSlice = (set: any, get: any) => ({
   cart: [],
   cartQuantity: 0,
 
-  addToCart: (item) => {
-    set((prev) => {
+  addToCart: (item: any) => {
+    set((prev: any) => {
       // Check if the item already exists in the cart
       const existingItemIndex = prev.cart.findIndex(
-        (cartItem) => cartItem.id === item.id
+        (cartItem: any) => cartItem.id === item.id
       );
       // If the item exists, update its quantity
       if (existingItemIndex !== -1) {
@@ -27,11 +27,11 @@ const cartSlice = (set, get) => ({
     });
   },
 
-  increaseQuantity: (itemId) => {
-    set((prev) => {
+  increaseQuantity: (itemId: any) => {
+    set((prev: any) => {
       // Check if the item already exists in the cart
       const existingItemIndex = prev.cart.findIndex(
-        (cartItem) => cartItem._id === itemId
+        (cartItem: any) => cartItem._id === itemId
       );
       // Update item quantity
       const updatedCart = [...prev.cart];
@@ -44,9 +44,9 @@ const cartSlice = (set, get) => ({
     });
   },
 
-  removeFromCart: (itemId) => {
+  removeFromCart: (itemId: any) => {
     const existingItemIndex = get().cart.findIndex(
-      (cartItem) => cartItem.id === itemId
+      (cartItem: any) => cartItem.id === itemId
     );
     // If the item exists in the cart, update its quantity or remove it
     if (existingItemIndex !== -1) {
@@ -68,9 +68,9 @@ const cartSlice = (set, get) => ({
     }
   },
 
-  deleteFromCart: (itemId) => {
+  deleteFromCart: (itemId: any) => {
     const existingItemIndex = get().cart.findIndex(
-      (cartItem) => cartItem.id === itemId
+      (cartItem: any) => cartItem.id === itemId
     );
     const updatedCart = [...get().cart];
     const deletedItem = updatedCart[existingItemIndex];

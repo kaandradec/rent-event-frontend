@@ -18,7 +18,7 @@ interface CartPaymentProps {
     asistentes: number;
     totalPrice: () => number;
     confirmado: boolean;
-    setConfirmado: (valor: boolean) => boolean;
+    setConfirmado: React.Dispatch<SetStateAction<boolean>>;
     region: string;
     correo: string;
     nombreTargeta: string;

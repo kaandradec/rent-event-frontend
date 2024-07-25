@@ -1,10 +1,10 @@
-import {useEffect, useState} from "react";
-import {useAuthStore} from "@/store/auth";
-import {AxiosError, AxiosResponse} from "axios";
-import {Button, Card, CardHeader, Chip, Image} from "@nextui-org/react";
-import {getEventosDeCliente} from "@/api/eventos";
-import {BotonCrearEvento} from "@/components/BotonCrearEvento";
-import {useNavigate} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useAuthStore } from "@/store/auth";
+import { AxiosError, AxiosResponse } from "axios";
+import { Button, Card, CardHeader, Chip, Image } from "@nextui-org/react";
+import { getEventosDeCliente } from "@/api/eventos";
+import { BotonCrearEvento } from "@/components/BotonCrearEvento";
+import { useNavigate } from "react-router-dom";
 
 interface Evento {
     codigo: string;
@@ -28,32 +28,31 @@ interface Pago {
 }
 
 export const MyEvents = () => {
-    const {correo, nombre, apellido} = useAuthStore();
+    const { correo, nombre, apellido } = useAuthStore();
     const [errMsg, setErrMsg] = useState("");
 
     const [eventos, setEventos] = useState<Evento[]>();
 
 
-    const mapearEventos = (eventos: AxiosResponse) => {
-        return eventos.map(evento => {
-                const eventoMapeado: Evento = {
-                    codigo: evento.codigo,
-                    estado: evento.estado,
-                    nombre: evento.nombre,
-                    fecha: evento.fecha,
-                    hora: evento.hora,
-                    pais: evento.pais,
-                    region: evento.region,
-                    callePrincipal: evento.callePrincipal,
-                    calleSecundaria: evento.calleSecundaria,
-                    referenciaDireccion: evento.referenciaDireccion,
-                    iva: evento.iva,
-                    precio: evento.precio,
-                    pagos: evento.pagos
-                }
-                return eventoMapeado;
+    const mapearEventos = (eventos: any) => {
+        return eventos.map((evento: any) => {
+            const eventoMapeado: Evento = {
+                codigo: evento.data.codigo,
+                estado: evento.data.estado,
+                nombre: evento.data.nombre,
+                fecha: evento.data.fecha,
+                hora: evento.data.hora,
+                pais: evento.data.pais,
+                region: evento.data.region,
+                callePrincipal: evento.data.callePrincipal,
+                calleSecundaria: evento.data.calleSecundaria,
+                referenciaDireccion: evento.data.referenciaDireccion,
+                iva: evento.data.iva,
+                precio: evento.data.precio,
+                pagos: evento.data.pagos
             }
-        )
+            return eventoMapeado;
+        });
     }
 
     const fetchEventos = async () => {
@@ -64,7 +63,7 @@ export const MyEvents = () => {
             if (correo != null) {
                 const response = await getEventosDeCliente(correo);
 
-                const eventos: Evento[] = mapearEventos(response.data)
+                const eventos: Evento[] = mapearEventos(response)
 
                 setEventos(eventos)
                 console.log(response.data)
@@ -95,7 +94,7 @@ export const MyEvents = () => {
                 <section className="max-w-sm max-h-fit border-2 rounded-3xl p-5 mx-5">
                     <div className="container flex justify-center items-center h-screen ">
                         <div className="flex flex-col items-center">
-                            <img src="/lunacat.png" className="rounded-full border-4 border-gray-200"/>
+                            <img src="/lunacat.png" className="rounded-full border-4 border-gray-200" />
                             <p className="mt-4 text-primary">{correo}</p>
                             <p className="text-primary">{nombre + " " + apellido}</p>
                         </div>
@@ -123,7 +122,7 @@ export const MyEvents = () => {
     );
 };
 
-const EventoCard = ({evento, key}: { evento: Evento, key: number }) => {
+const EventoCard = ({ evento, key }: { evento: Evento, key: number }) => {
 
     const navigate = useNavigate();
 

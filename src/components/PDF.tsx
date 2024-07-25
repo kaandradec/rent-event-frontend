@@ -9,21 +9,21 @@ import {
   Font,
 } from "@react-pdf/renderer";
 import logo from "../../public/logoPDF.png";
-import { Factura, Servicio, Servicios, StoreProduct } from "types";
+import { Factura, Servicio } from "types";
 
 Font.register({
   family: "Open Sans",
   src: "https://fonts.gstatic.com/s/opensans/v20/mem5YaGs126MiZpBA-UN_r8OUuhs.ttf",
 });
 
-interface DatosCliente {
-  nombre: string;
-  direccion: string;
-  cedula: string;
-  tarjeta: string;
-  nombreTarjeta: string;
-  correo: string;
-}
+// interface DatosCliente {
+//   nombre: string;
+//   direccion: string;
+//   cedula: string;
+//   tarjeta: string;
+//   nombreTarjeta: string;
+//   correo: string;
+// }
 
 type PDFProps = {
   factura: Factura | undefined;
@@ -63,7 +63,7 @@ export default function PDF({ factura, servicios }: PDFProps) {
       marginBottom: 5,
     },
     table: {
-      display: "table",
+      // display: "table",
       width: "auto",
       borderStyle: "solid",
       borderWidth: 1,

@@ -268,8 +268,8 @@ export default function MyEventsDetail() {
             )}
             <DeleteModal isOpen={isOpen} onClose={onClose} handleCancelEvent={handleCancelEvent} />
             <PagoModal isOpenPago={isOpenPago} onClosePago={onClosePago}
-                handleCerrarPago={handlePagarEvent} total={evento?.precio}
-                pagoAnterior={evento?.pagos[0].monto} evento={evento?.codigo} />
+                handleCerrarPago={handlePagarEvent} total={evento?.precio || 0}
+                pagoAnterior={evento?.pagos[0].monto || 0} evento={evento?.codigo || ""} />
         </>
     );
 }

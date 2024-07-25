@@ -1,6 +1,6 @@
 import { useStore } from "@/store/store";
 
-import { StoreProduct } from "../../../types";
+import { ProductProps, StoreProduct } from "../../../types";
 import CartProduct from "@/components/CartProduct";
 import ResetCart from "@/components/ResetCart";
 import CartPayment from "@/components/CartPayment";
@@ -82,8 +82,8 @@ const Cart = () => {
     }, []);
     useEffect(() => {
         setIsPagoValido(
-            (parseFloat(pago) >= (totalPrice() * 0.3))
-            && (parseFloat(pago) <= totalPrice())
+            (parseFloat(pago.toString()) >= (totalPrice() * 0.3))
+            && (parseFloat(pago.toString()) <= totalPrice())
         )
     },
         [pago]);
@@ -95,7 +95,7 @@ const Cart = () => {
 
     const subtotal = (): number => {
         let total: number = 0;
-        cart.map((item) => {
+        cart.map((item: StoreProduct) => {
             {
                 return item.quantity ?
                     (total += item.quantity * item.costo)
@@ -309,9 +309,9 @@ const Cart = () => {
                                             labelPlacement="outside"
                                             className={"col-span-2"}
                                             isRequired
-                                            value={pago}
+                                            value={pago.toString()}
                                             onChange={(valor) => {
-                                                setPago(valor.target.value);
+                                                setPago(Number(valor.target.value));
                                             }}
                                         />
                                         <p className={"col-span-full font-light text-xs mt-1"}>*El anticipo del 30% asegura la disponibilidad del servicio y cubre costos

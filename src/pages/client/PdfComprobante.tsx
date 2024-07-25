@@ -4,7 +4,7 @@ import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import PDF from "@/components/PDF";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Evento, Factura, Servicios } from "../../../types";
+import { Evento, Factura, Servicio, Servicios } from "../../../types";
 import { obtenerFacturaPorCodigoEvento } from "@/api/factura";
 import { getEventoPorCodigo } from "@/api/eventos";
 
@@ -23,7 +23,7 @@ export default function PdfComprobante() {
   const [nombreTarjeta, setNombreTarjeta] = useState<string>("");
   const [errMsg, setErrMsg] = useState<string>("");
 
-  const [servicios, setServicios] = useState<Servicios[]>([]);
+  const [servicios, setServicios] = useState<Servicio[]>([]);
   const [factura, setFactura] = useState<Factura>();
   const [evento, setEvento] = useState<Evento>();
 

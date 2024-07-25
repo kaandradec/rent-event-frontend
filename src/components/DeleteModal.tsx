@@ -1,6 +1,6 @@
-import {Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader} from "@nextui-org/react";
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 
-export const DeleteModal = ({ isOpen, onClose, handleCancelEvent }) => {
+export const DeleteModal = ({ isOpen, onClose, handleCancelEvent }: { isOpen: any, onClose: any, handleCancelEvent: any }) => {
     return (
         <Modal backdrop='blur' isOpen={isOpen} onClose={onClose}>
             <ModalContent>

@@ -1,5 +1,5 @@
-import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
-import React, {useEffect, useState} from "react";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 interface BotonPaisesProps {
@@ -9,7 +9,7 @@ interface BotonPaisesProps {
 interface ApiResponse {
     error: boolean;
     msg: string;
-    data: { name: string }[];
+    data: { country: string }[];
 }
 
 interface StatesApiResponse {
@@ -29,7 +29,7 @@ interface StateData {
     name: string;
 }
 
-export const BotonPaises: React.FC<BotonPaisesProps> = ({setSelectedCountry, setSelectedCity}) => {
+export const BotonPaises: React.FC<BotonPaisesProps> = ({ setSelectedCountry, setSelectedCity }) => {
     const [paises, setPaises] = useState<string[]>([]);
     const [ciudades, setCiudades] = useState<string[]>([]);
     const [country, setCountry] = useState<string>("País");
@@ -101,12 +101,12 @@ export const BotonPaises: React.FC<BotonPaisesProps> = ({setSelectedCountry, set
                     aria-label={"País"}
                     selectedKeys={new Set([country])}
                     onSelectionChange={
-                    (keys) => {
-                        handleCountrySelection(keys as Set<string>)
-                        setCity("Elige una ciudad")
-                    }
+                        (keys) => {
+                            handleCountrySelection(keys as Set<string>)
+                            setCity("Elige una ciudad")
+                        }
 
-                }
+                    }
                     className="max-h-60 overflow-auto"
                 >
                     {paises.map((pais) => (

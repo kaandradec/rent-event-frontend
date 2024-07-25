@@ -74,7 +74,7 @@ function Products() {
     if (filter[0] === "costo" && typeof filter[1] === 'number' && typeof filter[2] === 'number') {
       // Filter products by price range
       filteredProd = product.filter(
-        (item) =>
+        (item: any) =>
           item.costo >= filter[1] && item.costo <= filter[2]
       );
     } else {

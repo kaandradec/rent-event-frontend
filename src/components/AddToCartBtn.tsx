@@ -16,7 +16,7 @@ export default function AddToCartBtn({
   quantity,
 }: StoreProduct) {
   // Access cart state and functions from the store
-  const cart = useStore((state) => state.cart);
+  const cart: StoreProduct[] = useStore((state) => state.cart);
   const existingCartItem = cart.find((cartItem) => cartItem.id === id);
   const addToCart = useStore((state) => state.addToCart);
   const removeFromCart = useStore((state) => state.removeFromCart);
@@ -43,7 +43,7 @@ export default function AddToCartBtn({
   return (
     // Render the component based on the existingCartItem's quantity
     <>
-      {existingCartItem?.quantity > 0 ? (
+      {existingCartItem?.quantity && existingCartItem.quantity > 0 ? (
         <Button
           onClick={() => removeFromCart(id)}
           color="danger" startContent={<ShoppingCart
