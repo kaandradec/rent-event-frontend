@@ -9,7 +9,7 @@ import {
   Font,
 } from "@react-pdf/renderer";
 import logo from "../../public/logoPDF.png";
-import { Factura, Servicios, StoreProduct } from "types";
+import { Factura, Servicio, Servicios, StoreProduct } from "types";
 
 Font.register({
   family: "Open Sans",
@@ -27,88 +27,103 @@ interface DatosCliente {
 
 type PDFProps = {
   factura: Factura | undefined;
-  servicios: Servicios[];
+  servicios: Servicio[] | undefined;
 };
 
 export default function PDF({ factura, servicios }: PDFProps) {
   const styles = StyleSheet.create({
     page: {
-      flexDirection: "column",
+      padding: 30,
       backgroundColor: "#FFFFFF",
       fontFamily: "Open Sans",
     },
-    image: {
-      width: 100,
-      height: 100,
-      alignSelf: "center",
-    },
     header: {
-      fontSize: 20,
+      fontSize: 24,
       textAlign: "center",
       color: "#333333",
+      marginBottom: 20,
+      textTransform: "uppercase",
+    },
+    subHeader: {
+      fontSize: 18,
+      textAlign: "center",
+      color: "#555555",
       marginBottom: 10,
+      textTransform: "uppercase",
     },
     clientInfo: {
       fontSize: 12,
-      margin: 10,
+      marginVertical: 5,
+      padding: 10,
+      borderWidth: 1,
+      borderColor: "#cccccc",
+      borderRadius: 5,
     },
-    serviceItem: {
-      fontSize: 10,
-      marginLeft: 10,
+    infoText: {
+      marginBottom: 5,
     },
     table: {
+      display: "table",
       width: "auto",
       borderStyle: "solid",
       borderWidth: 1,
-      borderRightWidth: 0,
-      borderBottomWidth: 0,
+      borderColor: "#cccccc",
+      marginVertical: 10,
     },
     tableRow: {
-      margin: "auto",
       flexDirection: "row",
     },
     tableColHeader: {
-      width: "25%",
+      width: "33.33%",
+      backgroundColor: "#f0f0f0",
       borderStyle: "solid",
       borderWidth: 1,
-      borderLeftWidth: 0,
-      borderTopWidth: 0,
-      backgroundColor: "#eeeeee",
+      borderColor: "#cccccc",
+      padding: 5,
     },
     tableCol: {
-      width: "25%",
+      width: "33.33%",
       borderStyle: "solid",
       borderWidth: 1,
-      borderLeftWidth: 0,
-      borderTopWidth: 0,
+      borderColor: "#cccccc",
+      padding: 5,
     },
     tableCellHeader: {
-      margin: 5,
       fontSize: 12,
-      fontWeight: 500,
+      fontWeight: "bold",
     },
     tableCell: {
-      margin: 5,
       fontSize: 10,
+    },
+    totalAmount: {
+      fontSize: 14,
+      fontWeight: "bold",
+      textAlign: "right",
+      marginTop: 10,
+      marginRight: 10,
     },
   });
 
   return (
     <Document>
       <Page style={styles.page}>
-        <Text style={styles.header}>Comprobante de Pago</Text>
-        <Image style={styles.image} src={logo} />
-        <Text style={styles.header}>Rent Event</Text>
-        <Text>NUMERO DE FACTURA: {factura?.numero}</Text>
-        <Text>RUC: {factura?.rucEmpresa}</Text>
-        <Text>DIRECCION: {factura?.direccionEmpresa}</Text>
-        <Text>FECHA: {factura?.fechaEmision}</Text>
-        <Text>IVA: {factura?.iva}</Text>
-        <Text style={styles.header}>Datos del cliente</Text>
-        <Text>NOMBRE: {factura?.nombreCliente}</Text>
-        <Text>CEDULA: {factura?.cedulaCliente}</Text>
-        <Text>DIRECCION: {factura?.direccionCliente}</Text>
-        <Text style={styles.header}>Servicios Solicitados</Text>
+        <Text style={styles.header}>Factura</Text>
+        <Image style={{ width: 100, height: 100, alignSelf: "center" }} src={logo} />
+        <Text style={styles.subHeader}>Rent Event</Text>
+        <Text style={styles.infoText}>NUMERO DE FACTURA: {factura?.numero}</Text>
+        <Text style={styles.infoText}>RUC: {factura?.rucEmpresa}</Text>
+        <Text style={styles.infoText}>DIRECCION: {factura?.direccionEmpresa}</Text>
+        <Text style={styles.infoText}>FECHA: {factura?.fechaEmision}</Text>
+        <Text style={styles.infoText}>IVA: {factura?.iva}</Text>
+
+        <Text style={styles.subHeader}>Datos del cliente</Text>
+        <View style={styles.clientInfo}>
+          <Text style={styles.infoText}>NOMBRE: {factura?.nombreCliente}</Text>
+          <Text style={styles.infoText}>CEDULA: {factura?.cedulaCliente}</Text>
+          <Text style={styles.infoText}>DIRECCION: {factura?.direccionCliente}</Text>
+        </View>
+
+        <Text style={styles.subHeader}>Servicios Solicitados</Text>
         {Array.isArray(servicios) && servicios.length > 0 ? (
           servicios.map((servicio, index) => (
             <View key={index} style={styles.table}>
@@ -125,9 +140,7 @@ export default function PDF({ factura, servicios }: PDFProps) {
                   <Text style={styles.tableCellHeader}>Descripción</Text>
                 </View>
                 <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>
-                    {servicio.descripcion || "N/A"}
-                  </Text>
+                  <Text style={styles.tableCell}>{servicio.descripcion || "N/A"}</Text>
                 </View>
               </View>
               <View style={styles.tableRow}>
@@ -135,7 +148,7 @@ export default function PDF({ factura, servicios }: PDFProps) {
                   <Text style={styles.tableCellHeader}>Precio</Text>
                 </View>
                 <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>${servicio.precio.toFixed(2)}</Text>
+                  <Text style={styles.tableCell}>${servicio.costo.toFixed(2)}</Text>
                 </View>
               </View>
             </View>
@@ -143,7 +156,8 @@ export default function PDF({ factura, servicios }: PDFProps) {
         ) : (
           <Text>No hay servicios disponibles</Text>
         )}
-        <Text>Monto Total a pagar: {factura?.montoTotal}</Text>
+
+        <Text style={styles.totalAmount}>Monto Total a pagar: ${factura?.montoTotal?.toFixed(2)}</Text>
       </Page>
     </Document>
   );

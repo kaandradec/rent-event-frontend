@@ -29,3 +29,39 @@ export interface Factura {
   montoTotal: number;
   iva: number;
 }
+
+
+export interface Evento {
+  codigo: string;
+  estado: string;
+  nombre: string;
+  fecha: string;
+  hora: string;
+  pais: string;
+  region: string;
+  callePrincipal: string;
+  calleSecundaria: string;
+  referenciaDireccion: string;
+  iva: number;
+  precio: number;
+  pagos: Pago[]
+  servicios: Servicio[]
+}
+
+export interface Pago {
+  fecha: string,
+  monto: number
+}
+
+export interface Servicio {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  costo: number;
+  tipo: string;
+  imagenes: Imagen[];
+}
+
+export interface Imagen {
+  url: string;
+}

@@ -1,14 +1,12 @@
 import { useAuthStore } from "@/store/auth";
 import { Button } from "@nextui-org/react";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
-import { useStore } from "@/store/store";
 import PDF from "@/components/PDF";
 import { useEffect, useState } from "react";
-import { obtenerDatosFacturacionCliente, obtenerTarjetasCliente } from "@/api/cliente";
-import { AxiosError } from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { obtenerFacturaPorCodigoEvento, obtenerServiciosFactura } from "@/api/eventos";
-import { Factura, Servicios } from "../../../types";
+import { Evento, Factura, Servicios } from "../../../types";
+import { obtenerFacturaPorCodigoEvento } from "@/api/factura";
+import { getEventoPorCodigo } from "@/api/eventos";
 
 
 
@@ -24,9 +22,10 @@ export default function PdfComprobante() {
   const [numeroTarjeta, setNumeroTarjeta] = useState<string>("");
   const [nombreTarjeta, setNombreTarjeta] = useState<string>("");
   const [errMsg, setErrMsg] = useState<string>("");
-  const [servicios, setServicios] = useState<Servicios[]>([]);
 
+  const [servicios, setServicios] = useState<Servicios[]>([]);
   const [factura, setFactura] = useState<Factura>();
+  const [evento, setEvento] = useState<Evento>();
 
   // const fetchClient = async () => {
   //   try {
@@ -76,6 +75,24 @@ export default function PdfComprobante() {
     };
   }
 
+  const mapearEvento = (evento: Evento) => {
+    return {
+      codigo: evento.codigo,
+      estado: evento.estado,
+      nombre: evento.nombre,
+      fecha: evento.fecha,
+      hora: evento.hora,
+      pais: evento.pais,
+      region: evento.region,
+      callePrincipal: evento.callePrincipal,
+      calleSecundaria: evento.calleSecundaria,
+      referenciaDireccion: evento.referenciaDireccion,
+      iva: evento.iva,
+      precio: evento.precio,
+      pagos: evento.pagos,
+      servicios: evento.servicios
+    };
+  }
 
 
   const fetchFactura = async () => {
@@ -89,22 +106,35 @@ export default function PdfComprobante() {
     }
   }
 
+  const fetchEvento = async () => {
+    try {
+      const response = await getEventoPorCodigo(codEvento);
+
+      const evento: Evento = mapearEvento(response.data);
+      setEvento(evento);
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     if (!rol) navigate("/");
     // fetchClient();
 
     fetchFactura();
+    fetchEvento();
 
   }, []);
 
-  const datosCliente = {
-    nombre: nombreFacturacion,
-    direccion: direccion,
-    cedula: numeroCedula,
-    tarjeta: numeroTarjeta,
-    nombreTarjeta: nombreTarjeta,
-    correo: correo,
-  };
+  // const datosCliente = {
+  //   nombre: nombreFacturacion,
+  //   direccion: direccion,
+  //   cedula: numeroCedula,
+  //   tarjeta: numeroTarjeta,
+  //   nombreTarjeta: nombreTarjeta,
+  //   correo: correo,
+  // };
 
   return (
     <>
@@ -156,7 +186,7 @@ export default function PdfComprobante() {
             style={{ width: "100%", height: "600px" }}
             showToolbar={true}
           >
-            <PDF factura={factura} servicios={servicios} />
+            <PDF factura={factura} servicios={evento?.servicios} />
           </PDFViewer>
         </div>
       </div>
