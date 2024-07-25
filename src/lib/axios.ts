@@ -5,7 +5,7 @@ import axios from "axios";
 const baseURL = "https://rent-event-backend.onrender.com";
 // const baseURL = "https://g2hk2mnk-8080.brs.devtunnels.ms";
 
-axios.defaults.baseURL = baseURL;
+// axios.defaults.baseURL = baseURL;
 
 export const authApi = axios.create({
   baseURL,
