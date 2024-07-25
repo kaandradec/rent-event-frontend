@@ -26,12 +26,13 @@ const CartProduct = ({ item }: cartProductProps) => {
   return (
     <section
       className="bg-gray-100 relative rounded-lg flex flex-col
-        sl:flex-row items-center"
+        sl:flex-row items-center
+        dark:bg-zinc-900 dark:text-white/90
+        "
     >
       <Link
         to={{
           pathname: `/${id}`,
-          query: { id, nombre },
         }}
         className="h-[8.2rem] w-full ls:h-full sl:w-[7.3rem] md:w-[8.8rem] left-0 top-0 absolute"
       />
@@ -47,18 +48,19 @@ const CartProduct = ({ item }: cartProductProps) => {
           <Link
             to={{
               pathname: `/${id}`,
-              query: { id, nombre },
             }}
-            className="text-base md:text-lg font-semibold w-fit text-cPrimary"
+            className="text-base md:text-lg font-semibold w-fit text-cPrimary
+            dark:text-white/90
+            "
           >
             {nombre}
           </Link>
-          <p className="line-clamp-2">{descripcion}</p>
-          <p className="font-semibold text-cPrimary flex justify-between">
+          <p className="line-clamp-2 dark:text-white/80">{descripcion}</p>
+          <p className="font-semibold text-cPrimary flex justify-between dark:text-white/90">
             <span>
               Precio unitario: <FormattedPrice amount={costo} />
             </span>
-            <span className="block md:hidden">
+            <span className="block md:hidden dark:text-white/90">
               Subtotal:{" "}
               <FormattedPrice amount={costo * quantity} />
             </span>
@@ -70,7 +72,7 @@ const CartProduct = ({ item }: cartProductProps) => {
                 onClick={() => deleteFromCart(id)}
               >
                 <Trash className="text-lg text-red-600 group-hover:scale-125" />
-                <span className="pt-0.5">Remover</span>
+                <span className="pt-0.5 dark:text-white/90">Remover</span>
               </button>
             </div>
           </div>

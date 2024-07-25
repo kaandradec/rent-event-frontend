@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {useAuthStore} from "@/store/auth";
-import {actualizarDatosFacturacionClient, obtenerDatosFacturacionCliente} from "@/api/cliente.ts";
-import {AxiosError} from "axios";
-import {UserInfo} from "@/components/UserInfo";
-import {Button, Input} from "@nextui-org/react";
-import {useNavigate} from "react-router-dom";
-import {BotonVolver} from "@/components/BotonVolver.tsx";
+import React, { useEffect, useState } from "react";
+import { useAuthStore } from "@/store/auth";
+import { actualizarDatosFacturacionClient, obtenerDatosFacturacionCliente } from "@/api/cliente.ts";
+import { AxiosError } from "axios";
+import { UserInfo } from "@/components/UserInfo";
+import { Button, Input } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
+import { BotonVolver } from "@/components/BotonVolver.tsx";
 
 
 export const ClientDatosFacturacionConf = () => {
@@ -26,15 +26,14 @@ export const ClientDatosFacturacionConf = () => {
         if (!validInputs) return;
 
         try {
-
             if (correo == null) return
             const mensaje = await actualizarDatosFacturacionClient(correo, nombre, numeroCedula, direccion);
 
             if (mensaje.status == 200) {
                 setSuccess(true)
                 setTimeout(() => {
-                        navigate("/account/config")
-                    },
+                    navigate("/account/config")
+                },
                     2500);
             }
 
@@ -54,12 +53,24 @@ export const ClientDatosFacturacionConf = () => {
         if (direccion.length === 0 || numeroCedula.length === 0 || nombre.length === 0) {
             setErrMsg("Campos vacíos");
             return false;
-        } else if (numeroCedula.length < 10) {
+        } else if (!validarCedulaEcuador(numeroCedula)) {
             setErrMsg("Cedula/ RUC/ Id invalido");
             return false;
         }
         return true;
     }
+    const validarCedulaEcuador = (cedula: string): boolean => {
+        if (cedula.length !== 10) return false;
+
+        const provincia = parseInt(cedula.substring(0, 2), 10);
+        if (provincia < 1 || provincia > 24) return false;
+
+        const tercerDigito = parseInt(cedula[2], 10);
+        if (tercerDigito >= 6) return false;
+
+        return true;
+    };
+
     const msgStyle = {
         colorError: 'text-red-500',
         colorSuccess: 'text-green-500',
@@ -97,7 +108,7 @@ export const ClientDatosFacturacionConf = () => {
         <main className="mt-40">
             <section className="max-w-lg border-2 rounded-b-none rounded-3xl p-5 mx-auto">
                 <form onSubmit={handleSubmit}>
-                    <UserInfo/>
+                    <UserInfo />
                     <h1 className="py-4 text-xl text-primary font-semibold">Datos para tus Facturas:</h1>
                     <div className="container flex align-super content-center ">
 
@@ -129,17 +140,17 @@ export const ClientDatosFacturacionConf = () => {
                                 onChange={(e) => setDireccion(e.target.value)}
                             />
                             <p className={`h-5 text-center my-1 ${success ? msgStyle.colorSuccess : msgStyle.colorError}`}
-                               aria-live="assertive">
+                                aria-live="assertive">
                                 {!success ? errMsg : '¡Cambio exitoso!'}
                             </p>
                             {!editar ?
                                 (
                                     <>
                                         <Button variant="bordered"
-                                                className="container flex max-w-52 h-14 font-semibold text-success dark:text-white"
-                                                color={"success"}
-                                                onClick={() => setEditar(true)}
-                                                type="button">
+                                            className="container flex max-w-52 h-14 font-semibold text-success dark:text-white"
+                                            color={"success"}
+                                            onClick={() => setEditar(true)}
+                                            type="button">
                                             Editar Datos
                                         </Button>
                                     </>
@@ -147,8 +158,8 @@ export const ClientDatosFacturacionConf = () => {
                                 )
                                 :
                                 <Button className="container flex max-w-52 h-14 font-semibold text-white dark:text-white"
-                                        color={"success"}
-                                        type="submit">
+                                    color={"success"}
+                                    type="submit">
                                     Confirmar
                                 </Button>
                             }
@@ -156,7 +167,7 @@ export const ClientDatosFacturacionConf = () => {
                     </div>
                 </form>
                 <div className="mt-2">
-                <BotonVolver/>
+                    <BotonVolver />
                 </div>
             </section>
         </main>

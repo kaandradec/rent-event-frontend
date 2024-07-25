@@ -4,9 +4,9 @@ import FormattedPrice from "./FormattedPrice";
 import { useAuthStore } from "@/store/auth";
 import { Button, Checkbox, Input } from "@nextui-org/react";
 import React, { SetStateAction, useEffect, useState } from "react";
-import {registerEventoClient} from "@/api/cliente.ts";
-import {AxiosError} from "axios";
-import {StoreProduct} from "../../types.ts";
+import { registerEventoClient } from "@/api/cliente.ts";
+import { AxiosError } from "axios";
+import { StoreProduct } from "../../types.ts";
 
 interface CartPaymentProps {
     setAsistentes: React.Dispatch<SetStateAction<number>>;
@@ -20,56 +20,56 @@ interface CartPaymentProps {
     confirmado: boolean;
     setConfirmado: (valor: boolean) => boolean;
     region: string;
-    correo: string ;
-    nombreTargeta: string ;
+    correo: string;
+    nombreTargeta: string;
     numeroTarjeta: string;
     fecha: string;
     direccionFactura: string;
     nombreFactura: string;
     pais: string;
     ciudad: string;
-    numeroCedula:string;
+    numeroCedula: string;
     nombreEvento: string;
     descripcionEvento: string;
     callePrincipal: string;
     calleSecundaria: string;
     referencia: string;
     cart: StoreProduct[];
-    pago:number;
-    isPagoValido:boolean;
+    pago: number;
+    isPagoValido: boolean;
 
 }
 
 const CartPayment = ({
-                         asistentes,
-                         isSelected,
-                         setAsistentes,
-                         setIsSelected,
-                         subtotal,
-                         costoTransporte,
-                         totalIva,
-                         totalPrice,
-                         confirmado,
-                         setConfirmado,
-                         region,
-                         correo,
-                         nombreTargeta,
-                         numeroTarjeta,
-                         fecha,
-                         direccionFactura,
-                         nombreFactura,
-                         pais,
-                         ciudad,
-                         numeroCedula,
-                         nombreEvento,
-                         descripcionEvento,
-                         callePrincipal,
-                         calleSecundaria,
-                         referencia,
-                         cart,
-                         pago,
-                         isPagoValido
-                     }: CartPaymentProps) => {
+    asistentes,
+    isSelected,
+    setAsistentes,
+    setIsSelected,
+    subtotal,
+    costoTransporte,
+    totalIva,
+    totalPrice,
+    confirmado,
+    setConfirmado,
+    region,
+    correo,
+    nombreTargeta,
+    numeroTarjeta,
+    fecha,
+    direccionFactura,
+    nombreFactura,
+    pais,
+    ciudad,
+    numeroCedula,
+    nombreEvento,
+    descripcionEvento,
+    callePrincipal,
+    calleSecundaria,
+    referencia,
+    cart,
+    pago,
+    isPagoValido
+}: CartPaymentProps) => {
     // const cart = useStore((state) => state.cart);
 
     const rol = useAuthStore.getState().rol;
@@ -90,14 +90,14 @@ const CartPayment = ({
 
             const response = await registerEventoClient(
                 correo, nombreTargeta, numeroTarjeta, fecha.toString(),
-                direccionFactura, nombreFactura, pais, ciudad,numeroCedula, nombreEvento,
+                direccionFactura, nombreFactura, pais, ciudad, numeroCedula, nombreEvento,
                 descripcionEvento, callePrincipal, calleSecundaria, referencia,
-                asistentes.toString(), cart, pago, totalPrice() );
+                asistentes.toString(), cart, pago, totalPrice());
             if (response.status == 200) {
                 setSuccess(true)
                 setTimeout(() => {
-                        navigate("/eventos")
-                    },
+                    navigate("/eventos")
+                },
                     2500);
             }
 
@@ -140,14 +140,14 @@ const CartPayment = ({
                         </Checkbox>
                     </div>
                 </div>
-                <div className="flex gap-2 text-[0.8rem] md:text-sm space-y-2">
+                <div className="flex gap-2 text-[0.8rem] md:text-sm space-y-4">
                     <span className="bg-green-600 rounded-full px-1 h-6 w-6 flex items-center justify-center mt-1 text-white text-sm">
                         <Coins />
                     </span>
                     <p>
-                        Se cobrará un abono del 50% para confirmar la reserva.
-                        El pago restante deberá realizarse 24 horas antes del evento en la sección
-                        <span onClick={() => navigate("/orders")} className="text-blue-600 hover:text-blue-800 cursor-pointer"> MIS ORDENES</span>
+                        Se cobrará un abono del 30% para confirmar la reserva.
+                        El pago restante deberá realizarse en la sección
+                        <span onClick={() => navigate("/orders")} className="text-blue-600 hover:text-blue-800 cursor-pointer"> MIS EVENTOS</span>
                     </p>
                 </div>
 
@@ -181,55 +181,55 @@ const CartPayment = ({
                 <div className="flex flex-col items-center text-sm space-y-2">
                     {
                         rol ? (
-                                confirmado ? (
-                                    <div>
-                                        {errMsg && <p className="text-red-500">{errMsg}</p>}
-                                        <p className={`h-5 text-center my-2 ${success ? "text-success" : "text-danger"}`}
-                                           aria-live="assertive">
-                                            {!success ? errMsg : "Evento Registrado con Exito"}
-                                        </p>
+                            confirmado ? (
+                                <div>
+                                    {errMsg && <p className="text-red-500">{errMsg}</p>}
+                                    <p className={`h-5 text-center my-2 ${success ? "text-success" : "text-danger"}`}
+                                        aria-live="assertive">
+                                        {!success ? errMsg : "Evento Registrado con Exito"}
+                                    </p>
                                     <Button
                                         onClick={() => {
-                                            isPagoValido?
-                                            registrarEvento():""
+                                            isPagoValido ?
+                                                registrarEvento() : ""
                                         }}
 
                                         color="success" size="lg" className="font-bold text-white">
                                         Proceder a la reserva
                                     </Button>
-                                    </div>
-                                        )
-                                        :
-                                    <div>
-                                        {/*//todo: poner !*/}
-                                        {!valido? (
-                                                <div>
-                                                    <Button
-                                                        onClick={() => {
-                                                            setConfirmado(true)
-                                                        }}
-                                                        color="success"
-                                                        size="lg"
-                                                        className="font-bold text-white"
-                                                    >
-                                                        Confirmar
-                                                    </Button>
-                                                </div>
-                                            ) :
-                                            (<Button
+                                </div>
+                            )
+                                :
+                                <div>
+                                    {/*//todo: poner !*/}
+                                    {!valido ? (
+                                        <div>
+                                            <Button
                                                 onClick={() => {
-                                                    ""
+                                                    setConfirmado(true)
                                                 }}
-                                                type={"button"}
-                                                color={"default"}
+                                                color="success"
                                                 size="lg"
                                                 className="font-bold text-white"
-                                            > Confirmar
-                                            </Button>)
-                                        }
+                                            >
+                                                Confirmar
+                                            </Button>
+                                        </div>
+                                    ) :
+                                        (<Button
+                                            onClick={() => {
+                                                ""
+                                            }}
+                                            type={"button"}
+                                            color={"default"}
+                                            size="lg"
+                                            className="font-bold text-white"
+                                        > Confirmar
+                                        </Button>)
+                                    }
 
-                                    </div>
-                            ) :
+                                </div>
+                        ) :
                             <Link
                                 to="/auth/login"
                                 className="text-cPrimary underline animate-bounce"
