@@ -1,3 +1,3 @@
-import { tokenApi } from "@/lib/axios";
+import { authApi } from "@/lib/axios";
 
-export const getServices = async () => await tokenApi.get("/servicios");
+export const getServices = async () => await authApi.get("/servicios");
