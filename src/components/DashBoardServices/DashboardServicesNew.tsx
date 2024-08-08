@@ -64,6 +64,9 @@ export default function DashboardServicesNew({ code, setSubpage }: DashboardServ
         if (name === "" || description === "" || type === "" || state === "" || provider === "" || cost === 0) {
             setError("Campos vacíos");
             return false;
+        }else if(cost <= 50 || cost >= 100){
+            setError("Valor excedido");
+            return false;
         }
         return true;
     }
@@ -76,6 +79,7 @@ export default function DashboardServicesNew({ code, setSubpage }: DashboardServ
     }
 
     const sendNewService = async () => {
+
         const formData = new FormData();
         formData.append('file', file || new Blob());
         formData.append('nombre', name);

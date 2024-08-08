@@ -13,6 +13,7 @@ import { AxiosError } from "axios";
 import { useAuthStore } from "@/store/auth.ts";
 import { InformacionPago } from "@/components/InformacionPago.tsx";
 import { CartSinServicios } from "@/components/CartSinServicios.tsx";
+import {BotonRegionesEcuador} from "@/components/BotonRegiones.tsx";
 
 /**
  * Cart component displays the user's shopping cart with a list of cart items.
@@ -44,9 +45,6 @@ const Cart = () => {
     const [nombreTarjeta, setNombreTarjeta] = useState("");
     const [errMsg, setErrMsg] = useState<string>("");
 
-    useEffect(() => {
-        setRegion("Elige una ciudad")
-    }, [pais]);
 
     const fetchClient = async () => {
         try {
@@ -78,6 +76,7 @@ const Cart = () => {
 
 
     useEffect(() => {
+        setPais("Ecuador")
         fetchClient();
     }, []);
     useEffect(() => {
@@ -253,8 +252,17 @@ const Cart = () => {
                                             />
                                         </div>
                                         <div>
-                                            <h3 className="font-normal">Direccion:</h3>
-                                            <BotonPaises setSelectedCountry={setPais} setSelectedCity={setRegion} />
+                                            {/*<h3 className="font-normal">Direccion:</h3>*/}
+                                            <Input
+                                                type="text"
+                                                label="Pais:"
+                                                labelPlacement="outside"
+                                                placeholder="Ecuador"
+                                                className="pb-8"
+                                                maxLength={200}
+                                                isReadOnly
+                                            />
+                                            <BotonRegionesEcuador setSelectedRegion={setRegion}/>
                                         </div>
                                     </div>
                                 </div>
